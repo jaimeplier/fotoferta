@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import Permission
+from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 
 class UsuarioManager(BaseUserManager):
@@ -35,6 +36,7 @@ class Usuario(AbstractBaseUser):
     estatus = models.BooleanField(default=True)
     fecha_registro = models.DateField(auto_now_add=True)
     customer_id = models.CharField(max_length=45, blank=True, null=True)
+    confiable = models.BooleanField(default=False)
 
     objects = UsuarioManager()
 
@@ -126,3 +128,297 @@ class RolHasPermissions(models.Model):
     class Meta:
         managed = True
         db_table = 'rol_has_permissions'
+
+class Fotografo(Usuario):
+
+    class Meta:
+        managed = True
+        db_table = 'fotografo'
+
+class SiguiendoFotografo(models.Model):
+    fotografo = models.ForeignKey(Fotografo, models.DO_NOTHING, related_name='fotografo')
+    siguiendo_a = models.ForeignKey(Fotografo, models.DO_NOTHING, related_name='siguiendo_a')
+    class Meta:
+        managed = True
+        db_table = 'siguiendo_fotografo'
+
+class Catalogo(models.Model):
+    nombre = models.CharField(max_length=512)
+    fecha_alta = models.DateTimeField(auto_now_add=True)
+    fecha_baja = models.DateTimeField(blank=True, null=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    estatus = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        abstract = True
+
+class RedSocial(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'red_social'
+
+class UsuarioRedSocial(models.Model):
+    usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
+    red_social = models.ForeignKey('RedSocial', models.DO_NOTHING)
+    token = models.CharField(max_length=256)
+
+    class Meta:
+        managed = True
+        db_table = 'usuario_has_red_social'
+
+class Tarjeta(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    ultimos_digitos = models.CharField(max_length=5)
+    token = models.CharField(max_length=64)
+    alias = models.CharField(max_length=128)
+    nombre_propietario = models.CharField(max_length=256)
+    estatus = models.BooleanField(default=True)
+
+    class Meta:
+        managed = True
+        db_table = 'tarjeta'
+
+class BitacoraLogin(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    fecha = models.DateTimeField(auto_now_add=True)
+    pass_correcto = models.BooleanField()
+
+    class Meta:
+        managed = True
+        db_table = 'bitacora_login'
+
+class Direccion(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    nombre = models.CharField(max_length=32)
+    colonia = models.ForeignKey('Colonia', models.DO_NOTHING)
+    referencias = models.TextField(max_length=512, null=True, blank=True)
+    entre_calles = models.TextField(max_length=512, null=True, blank=True)
+    estatus = models.BooleanField(default=True)
+
+    class Meta:
+        managed = True
+        db_table = 'direccion'
+
+class Pais(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'pais'
+
+class Estado(Catalogo):
+    pais = models.ForeignKey('Pais', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'estado'
+
+class Municipio(Catalogo):
+    estado = models.ForeignKey('Estado', models.DO_NOTHING)
+    cat_mun_id = models.IntegerField(null=True, blank=True)
+    class Meta:
+        managed = True
+        db_table = 'municipio'
+
+class Colonia(Catalogo):
+    municipio = models.ForeignKey('Municipio', models.DO_NOTHING)
+    cp = models.CharField(max_length=5)
+    class Meta:
+        managed = True
+        db_table = 'colonia'
+
+class Preferencias(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'preferencias'
+
+class Fotografia(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    foto_original = models.ImageField(upload_to='foto_original/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    foto_muestra = models.ImageField(upload_to='foto_muestra/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    descripcion = models.TextField(max_length=256, null=True, blank=True)
+    alto = models.IntegerField()  # pixeles
+    ancho = models.IntegerField()  # pixeles
+    tipo_foto = models.ForeignKey("TipoFoto", models.DO_NOTHING) # Default tipo normal
+    etiquetas = models.ManyToManyField('Etiqueta', related_name='fotografias_tags')
+    categorias = models.ManyToManyField('Categoria', related_name='fotografias_cat')
+    orientacion = models.ForeignKey("Orientacion", models.DO_NOTHING)
+    tamanio = models.ForeignKey("Tamanio", models.DO_NOTHING)
+
+    publica = models.BooleanField(default=True) # Si la foto se mostrara en la red social
+    aprobada = models.BooleanField(default=False) # Si fue aprobada por un administrador
+    estatus = models.BooleanField(default=True) # Si la imagen debe mostrarse o no
+    fecha_alta = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        managed = True
+        db_table = 'fotografia'
+
+
+class FotoReaccion(models.Model):
+    usuario = models.ForeignKey(Fotografo, models.DO_NOTHING)
+    foto = models.ForeignKey(Fotografia, models.DO_NOTHING)
+    reaccion = models.ForeignKey("Reaccion", models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'foto_reaccion'
+
+class Reaccion(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'reaccion'
+
+
+class TipoFoto(Catalogo):
+    precio = models.FloatField()
+
+    class Meta:
+        managed = True
+        db_table = 'tipo_foto'
+
+class Etiqueta(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'etiqueta'
+
+class Orientacion(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'orientacion'
+
+class Categoria(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'categoria'
+
+class Tamanio(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'tamanio'
+
+class CodigoMarco(models.Model):
+    codigo = models.CharField(max_length=5, unique=True)
+
+    class Meta:
+        managed = True
+        db_table = 'codigo_marco'
+
+class Marco(Catalogo):
+    codigo = models.ForeignKey(CodigoMarco, models.DO_NOTHING)
+    tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
+    alto = models.FloatField() # centimetros
+    ancho = models.FloatField() # centimetros
+    profundidad = models.FloatField() # centimetros
+    peso = models.FloatField() # Kilogramos
+    precio = models.FloatField()
+
+    class Meta:
+        managed = True
+        db_table = 'marco'
+
+class ModeloMariaLuisa(Catalogo):
+    modelo = models.CharField(max_length=5, unique=True)
+
+    class Meta:
+        managed = True
+        db_table = 'modelo_maria_luisa'
+
+class MariaLuisa(Catalogo):
+    modelo = models.ForeignKey(ModeloMariaLuisa, models.DO_NOTHING)
+    precio = models.FloatField()
+    tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
+    alto = models.FloatField()  # centimetros
+    ancho = models.FloatField()  # centimetros
+
+    class Meta:
+        managed = True
+        db_table = 'maria_luisa'
+
+class FormaPago(Catalogo):
+    porcentaje_comision = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100)])
+
+    class Meta:
+        managed = True
+        db_table = 'forma_pago'
+
+class EstatusPago(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'estatus_pago'
+
+class TipoCompra(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'tipo_compra'
+
+class DimensionOrden(models.Model):
+    orden = models.OneToOneField('Orden', models.DO_NOTHING)
+    alto = models.FloatField() # centimetros
+    ancho = models.FloatField() # centimetros
+    profundidad = models.FloatField() # centimetros
+
+    class Meta:
+        managed = True
+        db_table = 'dimension_orden'
+
+class TipoComision(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'tipo_comision'
+
+class Comision(Catalogo):
+    porcentaje_comision = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100)])
+
+    class Meta:
+        managed = True
+        db_table = 'comision'
+
+class Orden(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_compra = models.DateField(null=True, blank=True)
+    usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
+    direccion = models.ForeignKey('Direccion', models.DO_NOTHING)
+    tarjeta = models.ForeignKey('Tarjeta', models.DO_NOTHING, null=True, blank=True)
+    oxxo_order = models.CharField(max_length=12)
+    num_guia = models.CharField(max_length=12, null=True, blank=True)
+    peso = models.FloatField(default=0)
+    costo_envio = models.FloatField()
+    forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING)
+    comision = models.ForeignKey('Comision', models.DO_NOTHING, null=True, blank=True)
+    estatus = models.ForeignKey('EstatusPago', models.DO_NOTHING)
+    order_id = models.CharField(max_length=512, blank=True, null=True)
+    total = models.FloatField(blank=True, null=True)
+
+
+    class Meta:
+        managed = True
+        db_table = 'orden'
+
+class Producto(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    orden = models.ForeignKey('Orden', models.CASCADE, related_name='productos')
+    foto = models.ForeignKey(Fotografia, models.DO_NOTHING)
+    marco = models.ForeignKey(Marco, models.DO_NOTHING, null=True, blank=True)
+    maria_luisa = models.ForeignKey(MariaLuisa, models.DO_NOTHING, null=True, blank=True)
+    tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
+    estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'producto'
+
+class Descarga(models.Model):
+    producto = models.ForeignKey('Producto', models.DO_NOTHING)
+    token = models.CharField(max_length=64)
+    no_descargas_disponibles = models.PositiveIntegerField(default=3)
