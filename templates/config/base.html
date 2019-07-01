@@ -1,0 +1,142 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!--      CSS      -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/materialize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/datatables.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/menu.css' %}">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    {% block style %}
+    {% endblock %}
+
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+</head>
+<body>
+<main>
+<!-- aqui empieza el container -->
+<div class="had-container">
+    <div class="row no_bottom">
+        <div class="col s12 m12 l12 banner_rosa"></div>
+    </div>
+    <nav class="nav-wrapper">
+        <div class="nav-wrapper no_bottom">
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down ">
+                <!--<li><img src="" alt="" class="circular--portrait responsive-img"></li>
+                 hay que eliminar esa imagen y agregar el block donde se muestre la imagen -->
+                {% if user.is_authenticated %}
+                    <li><label class="nombre">&nbsp; {{ user.get_full_name }} </label></li>
+                    <!-- prueba debe ser eliminado y agregar un block para mostrar el nombre del usuario
+                    <li><a href="#"><i class="material-icons">notifications</i></a></li> block para notificaciones -->
+                    <li><a href="{% url 'webapp:logout' %}"><i class="material-icons">power_settings_new</i></a></li>
+                {% else %}
+                    <li class="botones">
+                        <a class="botones" href="{% url 'webapp:login' %}">Inicia Sesión</a>
+                    </li>
+                {% endif %}
+                <!-- block para cerrar sesion -->
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="#"> Prueba </a></li>
+                <!-- hay que eliminar prueba y agregar un block para que pinte el nombre -->
+                <li><a href="#"><i class="material-icons">notifications</i>Notificaciones</a></li>
+                <!-- en notificaciones falta agregar la url que mande a notificaciones -->
+                <li><a href="#"><i class="material-icons">power_settings_new</i>Cerrar Sesión</a></li>
+                <!-- debe de mostrarse como un block web:logout o algo así para finalizar la sesion -->
+            </ul>
+        </div>
+    </nav>
+            <a href="{% url 'webapp:list_chofer' %}"><img src="{% static 'images/logo.png' %}" class="responsive-img" id="mini-logo"></a>
+    <!-- menú del lado izquierdo -->
+    <div class="row">
+        <div class="col s3" style="padding: 0px;">
+
+            <div id='snav' class='en'>
+                <ul>
+                    {% if user.is_callcenter %}
+                    <li><a href="{% url 'webapp:vehiculos_activos' %}"> <i class="fa fa-flag-checkered"></i> <span>Vehículos Activos</span></a></li>
+                    <li><a href="{% url 'webapp:todos_vehiculos' %}"> <i class="fa fa-taxi"></i> <span>Todos los Vehículos</span> </a></li>
+                    <li><a href="{% url 'callcenter:llamada' %}"> <i class="fa fa-phone"></i> <span>Llamada Telefónica</span> </a></li>
+                    <li><a href="{% url 'webapp:mensajes' %}"> <i class="fa fa-comments"></i> <span>Mensajes</span> </a></li>
+                    <li><a href="{% url 'webapp:reportes' %}"> <i class="fa fa-edit"></i> <span>Reportes</span> </a></li>
+                    <li><a href="{% url 'webapp:logout' %}"> <i class="fa fa-times-circle"></i> <span>Cerrar Sesión</span> </a></li>
+                    {% endif %}
+                {% if user.is_admin_sitio %}
+                    <li><a href="{% url 'webapp:vehiculos_activos' %}"> <i class="fa fa-flag-checkered"></i> <span>Vehículos Activos</span></a></li>
+                    <li><a href="{% url 'webapp:todos_vehiculos' %}"> <i class="fa fa-taxi"></i> <span>Todos los Vehículos</span> </a></li>
+                    <li><a href="{% url 'callcenter:llamada' %}"> <i class="fa fa-phone"></i> <span>Llamada Telefónica</span> </a></li>
+                    <li><a href="{% url 'webapp:mensajes' %}"> <i class="fa fa-comments"></i> <span>Mensajes</span> </a></li>
+                    <li><a href="{% url 'webapp:reportes' %}"> <i class="fa fa-edit"></i> <span>Reportes</span> </a></li>
+                    <li><a href="{% url 'webapp:creditos' %}"> <i class="fa fa-credit-card"></i> <span>Créditos</span> </a></li>
+                    <li><a href="{% url 'webapp:configuraciones' %}"> <i class="fa fa-cogs"></i> <span>Configuraciones</span> </a></li>
+                    <li><a href="{% url 'webapp:logout' %}"> <i class="fa fa-times-circle"></i> <span>Cerrar Sesión</span> </a></li>
+                    {% endif %}
+                {% if user.is_admin_softic %}
+                    <li><a href="{% url 'webapp:vehiculos_activos' %}"> <i class="fa fa-flag-checkered"></i> <span>Vehículos Activos</span></a></li>
+                    <li><a href="{% url 'webapp:todos_vehiculos' %}"> <i class="fa fa-taxi"></i> <span>Todos los Vehículos</span> </a></li>
+                    <li><a href="{% url 'callcenter:llamada' %}"> <i class="fa fa-phone"></i> <span>Llamada Telefónica</span> </a></li>
+                    <li><a href="{% url 'webapp:mensajes' %}"> <i class="fa fa-comments"></i> <span>Mensajes</span> </a></li>
+                    <li><a href="{% url 'webapp:reportes' %}"> <i class="fa fa-edit"></i> <span>Reportes</span> </a></li>
+                    <li><a href="{% url 'webapp:creditos' %}"> <i class="fa fa-credit-card"></i> <span>Créditos</span> </a></li>
+                    <li><a href="{% url 'webapp:configuraciones' %}"> <i class="fa fa-cogs"></i> <span>Configuraciones</span> </a></li>
+                    <li><a href="{% url 'webapp:logout' %}"> <i class="fa fa-times-circle"></i> <span>Cerrar Sesión</span> </a></li>
+                    {% endif %}
+                {% if user.is_admin_ciudad %}
+                    <li><a href="{% url 'webapp:vehiculos_activos' %}"> <i class="fa fa-flag-checkered"></i> <span>Vehículos Activos</span></a></li>
+                    <li><a href="{% url 'webapp:todos_vehiculos' %}"> <i class="fa fa-taxi"></i> <span>Todos los Vehículos</span> </a></li>
+                    <li><a href="{% url 'callcenter:llamada' %}"> <i class="fa fa-phone"></i> <span>Llamada Telefónica</span> </a></li>
+                    <li><a href="{% url 'webapp:mensajes' %}"> <i class="fa fa-comments"></i> <span>Mensajes</span> </a></li>
+                    <li><a href="{% url 'webapp:reportes' %}"> <i class="fa fa-edit"></i> <span>Reportes</span> </a></li>
+                    <li><a href="{% url 'webapp:creditos' %}"> <i class="fa fa-credit-card"></i> <span>Créditos</span> </a></li>
+                    <li><a href="{% url 'webapp:configuraciones' %}"> <i class="fa fa-cogs"></i> <span>Configuraciones</span> </a></li>
+                    <li><a href="{% url 'webapp:logout' %}"> <i class="fa fa-times-circle"></i> <span>Cerrar Sesión</span> </a></li>
+                    {% endif %}
+                </ul>
+            </div>
+
+        </div>
+        <div class="col s9"></div>
+    </div>
+    {% block content %}
+    {% endblock%}
+    <!-- aquí finaliza el menú -->
+</main>
+
+    <footer class="page-footer">   <!-- aqui empieza el footer -->
+        <div class="had-container">
+            <div class="row">
+                <div class="col s1"></div>
+                <div class="col s10 center">
+                    <h6 class="black-text"><b>Taximovil</b> 2018</h6>
+                    <hr class="linea2" color="#D01E88">
+                </div>
+                <div class="col s1"></div>
+            </div>
+        </div>
+    </footer>   <!-- aquí finaliza footer-->
+</div>
+<!-- finaliza el container -->
+</body>
+
+<!--      JS      -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script> <!-- jQuery updated-->
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+
+{% block scripts %}
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $(".dropdown-button").dropdown();
+            $(".button-collapse").sideNav();
+            $('select').material_select();
+        });
+    </script>
+{% endblock %}
+</html>
+<!-- Developed By Softic Web Team -->
