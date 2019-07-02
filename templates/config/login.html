@@ -7,7 +7,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="SHORTCUT ICON" href="{% static 'favicon.png'%}">
-    {% static 'css/materialize.css' %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap-social.css' %}">
     <link rel="stylesheet" href="{% static 'css/all.css' %}">
@@ -149,12 +148,13 @@
                     </div>
                     <div class="row">
                         <div class="col-12 loginFormContainer">
-                            <form>
+                            <form method="post">
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electrónico">
+                                    <input name="correo" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electrónico">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                                    <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
                                 </div>
                                 <div class="form-group forgotPassword">
                                     <a href="#">¿Olvidaste tu contraseña?</a>
