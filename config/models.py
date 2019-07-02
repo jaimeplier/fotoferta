@@ -313,6 +313,9 @@ class CodigoMarco(models.Model):
         managed = True
         db_table = 'codigo_marco'
 
+    def __str__(self):
+        return self.codigo
+
 class Marco(Catalogo):
     codigo = models.ForeignKey(CodigoMarco, models.DO_NOTHING)
     tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
