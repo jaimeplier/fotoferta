@@ -307,6 +307,7 @@ class Tamanio(Catalogo):
 
 class CodigoMarco(models.Model):
     codigo = models.CharField(max_length=5, unique=True)
+    estatus = models.BooleanField(default=True)
 
     class Meta:
         managed = True

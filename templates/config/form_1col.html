@@ -17,9 +17,15 @@
 					  			<div class="row">
 					  				{% csrf_token %}
                                     {% for field in form %}
-                                        <div class="input-field col s12" style="padding: 0.75rem;">
+                                        {% if field.field.required %}
+                                        <div class="{% if field|field_type != 'booleanfield' %} input-field {% endif %} col s12" style="padding: 0.75rem;">
                                             {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
-                                            <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        {% else %}
+
+                                            {% render_field field class+="validate" placeholder=field.label %}
+                                            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                        {% endif %}
                                         </div>
                                     {% endfor %}
 					  			</div>
