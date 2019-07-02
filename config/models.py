@@ -317,7 +317,8 @@ class CodigoMarco(models.Model):
         return self.codigo
 
 class Marco(Catalogo):
-    imagen = models.ImageField(upload_to='img_marco/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    imagen_horizontal = models.ImageField(upload_to='img_marco/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    imagen_vertical = models.ImageField(upload_to='img_marco/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     codigo = models.ForeignKey(CodigoMarco, models.DO_NOTHING)
     tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
     alto = models.FloatField() # centimetros
