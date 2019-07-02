@@ -402,6 +402,7 @@ class Orden(models.Model):
     costo_envio = models.FloatField()
     forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING)
     comision = models.ForeignKey('Comision', models.DO_NOTHING, null=True, blank=True)
+    promocion = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus = models.ForeignKey('EstatusPago', models.DO_NOTHING)
     order_id = models.CharField(max_length=512, blank=True, null=True)
     total = models.FloatField(blank=True, null=True)
@@ -419,6 +420,7 @@ class Producto(models.Model):
     maria_luisa = models.ForeignKey(MariaLuisa, models.DO_NOTHING, null=True, blank=True)
     tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
     tipo_papel = models.ForeignKey('TipoPapel', models.DO_NOTHING, null=True, blank=True)
+    promocion_aplicada = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING)
 
     class Meta:
