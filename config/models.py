@@ -29,6 +29,8 @@ class UsuarioManager(BaseUserManager):
 
 
 class Usuario(AbstractBaseUser):
+    foto_perfil = models.ImageField(upload_to='foto_perfil/',
+                               validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])], null=True, blank=True)
     nombre = models.CharField(max_length=64)
     correo = models.EmailField(unique=True, max_length=128)
     password = models.CharField(max_length=512)
@@ -130,7 +132,9 @@ class RolHasPermissions(models.Model):
         db_table = 'rol_has_permissions'
 
 class Fotografo(Usuario):
-
+    foto_portada = models.ImageField(upload_to='foto_portada/',
+                                     validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])], null=True,
+                                     blank=True)
     class Meta:
         managed = True
         db_table = 'fotografo'
@@ -342,6 +346,8 @@ class ModeloMariaLuisa(Catalogo):
         db_table = 'modelo_maria_luisa'
 
 class MariaLuisa(Catalogo):
+    imagen = models.ImageField(upload_to='img_marialuisa/',
+                               validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     modelo = models.ForeignKey(ModeloMariaLuisa, models.DO_NOTHING)
     precio = models.FloatField()
     tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
