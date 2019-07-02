@@ -1,0 +1,40 @@
+<!--   SOFTIC SOLUTIONS   -->
+{% extends "config/tab_base.html" %}
+{% block titulo_tabla %}<h5 class="black-text margin_114">Código marco</h5><a class="waves-effect waves-light btn" href="{% url 'administrador:nuevo_marco' %}" style="position: absolute; left: 40%;"><i class="material-icons left">add</i>Agregar</a>{% endblock %}
+{% load static %}
+{% block campos %}
+    <th>Id</th>
+    <th>Marco</th>
+    <th data-orderable="false">Editar</th>
+    <th>Estatus</th>
+    <th>Código</th>
+    <th>Tamaño</th>
+    <th>Alto</th>
+    <th>Ancho</th>
+    <th>Profundidad</th>
+    <th>Peso</th>
+    <th>Precio</th>
+{% endblock %}
+
+{% block scripts_tabla %}
+
+    function cambiar_estatus(id){
+        $.ajax({
+                url: "",
+                data: {pk: id},
+                type: "POST", // http method
+                // handle a successful response
+                success: function (aData) {
+                $('#tabla').dataTable()._fnAjaxUpdate();
+                },
+
+                // handle a non-successful response
+                error: function (xhr, errmsg, err) {
+                alert("Ocurrio un error: " + xhr.responseJSON.Error);
+                $('#tabla').dataTable()._fnAjaxUpdate();
+                }
+            });
+        }
+{% endblock %}
+
+{% block url_ajax %}{% url 'administrador:tab_list_marco' %}{% endblock %}
