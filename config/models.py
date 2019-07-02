@@ -344,6 +344,12 @@ class MariaLuisa(Catalogo):
         managed = True
         db_table = 'maria_luisa'
 
+class TipoPapel(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'tipo_papel'
+
 class FormaPago(Catalogo):
     porcentaje_comision = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100)])
 
@@ -400,7 +406,6 @@ class Orden(models.Model):
     order_id = models.CharField(max_length=512, blank=True, null=True)
     total = models.FloatField(blank=True, null=True)
 
-
     class Meta:
         managed = True
         db_table = 'orden'
@@ -413,6 +418,7 @@ class Producto(models.Model):
     marco = models.ForeignKey(Marco, models.DO_NOTHING, null=True, blank=True)
     maria_luisa = models.ForeignKey(MariaLuisa, models.DO_NOTHING, null=True, blank=True)
     tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
+    tipo_papel = models.ForeignKey('TipoPapel', models.DO_NOTHING, null=True, blank=True)
     estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING)
 
     class Meta:
@@ -423,3 +429,32 @@ class Descarga(models.Model):
     producto = models.ForeignKey('Producto', models.DO_NOTHING)
     token = models.CharField(max_length=64)
     no_descargas_disponibles = models.PositiveIntegerField(default=3)
+
+    class Meta:
+        managed = True
+        db_table = 'descarga'
+
+
+class TipoPromocion(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'tipo_promocion'
+
+class Promocion(models.Model):
+
+    codigo_promocion = models.CharField(max_length=8, unique=True)
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField()
+    tipo_promocion = models.ForeignKey('TipoPromocion', models.DO_NOTHING)
+    porcentaje_cantidad = models.FloatField()
+    tipo_compra = models.ForeignKey('TipoCompra', models.DO_NOTHING)
+    marco = models.ForeignKey('Marco', models.DO_NOTHING, null=True, blank=True)
+    tamanio_marco = models.ForeignKey('Tamanio', models.DO_NOTHING, null=True, blank=True)
+    maria_luisa = models.ForeignKey('MariaLuisa', models.DO_NOTHING, null=True, blank=True)
+    imagen = models.ImageField(upload_to='promo_fotoferta/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, null=True, blank=True)
+
+    class Meta:
+        managed = True
+        db_table = 'promocion'
