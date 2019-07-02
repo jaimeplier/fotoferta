@@ -317,12 +317,16 @@ class CodigoMarco(models.Model):
         return self.codigo
 
 class Marco(Catalogo):
+    imagen = models.ImageField(upload_to='img_marco/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     codigo = models.ForeignKey(CodigoMarco, models.DO_NOTHING)
     tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
     alto = models.FloatField() # centimetros
     ancho = models.FloatField() # centimetros
     profundidad = models.FloatField() # centimetros
     peso = models.FloatField() # Kilogramos
+    grosor_lado = models.FloatField()
+    grosor_total = models.FloatField()
+    grosor_final = models.FloatField()
     precio = models.FloatField()
 
     class Meta:
