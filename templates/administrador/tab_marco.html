@@ -1,19 +1,25 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
-{% block titulo_tabla %}<h5 class="black-text margin_114">Código marco</h5><a class="waves-effect waves-light btn" href="{% url 'administrador:nuevo_marco' %}" style="position: absolute; left: 40%;"><i class="material-icons left">add</i>Agregar</a>{% endblock %}
+{% block titulo_tabla %}<h5 class="black-text margin_114">Marcos</h5><a class="waves-effect waves-light btn" href="{% url 'administrador:nuevo_marco' %}" style="position: absolute; left: 40%;"><i class="material-icons left">add</i>Agregar</a>{% endblock %}
 {% load static %}
 {% block campos %}
     <th>Id</th>
-    <th>Marco</th>
-    <th data-orderable="false">Editar</th>
-    <th>Estatus</th>
+    <th>Nombre</th>
     <th>Código</th>
     <th>Tamaño</th>
     <th>Alto</th>
     <th>Ancho</th>
+    <th>Grosor lateral</th>
+    <th>Grosor total</th>
+    <th>Grosor final</th>
     <th>Profundidad</th>
     <th>Peso</th>
     <th>Precio</th>
+    <th>Imagen horizontal</th>
+    <th>Imagen vertical</th>
+    <th data-orderable="false">Editar</th>
+    <th>Estatus</th>
+
 {% endblock %}
 
 {% block scripts_tabla %}

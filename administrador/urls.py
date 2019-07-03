@@ -2,7 +2,8 @@ from django.urls import path
 
 from administrador import views
 from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView, CodigoMarcoActualizar, TamanioCrear, \
-    TamanioListarAjaxListView, TamanioActualizar, MarcoCrear, MarcoListarAjaxListView, MarcoActualizar
+    TamanioListarAjaxListView, TamanioActualizar, MarcoCrear, MarcoListarAjaxListView, MarcoActualizar, MarialuisaCrear, \
+    MarialuisaAjaxListView, MarialuisaActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -22,4 +23,10 @@ urlpatterns = [
     path('marco/', MarcoListarAjaxListView.as_view(), name='tab_list_marco'),
     path('marco/editar/<int:pk>', MarcoActualizar.as_view(), name='edit_marco'),
 
+    '''
+    path('marialuisa/nuevo/', MarialuisaCrear.as_view(), name='nuevo_marialuisa'),
+    path('marialuisa/listar/', views.marialuisa_listar, name='list_marialuisa'),
+    path('marialuisa/', MarialuisaAjaxListView.as_view(), name='tab_list_marialuisa'),
+    path('marialuisa/editar/<int:pk>', MarialuisaActualizar.as_view(), name='edit_marialuisa'),
+    '''
 ]

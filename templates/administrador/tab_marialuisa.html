@@ -1,10 +1,12 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
-{% block titulo_tabla %}<h5 class="black-text margin_114">Tamaños</h5><a class="waves-effect waves-light btn" href="{% url 'administrador:nuevo_codigo_marco' %}" style="position: absolute; left: 40%;"><i class="material-icons left">add</i>Agregar</a>{% endblock %}
+{% block titulo_tabla %}<h5 class="black-text margin_114">Marialuisa</h5><a class="waves-effect waves-light btn" href="{% url 'administrador:nuevo_marialuisa' %}" style="position: absolute; left: 40%;"><i class="material-icons left">add</i>Agregar</a>{% endblock %}
 {% load static %}
 {% block campos %}
-    <th>Id</th>
-    <th>Marco</th>
+    <th>Modelo</th>
+    <th>Precio</th>
+    <th>Tamaño</th>
+    <th>Imagen</th>
     <th data-orderable="false">Editar</th>
     <th>Estatus</th>
 {% endblock %}
@@ -30,5 +32,4 @@
         }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:tab_list_tamanio' %}{% endblock %}
-
+{% block url_ajax %}{% url 'administrador:tab_list_marialuisa' %}{% endblock %}
