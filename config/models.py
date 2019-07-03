@@ -135,6 +135,7 @@ class Fotografo(Usuario):
     foto_portada = models.ImageField(upload_to='foto_portada/',
                                      validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])], null=True,
                                      blank=True)
+    fotopartner = models.BooleanField(default=False)
     class Meta:
         managed = True
         db_table = 'fotografo'
