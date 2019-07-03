@@ -59,25 +59,21 @@ class MarcoForm(ModelForm):
                 'imagen_vertical': 'Imagen vertical',
               }
 
-'''
 
 class MarialuisaForm(ModelForm):
     class Meta:
         model = MariaLuisa
-        '''
+
         fields = [
-            'modelo ',
-            'precio ',
-            'tamanio ',
+            'nombre',
+            'modelo',
+            'precio',
+            'tamanio',
             'alto',
-            'ancho ',
+            'ancho',
             'imagen',
         ]
-        '''
-        fields = ['nombre', 'precio', 'alto', 'ancho']
 
-        labels = {'nombre': 'Nombre'}
-        '''
         labels = {
             'modelo': 'Modelo',
             'precio': 'Precio',
@@ -86,9 +82,3 @@ class MarialuisaForm(ModelForm):
             'ancho': 'Ancho',
             'imagen': 'Imagen',
               }
-        '''
-
-'''
-
-
-        # widgets = { 'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']])}

@@ -289,7 +289,6 @@ class MarcoActualizar(UpdateView):
 
 
 # Clase Marialuisa
-'''
 
 
 class MarialuisaCrear(CreateView):
@@ -329,13 +328,11 @@ class MarialuisaAjaxListView(BaseDatatableView):
     # permission_required = 'admin_sitio'
     model = MariaLuisa
     columns = [
-        'nombre'
-    #    'modelo', 'precio', 'tamanio', 'imagen', 'editar', 'estatus'
+        'nombre','modelo.nombre', 'precio', 'tamanio', 'imagen', 'editar', 'estatus'
     ]
 
     order_columns = [
-    'nombre'
-    #    'modelo', 'precio', 'tamanio', 'imagen', '', ''
+    'nombre', 'modelo.nombre', 'precio', 'tamanio', 'imagen', '', ''
     ]
 
     max_display_length = 100
@@ -355,10 +352,10 @@ class MarialuisaAjaxListView(BaseDatatableView):
                 return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
                     row.pk) + ')><span class="lever"></span>On</label></div>'
 
-        return super(MarcoListarAjaxListView, self).render_column(row, column)
+        return super(MarialuisaAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Marco.objects.all()
+        return MariaLuisa.objects.all()
 
 
 class MarialuisaActualizar(UpdateView):
@@ -374,7 +371,7 @@ class MarialuisaActualizar(UpdateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de tamaño'
+            context['titulo'] = 'Modificación de maria luisa'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context
@@ -386,6 +383,6 @@ class MarialuisaActualizar(UpdateView):
 
     def get_success_url(self):
         return reverse('administrador:list_marialuisa')
-'''
+
 
 
