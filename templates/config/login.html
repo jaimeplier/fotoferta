@@ -159,6 +159,9 @@
                                 <div class="form-group forgotPassword">
                                     <a href="#">¿Olvidaste tu contraseña?</a>
                                 </div>
+                                {% if error_message %}
+                                    <strong style="color: darkred">{{ error_message }}</strong>
+                                {% endif %}
                                 <button type="submit" class="btn col-12 centerDiv generalBtn">Iniciar Sesión</button>
                             </form>
                         </div>
