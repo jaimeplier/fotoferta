@@ -338,12 +338,15 @@ class Marco(Catalogo):
         managed = True
         db_table = 'marco'
 
-class ModeloMariaLuisa(Catalogo):
+class ModeloMariaLuisa(models.Model):
     modelo = models.CharField(max_length=5, unique=True)
 
     class Meta:
         managed = True
         db_table = 'modelo_maria_luisa'
+
+    def __str__(self):
+        return self.modelo
 
 class MariaLuisa(Catalogo):
     imagen = models.ImageField(upload_to='img_marialuisa/',
@@ -358,11 +361,31 @@ class MariaLuisa(Catalogo):
         managed = True
         db_table = 'maria_luisa'
 
+
+class GrosorPapel(models.Model):
+    medida = models.FloatField()
+
+    class Meta:
+        managed = True
+        db_table = 'grosor_papel'
+
+    def __str__(self):
+        return str(self.medida) + ' mm.'
+
 class TipoPapel(Catalogo):
+    grosor = models.ForeignKey('GrosorPapel', models.DO_NOTHING)
+    precio = models.FloatField()
 
     class Meta:
         managed = True
         db_table = 'tipo_papel'
+
+class Textura(Catalogo):
+    imagen = models.ImageField(upload_to='img_texturas/',
+                               validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    class Meta:
+        managed = True
+        db_table = 'textura'
 
 class FormaPago(Catalogo):
     porcentaje_comision = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100)])
@@ -458,7 +481,9 @@ class TipoPromocion(Catalogo):
         db_table = 'tipo_promocion'
 
 class Promocion(models.Model):
-
+    nombre = models.CharField(max_length=256)
+    total_cupones = models.PositiveIntegerField()
+    usos_por_usuario = models.PositiveIntegerField()
     codigo_promocion = models.CharField(max_length=8, unique=True)
     fecha_inicio = models.DateTimeField()
     fecha_fin = models.DateTimeField()
