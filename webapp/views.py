@@ -6,7 +6,11 @@ from django.urls import reverse
 def login(request):
     error_message = ''
     if request.user.is_authenticated:
-        return redirect(reverse('webapp:list_chofer'))
+        if request.user.rol.pk == 2:  # Administrador Fotofertas
+            return redirect(reverse('administrador:list_marco'))
+        # elif user.rol.pk in [3,4]: # Cliente o Fotopartner
+        #     return redirect(reverse('webapp:'))
+        logout(request)
     if request.method == 'POST':
         correo = request.POST['correo']
         password = request.POST['password']
@@ -32,3 +36,7 @@ def login(request):
     if request.GET.get('next') is not None:
         context['next'] = request.GET.get('next')
     return render(request, 'config/login.html', context)
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('webapp:login'))
