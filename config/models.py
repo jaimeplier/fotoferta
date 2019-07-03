@@ -387,6 +387,19 @@ class Textura(Catalogo):
         managed = True
         db_table = 'textura'
 
+class Logo(Catalogo):
+    imagen = models.ImageField(upload_to='logo/',
+                               validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    class Meta:
+        managed = True
+        db_table = 'logo'
+
+class MenuFotopartner(Catalogo):
+    url = models.CharField(max_length=256)
+    class Meta:
+        managed = True
+        db_table = 'menu_fotopartner'
+
 class FormaPago(Catalogo):
     porcentaje_comision = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100)])
 
