@@ -339,7 +339,7 @@ class Marco(Catalogo):
         db_table = 'marco'
 
 class ModeloMariaLuisa(models.Model):
-    modelo = models.CharField(max_length=5, unique=True)
+    modelo = models.CharField(max_length=6, unique=True)
 
     class Meta:
         managed = True
