@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'rest_framework',
+    'rest_framework.authtoken',
     'config.apps.ConfigConfig',
     'webapp.apps.WebappConfig',
     'administrador.apps.AdminConfig'
@@ -138,3 +140,10 @@ STATIC_ROOT = "/var/django/static/"
 MEDIA_ROOT = "/var/django/media/"
 
 FILE_UPLOAD_PERMISSIONS = 0o644
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DATETIME_FORMAT': "%Y-%m-%d %H:%M",
+}
