@@ -1,6 +1,6 @@
-from django.forms import ModelForm, Select, BooleanField
+from django.forms import ModelForm, Select, BooleanField, PasswordInput
 
-from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa
+from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa, PersonalAdministrativo
 
 
 class CodigoMarcoForm(ModelForm):
@@ -91,4 +91,13 @@ class MarialuisaForm(ModelForm):
             'imagen': 'Imagen',
               }
 
+class PersonalAdministrativoForm(ModelForm):
+    class Meta:
+        model = PersonalAdministrativo
 
+        fields = ['nombre',
+                  'correo',
+                  'password',
+                  'estatus'
+                  ]
+        widgets = {'password': PasswordInput()}

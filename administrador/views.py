@@ -1,15 +1,15 @@
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 
 from administrador.forms import (CodigoMarcoForm, MarcoForm, MarialuisaForm,
-                                 TamanioForm, ModeloMarialuisaForm)
+                                 TamanioForm, ModeloMarialuisaForm, PersonalAdministrativoForm)
 from config.models import (CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa,
-                           Tamanio)
+                           Tamanio, PersonalAdministrativo, Rol)
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 
@@ -488,3 +488,106 @@ class MarialuisaActualizar(PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('administrador:list_marialuisa')
+
+
+class PersonalAdministrativoCrear(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'add_personaladministrativo'
+    model = PersonalAdministrativo
+    form_class = PersonalAdministrativoForm
+    template_name = 'config/form_1col.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PersonalAdministrativoCrear, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Registro de Personal'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un personal'
+        return context
+
+    def form_valid(self, form):
+        rol = Rol.objects.get(pk=5)
+        personal = form.save(commit=False)
+        personal.set_password(personal.password)
+        personal.rol = rol
+        personal.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_personal_administrativo')
+
+@permission_required(perm='add_personaladministrativo', login_url='/webapp/login')
+def personal_administrativo_listar(request):
+    template_name = 'administrador/tab_personal_administrativo.html'
+    return render(request, template_name)
+
+class PersonalAdministrativoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'add_personaladministrativo'
+    model = PersonalAdministrativo
+    columns = ['nombre','correo', 'editar', 'estatus']
+
+    order_columns = ['nombre', 'correo', '', 'estatus']
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_personal_administrativo',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
+                    row.pk) + ')><span class="lever"></span>On</label></div>'
+            else:
+                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
+                    row.pk) + ')><span class="lever"></span>On</label></div>'
+
+        return super(PersonalAdministrativoAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return PersonalAdministrativo.objects.all()
+
+
+class PersonalAdministrativoActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'add_personaladministrativo'
+    model = PersonalAdministrativo
+    template_name = 'config/form_1col.html'
+    form_class = PersonalAdministrativoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PersonalAdministrativoActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación de personal'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        form.instance.set_password(form.cleaned_data['password'])
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_personal_administrativo')
+
+@permission_required(perm='add_personaladministrativo', login_url='/webapp/login')
+def personal_administrativo_cambiar_estatus(request, pk):
+    personal = get_object_or_404(PersonalAdministrativo, pk=pk)
+    if personal.estatus:
+        personal.estatus = False
+    else:
+        personal.estatus = True
+    personal.save()
+    return JsonResponse({'result': 0})

@@ -3,7 +3,9 @@ from django.urls import path
 from administrador import views
 from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView, CodigoMarcoActualizar, TamanioCrear, \
     TamanioListarAjaxListView, TamanioActualizar, MarcoCrear, MarcoListarAjaxListView, MarcoActualizar, MarialuisaCrear, \
-    MarialuisaAjaxListView, MarialuisaActualizar, ModeloMarialuisaCrear, ModeloMarialuisaAjaxListView, ModeloMarialuisaActualizar
+    MarialuisaAjaxListView, MarialuisaActualizar, ModeloMarialuisaCrear, ModeloMarialuisaAjaxListView, \
+    ModeloMarialuisaActualizar, PersonalAdministrativoCrear, PersonalAdministrativoAjaxListView, \
+    PersonalAdministrativoActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -32,5 +34,11 @@ urlpatterns = [
     path('modelomarialuisa/listar/', views.modelomarialuisa_listar, name='list_modelomarialuisa'),
     path('modelomarialuisa/', ModeloMarialuisaAjaxListView.as_view(), name='tab_list_modelomarialuisa'),
     path('modelomarialuisa/editar/<int:pk>', ModeloMarialuisaActualizar.as_view(), name='edit_modelomarialuisa'),
+
+    path('personal_administrativo/nuevo/', PersonalAdministrativoCrear.as_view(), name='nuevo_personal_administrativo'),
+    path('personal_administrativo/listar/', views.personal_administrativo_listar, name='list_personal_administrativo'),
+    path('personal_administrativo/ajax/', PersonalAdministrativoAjaxListView.as_view(), name='tab_list_personal_administrativo'),
+    path('personal_administrativo/editar/<int:pk>', PersonalAdministrativoActualizar.as_view(), name='edit_personal_administrativo'),
+    path('personal_administrativo/cambiar_estatus/<int:pk>', views.personal_administrativo_cambiar_estatus, name='cambiar_estatus_personal_administrativo'),
 
 ]
