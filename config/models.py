@@ -514,3 +514,9 @@ class Promocion(models.Model):
     class Meta:
         managed = True
         db_table = 'promocion'
+
+class PersonalAdministrativo(Usuario):
+
+    class Meta:
+        managed = True
+        db_table = 'personal_administrativo'
