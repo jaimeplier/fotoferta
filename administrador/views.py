@@ -555,6 +555,12 @@ class PersonalAdministrativoAjaxListView(PermissionRequiredMixin, BaseDatatableV
     def get_initial_queryset(self):
         return PersonalAdministrativo.objects.all()
 
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(correo__icontains=search)
+        return qs
+
 
 class PersonalAdministrativoActualizar(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
