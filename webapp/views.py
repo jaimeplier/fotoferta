@@ -1,6 +1,10 @@
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.generic import CreateView
+
+from config.models import Fotografo, Rol
+from webapp.forms import RegistroForm
 
 
 def login(request):
@@ -22,8 +26,8 @@ def login(request):
                     return redirect(request.POST.get('next'))
                 elif user.rol.pk == 2: # Administrador Fotofertas
                     return redirect(reverse('administrador:list_marco'))
-                # elif user.rol.pk in [3,4]: # Cliente o Fotopartner
-                #     return redirect(reverse('webapp:'))
+                elif user.rol.pk in [3,4]: # Cliente o Fotopartner
+                    return redirect(reverse('webapp:sitio_en_construccion'))
                 logout(request)
                 return redirect(reverse('webapp:login_unauthorized'))
             else:
@@ -40,3 +44,58 @@ def login(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('webapp:login'))
+
+def sitio_construccion(request):
+    return render(request, 'config/sitio_en_construccion.html')
+
+class ClienteRegistro(CreateView):
+
+    model = Fotografo
+    template_name = 'config/registro.html'
+    success_url = '/webapp/login'
+    form_class = RegistroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ClienteRegistro, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+            if request.user.rol.pk == 2: # Si es administrador
+                return redirect(reverse('administrador:list_marco'))
+            else:
+                logout_view(request)
+                return redirect(reverse('webapp:login'))
+        self.object = self.get_object
+
+        rol = Rol.objects.get(pk=3) # Rol fotopartner
+
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            try:
+                user = form.save(commit=False)
+                user.rol = rol
+                user.set_password(user.password)
+                user.save()
+
+                # Cosas para envio de correo
+                # to = [user.correo]
+                # ctx = {
+                #     'token': token,
+                #     'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode('UTF-8'),
+                #     'user': user,
+                #     'request': self.request,
+                # }
+                # message = get_template("mailing/correo_registro.html").render(ctx)
+                # sendMail(to, 'Registro inderspace', message)
+
+                return redirect(reverse('webapp:sitio_en_construccion'))
+            except:
+                return render(self.request, template_name=self.template_name,
+                              context={'form': form,
+                                       'error_message': 'Ocurrió un error en el registro, intenta mas tarde o con otro correo'})
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
