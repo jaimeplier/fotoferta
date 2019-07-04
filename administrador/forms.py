@@ -1,6 +1,6 @@
 from django.forms import ModelForm, Select, BooleanField
 
-from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa
+from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa
 
 
 class CodigoMarcoForm(ModelForm):
@@ -59,6 +59,14 @@ class MarcoForm(ModelForm):
                 'imagen_vertical': 'Imagen vertical',
               }
 
+class ModeloMarialuisaForm(ModelForm):
+    class Meta:
+        model = ModeloMariaLuisa
+        fields = ['modelo',
+                  ]
+
+        labels = {'modelo': 'Modelo',
+                  }
 
 class MarialuisaForm(ModelForm):
     class Meta:
@@ -82,3 +90,5 @@ class MarialuisaForm(ModelForm):
             'ancho': 'Ancho',
             'imagen': 'Imagen',
               }
+
+
