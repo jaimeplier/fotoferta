@@ -3,7 +3,9 @@ from django.urls import path
 from administrador import views
 from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView, CodigoMarcoActualizar, TamanioCrear, \
     TamanioListarAjaxListView, TamanioActualizar, MarcoCrear, MarcoListarAjaxListView, MarcoActualizar, MarialuisaCrear, \
-    MarialuisaAjaxListView, MarialuisaActualizar, ModeloMarialuisaCrear, ModeloMarialuisaAjaxListView, ModeloMarialuisaActualizar
+    MarialuisaAjaxListView, MarialuisaActualizar, ModeloMarialuisaCrear, ModeloMarialuisaAjaxListView, ModeloMarialuisaActualizar, \
+    GrosorPapelCrear, GrosorPapelAjaxListView, GrosorPapelActualizar, TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, \
+    TexturaCrear, TexturaAjaxListView, TexturaActualizar, LogoCrear, LogoAjaxListView, LogoActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -32,5 +34,30 @@ urlpatterns = [
     path('modelomarialuisa/listar/', views.modelomarialuisa_listar, name='list_modelomarialuisa'),
     path('modelomarialuisa/', ModeloMarialuisaAjaxListView.as_view(), name='tab_list_modelomarialuisa'),
     path('modelomarialuisa/editar/<int:pk>', ModeloMarialuisaActualizar.as_view(), name='edit_modelomarialuisa'),
+   
+    path('grosor_papel/nuevo/', GrosorPapelCrear.as_view(), name='nuevo_grosor_papel'),
+    path('grosor_papel/listar/', views.grosor_papel_listar, name='list_grosor_papel'),
+    path('grosor_papel/', GrosorPapelAjaxListView.as_view(), name='tab_list_grosor_papel'),
+    path('grosor_papel/editar/<int:pk>', GrosorPapelActualizar.as_view(), name='edit_grosor_papel'),
+   
+    path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
+    path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
+    path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
+    path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
+   
+    path('textura/nuevo/', TexturaCrear.as_view(), name='nuevo_textura'),
+    path('textura/listar/', views.textura_listar, name='list_textura'),
+    path('textura/', TexturaAjaxListView.as_view(), name='tab_list_textura'),
+    path('textura/editar/<int:pk>', TexturaActualizar.as_view(), name='edit_textura'),
+   
+    path('logo/nuevo/', LogoCrear.as_view(), name='nuevo_logo'),
+    path('logo/listar/', views.logo_listar, name='list_logo'),
+    path('logo/', LogoAjaxListView.as_view(), name='tab_list_logo'),
+    path('logo/editar/<int:pk>', LogoActualizar.as_view(), name='edit_logo'),
+    
+    path('MenuFotopartner/nuevo/', MenuFotopartnerCrear.as_view(), name='nuevo_MenuFotopartner'),
+    path('MenuFotopartner/listar/', views.MenuFotopartner_listar, name='list_MenuFotopartner'),
+    path('MenuFotopartner/', MenuFotopartnerAjaxListView.as_view(), name='tab_list_MenuFotopartner'),
+    path('MenuFotopartner/editar/<int:pk>', LogoActualizar.as_view(), name='edit_MenuFotopartner'),
 
 ]
