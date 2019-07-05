@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/macos,django,pycharm+all
 
+### vsConfig ###
+./.vscode
+
 ### Django ###
 *.log
 *.pot

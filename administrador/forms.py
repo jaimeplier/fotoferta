@@ -1,6 +1,7 @@
 from django.forms import ModelForm, Select, BooleanField, PasswordInput
 
-from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa, PersonalAdministrativo
+from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa, PersonalAdministrativo,GrosorPapel,\
+    TipoPapel, Textura, Logo
 
 
 class CodigoMarcoForm(ModelForm):
@@ -91,6 +92,49 @@ class MarialuisaForm(ModelForm):
             'imagen': 'Imagen',
               }
 
+class GrosorPapelForm(ModelForm):
+    class Meta:
+        model = GrosorPapel
+
+        fields = [
+            'medida',
+        ]
+
+        labels = {
+            'medida': 'Medida',
+              }
+
+class TipoPapelForm(ModelForm):
+    class Meta:
+        model = TipoPapel
+
+        fields = [
+            'grosor',
+            'precio'
+        ]
+
+        labels = {
+            'grosor': 'Grosor',
+            'precio': 'Precio',
+              }
+
+class TexturaForm(ModelForm):
+    class Meta:
+        model = Textura
+
+        fields = [
+            'imagen',
+        ]
+
+class LogoForm(ModelForm):
+    class Meta:
+        model = Logo
+
+        fields = [
+            'imagen',
+        ]
+
+
 class PersonalAdministrativoForm(ModelForm):
     class Meta:
         model = PersonalAdministrativo
@@ -101,3 +145,4 @@ class PersonalAdministrativoForm(ModelForm):
                   'estatus'
                   ]
         widgets = {'password': PasswordInput()}
+
