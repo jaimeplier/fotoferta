@@ -323,6 +323,7 @@ class Tamanio(Catalogo):
         managed = True
         db_table = 'tamanio'
 
+# TODO Eliminar modelo e importaciones
 class CodigoMarco(models.Model):
     codigo = models.CharField(max_length=5, unique=True)
     estatus = models.BooleanField(default=True)
@@ -337,7 +338,7 @@ class CodigoMarco(models.Model):
 class Marco(Catalogo):
     imagen_horizontal = models.ImageField(upload_to='img_marco/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     imagen_vertical = models.ImageField(upload_to='img_marco/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
-    codigo = models.ForeignKey(CodigoMarco, models.DO_NOTHING)
+    codigo = models.CharField(max_length=5, unique=True)
     tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING)
     alto = models.FloatField() # centimetros
     ancho = models.FloatField() # centimetros
