@@ -8,7 +8,7 @@ from django.views.generic import CreateView, UpdateView
 from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
-    GrosorPapelForm, TipoPapelForm, TexturaForm, LogoForm, PersonalAdministrativoForm
+    GrosorPapelForm, TipoPapelForm, TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, GrosorPapel, TipoPapel, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner
 from django_datatables_view.base_datatable_view import BaseDatatableView
@@ -930,11 +930,11 @@ class MenuFotopartnerAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = MenuFotopartner
     columns = [
-        'imagen', 'editar'
+        'url', 'editar'
     ]
 
     order_columns = [
-        'imagen', ''
+        'url', ''
     ]
 
     max_display_length = 100
@@ -974,11 +974,11 @@ class MenuFotopartnerActualizar(PermissionRequiredMixin, UpdateView):
     form_class = MenuFotopartnerForm
 
     def get_context_data(self, **kwargs):
-        context = super(LogoActualizar, self).get_context_data(**kwargs)
+        context = super(MenuFotopartnerActualizar, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de logo'
+            context['titulo'] = 'Modificación de menu fotopartner'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context
@@ -989,9 +989,9 @@ class MenuFotopartnerActualizar(PermissionRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('administrador:list_logo')
+        return reverse('administrador:list_MenuFotopartner')
 
-
+# Personal Administrativo
 class PersonalAdministrativoCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/webapp/login'
