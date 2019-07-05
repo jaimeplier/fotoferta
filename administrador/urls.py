@@ -5,7 +5,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     TamanioListarAjaxListView, TamanioActualizar, MarcoCrear, MarcoListarAjaxListView, MarcoActualizar, MarialuisaCrear, \
     MarialuisaAjaxListView, MarialuisaActualizar, ModeloMarialuisaCrear, ModeloMarialuisaAjaxListView, \
     ModeloMarialuisaActualizar, PersonalAdministrativoCrear, PersonalAdministrativoAjaxListView, \
-    PersonalAdministrativoActualizar
+    PersonalAdministrativoActualizar, VentasAjaxListView
 
 app_name = 'administrador'
 urlpatterns = [
@@ -40,5 +40,8 @@ urlpatterns = [
     path('personal_administrativo/ajax/', PersonalAdministrativoAjaxListView.as_view(), name='tab_list_personal_administrativo'),
     path('personal_administrativo/editar/<int:pk>', PersonalAdministrativoActualizar.as_view(), name='edit_personal_administrativo'),
     path('personal_administrativo/cambiar_estatus/<int:pk>', views.personal_administrativo_cambiar_estatus, name='cambiar_estatus_personal_administrativo'),
+
+    path('ventas/listar/', views.ventas_listar, name='list_ventas'),
+    path('ventas/ajax/', VentasAjaxListView.as_view(), name='tab_list_ventas'),
 
 ]
