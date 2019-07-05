@@ -217,7 +217,8 @@ class Direccion(models.Model):
     def direccion_completa(self):
         num_ext = ('Num ext: ' + self.num_exterior) if self.num_exterior else 'S/N'
         num_int = (' Num int: ' + self.num_interior) if self.num_interior else ''
-        return self.calle + ' ' + num_ext + num_int + ' ' +self.colonia.estado + ' ' + self.colonia.municipio.estado
+        return self.calle + ' ' + num_ext + num_int + ' CP. ' + self.colonia.cp + ' ' + self.colonia.municipio.nombre + ' ' +\
+               self.colonia.municipio.estado.nombre
 
 class Pais(Catalogo):
     class Meta:
