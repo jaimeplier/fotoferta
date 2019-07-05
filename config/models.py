@@ -199,6 +199,9 @@ class BitacoraLogin(models.Model):
 class Direccion(models.Model):
     usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
     nombre = models.CharField(max_length=32)
+    calle = models.CharField(max_length=32)
+    num_exterior = models.CharField(max_length=5, null=True, blank=True)
+    num_interior = models.CharField(max_length=5, null=True, blank=True)
     colonia = models.ForeignKey('Colonia', models.DO_NOTHING)
     referencias = models.TextField(max_length=512, null=True, blank=True)
     entre_calles = models.TextField(max_length=512, null=True, blank=True)
@@ -207,6 +210,14 @@ class Direccion(models.Model):
     class Meta:
         managed = True
         db_table = 'direccion'
+
+    def __str__(self):
+        return self.nombre
+
+    def direccion_completa(self):
+        num_ext = ('Num ext: ' + self.num_exterior) if self.num_exterior else 'S/N'
+        num_int = (' Num int: ' + self.num_interior) if self.num_interior else ''
+        return self.calle + ' ' + num_ext + num_int + ' ' +self.colonia.estado + ' ' + self.colonia.municipio.estado
 
 class Pais(Catalogo):
     class Meta:
