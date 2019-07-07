@@ -3,94 +3,31 @@
 {% load static %}
 {% block style %}
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/datatables.css' %}"/>
-    <style>
-        body {
-            background-color: #FFFFFF;
-            background-image: none !important;
-        }
-        th{
-            color: #FFFFFF !important;
-        }
-
-        #tabla_length {
-            width: 41% !important;
-            margin-left: 59% !important;
-        }
-
-        .flexcontent {
-            margin-top: -8% !important;
-        }
-
-        #tabla_filter {
-            margin-top: 2% !important;
-            width: 41% !important;
-        }
-
-        .dt-button {
-            width: 10%;
-            height: 3rem;
-            line-height: 1.6rem;
-        }
-
-        .btncopy:hover {
-            background-color: #E5B304 !important;
-        }
-
-        .btnpdf:hover {
-            background-color: #F25F5C !important;
-        }
-
-        .btnexcel:hover {
-            background-color: #8FC93A !important;
-        }
-
-        .btnprint:hover {
-            background-color: #E18335 !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-            color: white !important;
-            border: 1px solid #979797;
-            background: none;
-            background-color: #D01E88;
-
-        }
-    </style>
 {% endblock %}
 {% block content %}
-    <div class="row paper-container">
-        <div class="row">
-            <div class="col s1 m1 l1"></div>
-            <div class="col s10 m10 l10">
-                <div class="row">
-                    <div class="col s12 left">
-                        {% block titulo_tabla %}{% endblock %}
-                    </div>
-                </div>
-            </div>
-            <div class="col s1 m1 l1"></div>
-        </div>
-        <br/>
+
+        {% block titulo_tabla %}{% endblock %}
         <!-- aquí va el contenido de la tabla -->
-        <div class="row" style="margin-top: 2%;">
-            <div class="col s1 m1 l1"></div>
-            <div class="col s10 m10 l10">
-                <div class="row">
-                    <div class="col s12">
-                        <table class="bordered highlight centered responsive-table stripe" id="tabla">
-                            <thead class="fondo_negro">
-                            <tr>
-                                {% block campos %}{% endblock %}
-                            </tr>
-                            </thead>
-                            {% block datos_tabla %} {% endblock %}
-                        </table>
-                    </div>
-                </div>
+
+
+        <div class="container-fluid">
+        <div class="row tableContainer">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table-responsive">
+                <table id="tabla" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            {% block campos %}{% endblock %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% block datos_tabla %} {% endblock %}
+                    </tbody>
+                </table>
             </div>
-            <div class="col s1 m1 l1"></div>
         </div>
     </div>
+
+
     <!-- Modal -->
     {% block modal %}
 
@@ -119,21 +56,7 @@
 
         var id = 0;
 
-        function actualiza(uid) {
-            id = uid;
-            $('.modal').modal({
-                    dismissible: false
-                }
-            );
-            $('#modal1').modal('open');
-        }
-
-
         $(document).ready(function () {
-
-            {% if user.is_admin or user.is_admin_gral or user.is_admin_payments or user.is_admin_users %}
-                $('.redes_sociales').hide()
-            {% endif %}
 
             tabla = $('#tabla').DataTable({
                 dom: 'lBfrtip',
@@ -141,7 +64,7 @@
                     url: "{% static "datatables/spanish.json" %}"
                 },
                 //buttons: ['copy', 'excel', 'pdf', 'csv', 'print'],
-                buttons: {
+                {% comment %}buttons: {
                     dom: {
                         container: {
                             tag: 'div',
@@ -217,7 +140,7 @@
                             }
                         },
                     ]
-                },
+                },{% endcomment %}
                 processing: true,
                 serverSide: true,
                 ajax: "{% block url_ajax %}{% endblock %}"
@@ -227,26 +150,7 @@
                 $('#usuarios').dataTable().fnFilter(this.value);
             });
 
-            $(document).ready(function () {
-                $('select').material_select();
-            });
 
-            tabla.on('draw', function () {
-                $('select').material_select();
-            });
-
-            $('select').material_select();
-            $(".button-collapse").sideNav();
-
-            Materialize.updateTextFields();
-            $('select').material_select();
-            $('ul.tabs').tabs({
-                swipeable: true,
-                responsiveThreshold: 1920
-            });
-
-
-            $('select').material_select();
 
         });
 

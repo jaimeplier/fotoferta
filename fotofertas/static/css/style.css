@@ -36,6 +36,7 @@ header {
     background: #ffffff;
     padding: 25px 15px 0 15px;
     position: relative;
+    margin-bottom: 2rem;
 }
 
 .logoContainer svg {
@@ -252,6 +253,7 @@ header {
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-bottomleft: 10px;
     border-bottom-left-radius: 10px;
+    border: solid 2px #ffffff;
 }
 
 .mainMenuContainer a:hover {
@@ -260,6 +262,38 @@ header {
 }
 
 /*Header*/
+/*Notifications*/
+.notificationContainer {
+    width: 250px;
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 1);
+    display: none;
+}
+
+.notification p {
+    margin-bottom: 0;
+}
+
+.notification a {
+    background: rgba(255, 255, 255, 1);
+    padding: 15px;
+    display: block;
+}
+
+.notification a:hover {
+    background: rgba(255, 182, 0, 0.5);
+    text-decoration: none;
+}
+
+.notification i {
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+/*Notifications*/
 
 /*Banner Promos*/
 
@@ -626,7 +660,7 @@ header {
 }
 
 .marginSelectionContainer h5,
-.marginSelectionContainer select  {
+.marginSelectionContainer select {
     margin-bottom: 2rem;
 }
 
@@ -1097,3 +1131,20 @@ footer .footerMenu {
 }
 
 /*Login*/
+/*Tables*/
+thead {
+    background: #FCDC3E;
+    color: #12284c;
+}
+
+/*Tables*/
+/*Forms Containers*/
+.formsContainer {
+    margin-top: 1rem;
+}
+
+.formsContainer input {
+    margin-bottom: 1rem;
+}
+
+/*Forms Containers*/
