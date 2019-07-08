@@ -169,3 +169,12 @@ function toggle_visibility(id) {
     else
         e.style.display = 'block';
 };
+
+function userProfileToggle(item1, item2, item3, item4, item5, item6) {
+    $('#' + item1).fadeIn(500);
+    $('#' + item2).hide();
+    $('#' + item3).hide();
+    $('#' + item4).hide();
+    $('#' + item5).hide();
+    $('#' + item6).hide();
+};

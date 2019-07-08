@@ -534,7 +534,7 @@ header {
     background-image: url(../images/fotofertas-oxxo-logo.png);
 }
 
-.card {
+.cardImage {
     background-image: url(../images/fotofertas-card.png);
     margin-bottom: 3rem;
 }
@@ -760,6 +760,10 @@ footer .footerMenu {
     padding-top: 2rem;
 }
 
+.userProfile h1 {
+    margin-bottom: 2rem;
+}
+
 .profileDataContainer {
     border-bottom: solid 4px #FFB600;
     padding-bottom: 2rem;
@@ -843,6 +847,8 @@ footer .footerMenu {
 
 .activeToggle {
     background: #FFB600;
+    width: 100%;
+    padding: 0;
 }
 
 .uploadButton {
@@ -853,7 +859,96 @@ footer .footerMenu {
     margin-right: 5px;
 }
 
+.userProfileGalleryIcons {
+    width: 100%;
+    position: absolute;
+    text-align: right;
+    padding-right: 15px;
+}
 
+.userProfileGalleryIcons a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: #ffffff;
+}
+
+.userProfileGalleryIcons a:nth-child(2) {
+    margin-right: 0;
+}
+
+.userProfileGalleryIcons a i {
+    font-size: 1.5rem;
+}
+
+.userProfileGalleryIcons .favourite {
+    color: #f54242;
+}
+
+.userProfileGalleryIcons .favourite .fa-heart::before {
+    content: "\f004";
+    font-weight: 900;
+}
+
+.historyMenu {
+    display: none;
+    position: absolute;
+    list-style: none;
+    width: 100%;
+    background: rgba(255, 255, 255, 1);
+    z-index: 1001;
+    left: 0;
+    top: 58px;
+    border: solid 1px #12284c;
+}
+
+.historyMenu a {
+    display: block;
+    border-bottom: solid 1px #12284c;
+    padding-bottom: 15px;
+}
+
+.historyMenu a:hover {
+    background: rgba(255, 182, 0, 0.5)
+}
+
+.historyMenu li:nth-child(2) a {
+    border-bottom: none;
+}
+
+#favoritesGallery,
+#sell,
+#buy,
+#following {
+    display: none;
+}
+
+.profileWidgetContainer {
+    border: solid #12284c 3px;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profileWidgetContainer .profileWidgetImage {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profileWidgetContainer .profileWidgetImage img {
+    width: 120px;
+    height: 120px;
+    -webkit-border-radius: 200px;
+    -moz-border-radius: 200px;
+    border-radius: 200px;
+}
+
+.profileWidgetContainer .profileWidgetData h4 {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
 
 /*Profile*/
 /*Photo Page*/
@@ -908,6 +1003,33 @@ footer .footerMenu {
 
 .photoProfileContent .photoDataSale .photoSaleTitle i {
     font-size: 1.75rem;
+}
+
+.reportContainer {
+    width: 180px;
+    position: absolute;
+    top: 55px;
+    left: 170px;
+    z-index: 1001;
+    background: rgba(255, 255, 255, 1);
+    display: none;
+}
+
+.reportContent a {
+    padding: 10px 10px 15px 10px;
+    display: block;
+    text-align: center;
+}
+
+.reportContent a:hover {
+    background: rgba(255, 182, 0, 0.5);
+    text-decoration: none;
+}
+
+.reportContent i {
+    position: relative;
+    top: 4px;
+    margin-left: 5px;
 }
 
 .photoProfileContent .photoPriceContainer h4,
@@ -981,10 +1103,17 @@ footer .footerMenu {
     -webkit-border-bottom-left-radius: 10px;
     -moz-border-radius-bottomleft: 10px;
     border-bottom-left-radius: 10px;
+    margin-bottom: 1rem;
 }
 
 .generalBtn:hover {
     color: rgba(255, 255, 255, 1);
+}
+
+.specialBtn {
+    background: #12284c;
+    ;
+
 }
 
 /*Buttons*/
@@ -1132,6 +1261,10 @@ footer .footerMenu {
 
 /*Login*/
 /*Tables*/
+.tableContainer {
+    margin-top: 2rem;
+}
+
 thead {
     background: #FCDC3E;
     color: #12284c;
@@ -1148,3 +1281,100 @@ thead {
 }
 
 /*Forms Containers*/
+/*File Input*/
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    color: white;
+    background-color: #FFB600;
+    display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #FFB600;
+}
+
+.inputfile + label {
+    cursor: pointer;
+    display: block;
+    /* "hand" cursor */
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.inputfile:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+.inputfile + label * {
+    pointer-events: none;
+}
+
+/*File Input*/
+/*Modal Upload Image*/
+.uploadStepCounter {
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stepCounter {
+    height: 10px;
+    border: solid 1px rgba(18, 40, 76, 1);
+}
+
+.uploadStepCounter .active {
+    background: rgba(18, 40, 76, 1);
+}
+
+.uploadedImage {
+    max-width: 100%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+}
+
+.uploadMenu {
+    text-align: center;
+}
+
+.modal-body select,
+.modal-body input {
+    margin-bottom: 1rem;
+
+}
+
+.modal-body textarea {
+    margin-bottom: 1rem;
+    width: 100%;
+    resize: none;
+}
+
+.finishedUpload h5 {
+    margin-bottom: 2rem;
+}
+
+.finishedUpload i {
+    padding: 2rem;
+    font-size: 3rem;
+    border: solid 1px rgba(18, 40, 76, 1);
+    margin-bottom: 2rem;
+}
+
+.modalTerms {
+    text-align: center;
+}
+
+/*Modal Upload Image*/
