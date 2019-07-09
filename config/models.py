@@ -98,6 +98,31 @@ class Usuario(AbstractBaseUser):
             return False
 
     @property
+    def is_cliente(self):
+        if self.rol.pk == 3:
+            return True
+        else:
+            return False
+
+    @property
+    def is_fotopartner(self):
+        if self.rol.pk == 3:
+            fotografo = Fotografo.objects.get(pk=self.pk)
+            if fotografo.fotopartner:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    @property
+    def is_admin(self):
+        if self.rol.pk in [2,5]:
+            return True
+        else:
+            return False
+
+    @property
     def is_active(self):
         return self.estatus
 
