@@ -1138,8 +1138,20 @@ class PersonalAdministrativoCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='add_personaladministrativo', login_url='/webapp/login')
 def personal_administrativo_listar(request):
-    template_name = 'administrador/tab_personal_administrativo.html'
-    return render(request, template_name)
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Personal'
+    context['btn_nuevo'] = 'Agregar personal'
+    context['url_nuevo'] = reverse('administrador:nuevo_personal_administrativo')
+    context['encabezados'] = [['Nombre', True],
+                              ['Correo', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_personal_administrativo')
+    context['url_update_estatus'] = '/administrador/personal_administrativo/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
 
 class PersonalAdministrativoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -1157,15 +1169,15 @@ class PersonalAdministrativoAjaxListView(PermissionRequiredMixin, BaseDatatableV
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_personal_administrativo',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
 
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">Off</label></div>'
 
         return super(PersonalAdministrativoAjaxListView, self).render_column(row, column)
 
