@@ -8,9 +8,10 @@ from django.views.generic import CreateView, UpdateView
 from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
-    GrosorPapelForm, TipoPapelForm, TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm
+    GrosorPapelForm, TipoPapelForm, TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
+    PromocionForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, GrosorPapel, TipoPapel, Textura, \
-    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner
+    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -253,6 +254,16 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             return '<a class="" href ="' + reverse('administrador:edit_marco',
                                                    kwargs={
                                                        'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'imagen_horizontal':
+            if row.imagen_horizontal.url:
+                print(row)
+                return '<img style="width:100%" src="'+ row.imagen_horizontal.url +'" />'
+        elif column == 'imagen_vertical':
+            if row.imagen_vertical.url:
+                return '<img style="width:100%" src="'+ row.imagen_vertical.url +'" />'
+
+        elif column == 'precio':
+            return "${0:,.2f}".format(row.precio)
 
         elif column == 'estatus':
             if row.estatus:
@@ -281,7 +292,7 @@ class MarcoActualizar(PermissionRequiredMixin, UpdateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de tamaño'
+            context['titulo'] = 'Modificación de marco'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context
@@ -445,6 +456,8 @@ class MarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             return '<a class="" href ="' + reverse('administrador:edit_marialuisa',
                                                    kwargs={
                                                        'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'precio':
+            return "${0:,.2f}".format(row.precio)
 
         elif column == 'estatus':
             if row.estatus:
@@ -645,6 +658,8 @@ class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             return '<a class="" href ="' + reverse('administrador:edit_tipo_papel',
                                                    kwargs={
                                                        'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'precio':
+            return "${0:,.2f}".format(row.precio)
 
         elif column == 'estatus':
             if row.estatus:
@@ -990,6 +1005,106 @@ class MenuFotopartnerActualizar(PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('administrador:list_MenuFotopartner')
+
+# Clase Promocion
+class PromocionCrear(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Promocion
+    form_class = PromocionForm
+    template_name = 'config/registro_promo.html'
+    success_url = '/administrador/Promocion/listar'
+
+    def get_context_data(self, **kwargs):
+        context = super(PromocionCrear, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Registro de Promocion'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una Promocion'
+        return context
+
+    def form_valid(self, form):
+        menu = form.save(commit=False)
+        menu.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_Promocion')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def Promocion_listar(request):
+    template_name = 'administrador/tab_Promocion.html'
+    return render(request, template_name)
+
+class PromocionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Promocion
+    columns = [
+        'url', 'editar'
+    ]
+
+    order_columns = [
+        'url', ''
+    ]
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_Promocion',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
+                    row.pk) + ')><span class="lever"></span>On</label></div>'
+            else:
+                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
+                    row.pk) + ')><span class="lever"></span>On</label></div>'
+
+        elif column == 'imagen':
+                if row.imagen.url:
+                    return '<img style="width:80%" src="'+ row.imagen.url +'" />'
+
+
+        return super(PromocionAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Promocion.objects.all()
+
+
+class PromocionActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Promocion
+    template_name = 'config/registro_promo.html'
+    form_class = PromocionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PromocionActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación de promoción'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        # form.instance.set_password(form.cleaned_data['password'])
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_Promocion')
 
 # Personal Administrativo
 class PersonalAdministrativoCrear(PermissionRequiredMixin, CreateView):
