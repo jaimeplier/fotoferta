@@ -8,7 +8,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     TipoPapelAjaxListView, TipoPapelActualizar, TexturaCrear, TexturaAjaxListView, TexturaActualizar, LogoCrear, \
     LogoAjaxListView, LogoActualizar, PersonalAdministrativoCrear, PersonalAdministrativoAjaxListView, \
     PersonalAdministrativoActualizar, VentasAjaxListView, MenuFotopartnerCrear, MenuFotopartnerAjaxListView, \
-     MenuFotopartnerActualizar
+     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -62,6 +62,11 @@ urlpatterns = [
     path('MenuFotopartner/listar/', views.MenuFotopartner_listar, name='list_MenuFotopartner'),
     path('MenuFotopartner/', MenuFotopartnerAjaxListView.as_view(), name='tab_list_MenuFotopartner'),
     path('MenuFotopartner/editar/<int:pk>', MenuFotopartnerActualizar.as_view(), name='edit_MenuFotopartner'),
+
+    path('Promocion/nuevo/', PromocionCrear.as_view(), name='nuevo_Promocion'),
+    path('Promocion/listar/', views.Promocion_listar, name='list_Promocion'),
+    path('Promocion/', PromocionAjaxListView.as_view(), name='tab_list_Promocion'),
+    path('Promocion/editar/<int:pk>', PromocionActualizar.as_view(), name='edit_Promocion'),
 
     path('personal_administrativo/nuevo/', PersonalAdministrativoCrear.as_view(), name='nuevo_personal_administrativo'),
     path('personal_administrativo/listar/', views.personal_administrativo_listar, name='list_personal_administrativo'),

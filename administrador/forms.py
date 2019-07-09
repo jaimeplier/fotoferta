@@ -153,3 +153,14 @@ class PersonalAdministrativoForm(ModelForm):
         widgets = {'password': PasswordInput()}
 
 
+class PromocionForm(ModelForm):
+    class Meta:
+        model = Tamanio
+        fields = ['nombre',
+                  'estatus'
+                  ]
+
+        labels = {'nombre': 'Nombre',
+                  }
+
+
