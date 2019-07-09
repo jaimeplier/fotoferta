@@ -55,7 +55,7 @@
         {% block scripts_tabla %}
             function cambiar_estatus(id) {
                 $.ajax({
-                    url: "{{ url_ajax }}",
+                    url: "{{ url_update_estatus }}"+id,
                     data: {pk: id},
                     type: "POST", // http method
                     // handle a successful response
@@ -162,7 +162,7 @@
                 },
                 processing: true,
                 serverSide: true,
-                ajax: "{% block url_ajax %}{% endblock %}"
+                ajax: "{{ url_ajax }}"
             });
 
             $("#buscar").on('keyup', function () {
