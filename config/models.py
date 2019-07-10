@@ -379,6 +379,11 @@ class Marco(Catalogo):
         db_table = 'marco'
 
 class ModeloMariaLuisa(models.Model):
+
+    fecha_alta = models.DateTimeField(auto_now_add=True)
+    fecha_baja = models.DateTimeField(blank=True, null=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    estatus = models.BooleanField(default=True)
     modelo = models.CharField(max_length=6, unique=True)
 
     class Meta:
@@ -548,7 +553,7 @@ class Promocion(models.Model):
     maria_luisa = models.ForeignKey('MariaLuisa', models.DO_NOTHING, null=True, blank=True)
     imagen = models.ImageField(upload_to='promo_fotoferta/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, null=True, blank=True)
-
+    estatus = models.BooleanField(default=True)
     class Meta:
         managed = True
         db_table = 'promocion'

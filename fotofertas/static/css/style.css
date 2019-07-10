@@ -5,6 +5,7 @@ html,
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
+    width: 100%;
 }
 
 body {
@@ -683,6 +684,7 @@ footer {
     color: #ffffff;
     padding: 2rem 1rem;
     text-align: left;
+
 }
 
 footer hr {
