@@ -279,6 +279,7 @@ class Preferencias(models.Model):
         db_table = 'preferencias'
 
 class Fotografia(models.Model):
+    nombre = models.CharField(max_length=64)
     usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
     foto_original = models.ImageField(upload_to='foto_original/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     foto_muestra = models.ImageField(upload_to='foto_muestra/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
