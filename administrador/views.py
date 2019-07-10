@@ -1149,8 +1149,6 @@ def personal_administrativo_listar(request):
                               ['Estatus', True]]
     context['url_ajax'] = reverse('administrador:tab_list_personal_administrativo')
     context['url_update_estatus'] = '/administrador/personal_administrativo/cambiar_estatus/'
-
-
     return render(request, template_name, context)
 
 class PersonalAdministrativoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
@@ -1229,8 +1227,21 @@ def personal_administrativo_cambiar_estatus(request, pk):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def ventas_listar(request):
-    template_name = 'administrador/tab_ventas.html'
-    return render(request, template_name)
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Ventas'
+    context['encabezados'] = [['ID', True],
+                              ['Fecha de compra', True],
+                              ['Usuario', True],
+                              ['Dirección', True],
+                              ['Método de pago', True],
+                              ['Detalle de pago', True],
+                              ['Total', True],
+                              ['Estatus', True],
+                              ['Detalle', False],
+                              ]
+    context['url_ajax'] = reverse('administrador:tab_list_ventas')
+    return render(request, template_name, context)
 
 class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -1265,7 +1276,7 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         return super(VentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return PersonalAdministrativo.objects.all()
+        return Orden.objects.all()
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
