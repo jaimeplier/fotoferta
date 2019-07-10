@@ -9,7 +9,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     LogoAjaxListView, LogoActualizar, PersonalAdministrativoCrear, PersonalAdministrativoAjaxListView, \
     PersonalAdministrativoActualizar, VentasAjaxListView, MenuFotopartnerCrear, MenuFotopartnerAjaxListView, \
     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar, \
-    UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView
+    UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView
 
 app_name = 'administrador'
 urlpatterns = [
@@ -93,4 +93,6 @@ urlpatterns = [
     path('usuarios_bloqueados/listar/', views.usuarios_bloqueados_listar, name='list_usuarios_bloqueados'),
     path('usuarios_bloqueados/ajax/', UsuariosBloqueadosAjaxListView.as_view(), name='tab_list_usuarios_bloqueados'),
 
+    path('aprobar_foto/listar/', views.aprobar_foto_listar, name='list_aprobar_foto'),
+    path('aprobar_foto/ajax/', AprobarFotoAjaxListView.as_view(), name='tab_list_aprobar_foto'),
 ]

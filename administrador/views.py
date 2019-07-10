@@ -11,7 +11,7 @@ from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, Tama
     GrosorPapelForm, TipoPapelForm, TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
     PromocionForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, GrosorPapel, TipoPapel, Textura, \
-    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo
+    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1635,6 +1635,52 @@ class UsuariosBloqueadosAjaxListView(PermissionRequiredMixin, BaseDatatableView)
 
     def get_initial_queryset(self):
         return Fotografo.objects.filter(estatus=False)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
+                correo__icontains=search)| qs.filter(estatus__icontains=search)
+        return qs
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def aprobar_foto_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Aprobar fotografías'
+    context['encabezados'] = [['ID', True],
+                              ['Fecha de publicación', True],
+                              ['Usuario', True],
+                              ['Nombre de la imagen', True],
+                              ['Tamaño', True],
+                              ['Tipo de fotografía', True],
+                              ['Descripción técnica', True],
+                              ['Estatus', False],
+                              ['Foto', False],
+                              ]
+    context['url_ajax'] = reverse('administrador:tab_list_aprobar_foto')
+    context['url_update_estatus'] = '/administrador/fotografo/cambiar_estatus/'
+    return render(request, template_name, context)
+
+class AprobarFotoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Fotografia
+    columns = ['id', 'fecha_alta', 'usuario.nombre', 'nombre', 'tamanio.nombre', 'tipo_foto.nombre', 'descripcion', 'aprobar', 'foto']
+
+    order_columns = ['id', 'fecha_alta', 'usuario.nombre', 'nombre', 'tamanio.nombre', 'tipo_foto.nombre', 'descripcion', '', '']
+
+    max_display_length = 100
+    settingstime_zone = timezone(settings.TIME_ZONE)
+    def render_column(self, row, column):
+
+        if column == 'aprobar':
+            return '<a class="" href ="#"><i class="fa fa-users"></i></a>'
+        return super(AprobarFotoAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Fotografia.objects.filter(aprobada=False)
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
