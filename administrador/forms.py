@@ -123,6 +123,7 @@ class TexturaForm(ModelForm):
         model = Textura
 
         fields = [
+            'nombre',
             'imagen',
         ]
 
@@ -131,7 +132,7 @@ class LogoForm(ModelForm):
         model = Logo
 
         fields = [
-            'imagen',
+            'nombre', 'imagen',
         ]
 
 class MenuFotopartnerForm(ModelForm):

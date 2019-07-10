@@ -48,7 +48,7 @@ class CodigoMarcoCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def codigo_marco_listar(request):
-    template_name = 'administrador/tab_codigo_marco.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Código marco'
     context['btn_nuevo'] = 'Agregar código'
@@ -265,7 +265,7 @@ class MarcoCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def marco_listar(request):
-    template_name = 'administrador/tab_marco.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Marco'
     context['btn_nuevo'] = 'Agregar marco'
@@ -288,6 +288,8 @@ def marco_listar(request):
                               ['Estatus', True]]
     context['url_ajax'] = reverse('administrador:tab_list_marco')
     context['url_update_estatus'] = '/administrador/marco/cambiar_estatus/'
+
+    return render(request, template_name, context)
 
 class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -336,10 +338,10 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(codigo__icontains=search) |
-                qs.filter(tamanio__icontains=search) | qs.filter(alto__icontains=search) | qs.filter(ancho__icontains=search) |
-                qs.filter(grosor_lado__icontains=search) | qs.filter(grosor_total__icontains=search) | qs.filter(grosor_final__icontains=search) |
-                qs.filter(profundidad__icontains=search) | qs.filter(peso__icontains=search) | qs.filter(precio__icontains=search) |
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(codigo__icontains=search) | \
+                qs.filter(tamanio__icontains=search) | qs.filter(alto__icontains=search) | qs.filter(ancho__icontains=search) | \
+                qs.filter(grosor_lado__icontains=search) | qs.filter(grosor_total__icontains=search) | qs.filter(grosor_final__icontains=search) | \
+                qs.filter(profundidad__icontains=search) | qs.filter(peso__icontains=search) | qs.filter(precio__icontains=search) | \
                 qs.filter(imagen_horizontal__icontains=search) | qs.filter(imagen_vertical__icontains=search)
         return qs
 
@@ -858,7 +860,8 @@ def textura_listar(request):
     context['titulo'] = 'Textura'
     context['btn_nuevo'] = 'Agregar textura'
     context['url_nuevo'] = reverse('administrador:nuevo_textura')
-    context['encabezados'] = [['Imagen', True],
+    context['encabezados'] = [['Nombre', True],
+                              ['Textura', True],
                               ['Editar', False],
                               ['Estatus', True]]
     context['url_ajax'] = reverse('administrador:tab_list_textura')
@@ -872,11 +875,11 @@ class TexturaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = Textura
     columns = [
-        'imagen', 'editar', 'estatus'
+        'nombre', 'imagen', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'imagen', '', ''
+        'nombre', 'imagen', '', ''
     ]
 
     max_display_length = 100
@@ -968,7 +971,8 @@ def logo_listar(request):
     context['titulo'] = 'Logo'
     context['btn_nuevo'] = 'Agregar logo'
     context['url_nuevo'] = reverse('administrador:nuevo_logo')
-    context['encabezados'] = [['Imagen', True],
+    context['encabezados'] = [['Nombre', True],
+                              ['Logo', True],
                               ['Editar', False],
                               ['Estatus', True]]
     context['url_ajax'] = reverse('administrador:tab_list_logo')
@@ -982,11 +986,11 @@ class LogoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = Logo
     columns = [
-        'imagen', 'editar', 'estatus'
+        'nombre', 'imagen', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'imagen', '', ''
+        'nombre', 'imagen', '', ''
     ]
 
     max_display_length = 100
