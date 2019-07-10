@@ -11,7 +11,7 @@ from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, Tama
     GrosorPapelForm, TipoPapelForm, TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
     PromocionForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, GrosorPapel, TipoPapel, Textura, \
-    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion
+    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1456,4 +1456,64 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if search:
             qs = qs.filter(usuario__nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
                 forma_pago__nombre__icontains=search)| qs.filter(forma_pago__nombre__icontains=search)
+        return qs
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def fotografo_cambiar_estatus(request, pk):
+    personal = get_object_or_404(Fotografo, pk=pk)
+    if personal.estatus:
+        personal.estatus = False
+    else:
+        personal.estatus = True
+    personal.save()
+    return JsonResponse({'result': 0})
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def usuarios_generales_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Usuarios generales'
+    context['encabezados'] = [['ID', True],
+                              ['Nombre', True],
+                              ['Correo', True],
+                              ['Estatus', True],
+                              ['Detalle', False],
+                              ]
+    context['url_ajax'] = reverse('administrador:tab_list_usuarios_generales')
+    context['url_update_estatus'] = '/administrador/fotografo/cambiar_estatus/'
+    return render(request, template_name, context)
+
+class UsuariosGeneralesAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Orden
+    columns = ['id', 'nombre', 'correo', 'estatus', 'detalle']
+
+    order_columns = ['id', 'nombre', 'correo', 'estatus', '']
+
+    max_display_length = 100
+    settingstime_zone = timezone(settings.TIME_ZONE)
+    def render_column(self, row, column):
+
+        if column == 'detalle':
+            return '<a class="" href ="#"><i class="fa fa-users"></i></a>'
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">On</label></div>'
+            else:
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">Off</label></div>'
+
+        return super(UsuariosGeneralesAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Fotografo.objects.filter(fotopartner=False)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
+                correo__icontains=search)| qs.filter(estatus__icontains=search)
         return qs
