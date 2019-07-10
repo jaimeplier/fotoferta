@@ -1469,6 +1469,16 @@ def fotografo_cambiar_estatus(request, pk):
     return JsonResponse({'result': 0})
 
 @permission_required(perm='administrador', login_url='/webapp/login')
+def fotografo_cambiar_confiable(request, pk):
+    fotografo = get_object_or_404(Fotografo, pk=pk)
+    if fotografo.confiable:
+        fotografo.confiable = False
+    else:
+        fotografo.confiable = True
+    fotografo.save()
+    return JsonResponse({'result': 0})
+
+@permission_required(perm='administrador', login_url='/webapp/login')
 def usuarios_generales_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
@@ -1533,6 +1543,8 @@ def fotopartners_listar(request):
                               ]
     context['url_ajax'] = reverse('administrador:tab_list_fotopartners')
     context['url_update_estatus'] = '/administrador/fotografo/cambiar_estatus/'
+    context['url_update_confiable'] = '/administrador/fotografo/cambiar_confiable/'
+    context['script_extra'] = '/static/js/tab_utils.js'
     return render(request, template_name, context)
 
 class FotopartnersAjaxListView(PermissionRequiredMixin, BaseDatatableView):
