@@ -14,6 +14,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
 app_name = 'administrador'
 urlpatterns = [
 
+    # Este no sirve
     path('codigo_marco/nuevo/', CodigoMarcoCrear.as_view(), name='nuevo_codigo_marco'),
     path('codigo_marco/listar/', views.codigo_marco_listar, name='list_codigo_marco'),
     path('tabla_codigo_marco/', CodigoMarcoListarAjaxListView.as_view(), name='tab_list_codigo_marco'),
@@ -23,51 +24,65 @@ urlpatterns = [
     path('tamanio/listar/', views.tamanio_listar, name='list_tamanio'),
     path('tamanio/', TamanioListarAjaxListView.as_view(), name='tab_list_tamanio'),
     path('tamanio/editar/<int:pk>', TamanioActualizar.as_view(), name='edit_tamanio'),
+    path('tamanio/cambiar_estatus/<int:pk>', views.tamanio_cambiar_estatus,
+         name='tamanio_cambiar_estatus'),
 
     path('marco/nuevo/', MarcoCrear.as_view(), name='nuevo_marco'),
     path('marco/listar/', views.marco_listar, name='list_marco'),
     path('marco/', MarcoListarAjaxListView.as_view(), name='tab_list_marco'),
     path('marco/editar/<int:pk>', MarcoActualizar.as_view(), name='edit_marco'),
+    path('marco/cambiar_estatus/<int:pk>', views.marco_cambiar_estatus,
+         name='marco_cambiar_estatus'),
 
     path('marialuisa/nuevo/', MarialuisaCrear.as_view(), name='nuevo_marialuisa'),
     path('marialuisa/listar/', views.marialuisa_listar, name='list_marialuisa'),
     path('marialuisa/', MarialuisaAjaxListView.as_view(), name='tab_list_marialuisa'),
     path('marialuisa/editar/<int:pk>', MarialuisaActualizar.as_view(), name='edit_marialuisa'),
+    path('marialuisa/cambiar_estatus/<int:pk>', views.marialuisa_cambiar_estatus,
+         name='marialuisa_cambiar_estatus'),
 
     path('modelomarialuisa/nuevo/', ModeloMarialuisaCrear.as_view(), name='nuevo_modelomarialuisa'),
     path('modelomarialuisa/listar/', views.modelomarialuisa_listar, name='list_modelomarialuisa'),
     path('modelomarialuisa/', ModeloMarialuisaAjaxListView.as_view(), name='tab_list_modelomarialuisa'),
     path('modelomarialuisa/editar/<int:pk>', ModeloMarialuisaActualizar.as_view(), name='edit_modelomarialuisa'),
+    path('modelomarialuisa/cambiar_estatus/<int:pk>', views.modelomarialuisa_cambiar_estatus,
+         name='modelomarialuisa_cambiar_estatus'),
 
-    path('grosor_papel/nuevo/', GrosorPapelCrear.as_view(), name='nuevo_grosor_papel'),
-    path('grosor_papel/listar/', views.grosor_papel_listar, name='list_grosor_papel'),
-    path('grosor_papel/', GrosorPapelAjaxListView.as_view(), name='tab_list_grosor_papel'),
-    path('grosor_papel/editar/<int:pk>', GrosorPapelActualizar.as_view(), name='edit_grosor_papel'),
 
     path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
     path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
     path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
     path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
+    path('tipo_papel/cambiar_estatus/<int:pk>', views.tipo_papel_cambiar_estatus,
+         name='tipo_papel_cambiar_estatus'),
 
     path('textura/nuevo/', TexturaCrear.as_view(), name='nuevo_textura'),
     path('textura/listar/', views.textura_listar, name='list_textura'),
     path('textura/', TexturaAjaxListView.as_view(), name='tab_list_textura'),
     path('textura/editar/<int:pk>', TexturaActualizar.as_view(), name='edit_textura'),
+    path('textura/cambiar_estatus/<int:pk>', views.textura_cambiar_estatus,
+         name='textura_cambiar_estatus'),
 
     path('logo/nuevo/', LogoCrear.as_view(), name='nuevo_logo'),
     path('logo/listar/', views.logo_listar, name='list_logo'),
     path('logo/', LogoAjaxListView.as_view(), name='tab_list_logo'),
     path('logo/editar/<int:pk>', LogoActualizar.as_view(), name='edit_logo'),
+    path('logo/cambiar_estatus/<int:pk>', views.logo_cambiar_estatus,
+         name='logo_cambiar_estatus'),
 
     path('MenuFotopartner/nuevo/', MenuFotopartnerCrear.as_view(), name='nuevo_MenuFotopartner'),
     path('MenuFotopartner/listar/', views.MenuFotopartner_listar, name='list_MenuFotopartner'),
     path('MenuFotopartner/', MenuFotopartnerAjaxListView.as_view(), name='tab_list_MenuFotopartner'),
     path('MenuFotopartner/editar/<int:pk>', MenuFotopartnerActualizar.as_view(), name='edit_MenuFotopartner'),
+    path('MenuFotopartner/cambiar_estatus/<int:pk>', views.MenuFotopartner_cambiar_estatus,
+         name='MenuFotopartner_cambiar_estatus'),
 
     path('Promocion/nuevo/', PromocionCrear.as_view(), name='nuevo_Promocion'),
     path('Promocion/listar/', views.Promocion_listar, name='list_Promocion'),
     path('Promocion/', PromocionAjaxListView.as_view(), name='tab_list_Promocion'),
     path('Promocion/editar/<int:pk>', PromocionActualizar.as_view(), name='edit_Promocion'),
+    path('Promocion/cambiar_estatus/<int:pk>', views.Promocion_cambiar_estatus,
+         name='Promocion_cambiar_estatus'),
 
     path('personal_administrativo/nuevo/', PersonalAdministrativoCrear.as_view(), name='nuevo_personal_administrativo'),
     path('personal_administrativo/listar/', views.personal_administrativo_listar, name='list_personal_administrativo'),
@@ -96,3 +111,10 @@ urlpatterns = [
     path('aprobar_foto/listar/', views.aprobar_foto_listar, name='list_aprobar_foto'),
     path('aprobar_foto/ajax/', AprobarFotoAjaxListView.as_view(), name='tab_list_aprobar_foto'),
 ]
+
+'''
+    path('grosor_papel/nuevo/', GrosorPapelCrear.as_view(), name='nuevo_grosor_papel'),
+    path('grosor_papel/listar/', views.grosor_papel_listar, name='list_grosor_papel'),
+    path('grosor_papel/', GrosorPapelAjaxListView.as_view(), name='tab_list_grosor_papel'),
+    path('grosor_papel/editar/<int:pk>', GrosorPapelActualizar.as_view(), name='edit_grosor_papel'),
+'''

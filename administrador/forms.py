@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Select, BooleanField, PasswordInput
 
 from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa, PersonalAdministrativo,GrosorPapel,\
-    TipoPapel, Textura, Logo, MenuFotopartner
+    TipoPapel, Textura, Logo, MenuFotopartner, Promocion
 
 
 class CodigoMarcoForm(ModelForm):
@@ -139,7 +139,7 @@ class MenuFotopartnerForm(ModelForm):
     class Meta:
         model = MenuFotopartner
 
-        fields = ['url']
+        fields = ['nombre']
 
 
 class PersonalAdministrativoForm(ModelForm):
@@ -156,9 +156,20 @@ class PersonalAdministrativoForm(ModelForm):
 
 class PromocionForm(ModelForm):
     class Meta:
-        model = Tamanio
-        fields = ['nombre',
-                  'estatus'
+        model = Promocion
+        fields = [
+                  'nombre',
+                  'total_cupones',
+                  'usos_por_usuario',
+                  'codigo_promocion',
+                  'fecha_inicio',
+                  'fecha_fin',
+                  'tipo_promocion',
+                  'porcentaje_cantidad',
+                  'tipo_compra',
+                  'imagen',
+                  'forma_pago',
+                  'estatus',
                   ]
 
         labels = {'nombre': 'Nombre',

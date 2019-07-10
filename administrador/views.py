@@ -16,6 +16,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
 
+### No tocar, codigo marco -> muerto
 
 class CodigoMarcoCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -77,15 +78,15 @@ class CodigoMarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_codigo_marco',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
 
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">Off</label></div>'
 
         return super(CodigoMarcoListarAjaxListView, self).render_column(row, column)
 
@@ -157,7 +158,7 @@ class TamanioCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def tamanio_listar(request):
-    template_name = 'administrador/tab_tamanio.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Tamaño'
     context['btn_nuevo'] = 'Agregar tamaño'
@@ -182,19 +183,18 @@ class TamanioListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     max_display_length = 100
 
     def render_column(self, row, column):
-
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_tamanio',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
 
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">Off</label></div>'
 
         return super(TamanioListarAjaxListView, self).render_column(row, column)
 
@@ -233,6 +233,15 @@ class TamanioActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_tamanio')
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def tamanio_cambiar_estatus(request, pk):
+    tamanio = get_object_or_404(Tamanio, pk=pk)
+    if tamanio.estatus:
+        tamanio.estatus = False
+    else:
+        tamanio.estatus = True
+    tamanio.save()
+    return JsonResponse({'result': 0})
 
 # Clase Marco
 
@@ -310,7 +319,7 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_marco',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'imagen_horizontal':
             if row.imagen_horizontal.url:
                 print(row)
@@ -324,11 +333,15 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
 
         return super(MarcoListarAjaxListView, self).render_column(row, column)
 
@@ -372,6 +385,16 @@ class MarcoActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_marco')
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def marco_cambiar_estatus(request, pk):
+    marco = get_object_or_404(Marco, pk=pk)
+    if marco.estatus:
+        marco.estatus = False
+    else:
+        marco.estatus = True
+    marco.save()
+    return JsonResponse({'result': 0})
+
 
 # Modelo Marialuisa
 class ModeloMarialuisaCrear(PermissionRequiredMixin, CreateView):
@@ -403,7 +426,7 @@ class ModeloMarialuisaCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def modelomarialuisa_listar(request):
-    template_name = 'administrador/tab_modelomarialuisa.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Marialuisa'
     context['btn_nuevo'] = 'Agregar marialuisa'
@@ -411,7 +434,8 @@ def modelomarialuisa_listar(request):
     context['encabezados'] = [['Id', True],
                               ['Nombre', True],
                               ['Editar', False],
-                              ['Estatus', True]]
+                              ['Estatus', False],
+                              ]
     context['url_ajax'] = reverse('administrador:tab_list_modelomarialuisa')
     context['url_update_estatus'] = '/administrador/modelomarialuisa/cambiar_estatus/'
 
@@ -428,7 +452,7 @@ class ModeloMarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     ]
 
     order_columns = [
-        'id','modelo', '', ''
+        'id','modelo', '', 'estatus'
     ]
 
     max_display_length = 100
@@ -438,15 +462,14 @@ class ModeloMarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_modelomarialuisa',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">Off</label></div>'
 
         return super(ModeloMarialuisaAjaxListView, self).render_column(row, column)
 
@@ -485,7 +508,15 @@ class ModeloMarialuisaActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_modelomarialuisa')
 
-
+@permission_required(perm='administrador', login_url='/webapp/login')
+def modelomarialuisa_cambiar_estatus(request, pk):
+    modelomarialuisa = get_object_or_404(Marco, pk=pk)
+    if modelomarialuisa.estatus:
+        modelomarialuisa.estatus = False
+    else:
+        modelomarialuisa.estatus = True
+    modelomarialuisa.save()
+    return JsonResponse({'result': 0})
 
 # Clase Marialuisa
 class MarialuisaCrear(PermissionRequiredMixin, CreateView):
@@ -517,18 +548,20 @@ class MarialuisaCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def marialuisa_listar(request):
-    template_name = 'administrador/tab_marialuisa.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Marialuisa'
     context['btn_nuevo'] = 'Agregar marialuisa'
     context['url_nuevo'] = reverse('administrador:nuevo_marialuisa')
-    context['encabezados'] = [['Id', True],
-                              ['Nombre', True],
+    context['encabezados'] = [['Nombre', True],
+                              ['Modelo', True],
+                              ['Precio', True],
+                              ['Tamaño', True],
+                              ['Imagen', True],
                               ['Editar', False],
                               ['Estatus', True]]
     context['url_ajax'] = reverse('administrador:tab_list_marialuisa')
     context['url_update_estatus'] = '/administrador/marialuisa/cambiar_estatus/'
-
 
     return render(request, template_name, context)
 
@@ -548,21 +581,22 @@ class MarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     max_display_length = 100
 
     def render_column(self, row, column):
-
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_marialuisa',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">On</label></div>'
+            else:
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch'+str(row.pk)+'"><label class="custom-control-label" for="customSwitch'+str(row.pk)+'">Off</label></div>'
+
         elif column == 'precio':
             return "${0:,.2f}".format(row.precio)
 
-        elif column == 'estatus':
-            if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
-            else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+
 
         elif column == 'imagen':
                 if row.imagen.url:
@@ -605,6 +639,16 @@ class MarialuisaActualizar(PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('administrador:list_marialuisa')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def marialuisa_cambiar_estatus(request, pk):
+    marialuisa = get_object_or_404(MariaLuisa, pk=pk)
+    if marialuisa.estatus:
+        marialuisa.estatus = False
+    else:
+        marialuisa.estatus = True
+    marialuisa.save()
+    return JsonResponse({'result': 0})
 
 # Clase GrosorPapel <----- Este ya no existe
 class GrosorPapelCrear(PermissionRequiredMixin, CreateView):
@@ -659,15 +703,18 @@ class GrosorPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_grosor_papel',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
 
         elif column == 'imagen':
                 if row.imagen.url:
@@ -736,7 +783,7 @@ class TipoPapelCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def tipo_papel_listar(request):
-    template_name = 'administrador/tab_tipo_papel.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Tipo de papel'
     context['btn_nuevo'] = 'Agregar papel'
@@ -755,7 +802,7 @@ class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/webapp/login'
     permission_required = 'administrador'
-    model = GrosorPapel
+    model = TipoPapel
     columns = [
         'grosor', 'precio',  'editar', 'estatus'
     ]
@@ -771,17 +818,21 @@ class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_tipo_papel',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-        elif column == 'precio':
-            return "${0:,.2f}".format(row.precio)
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
+
+        elif column == 'precio':
+            return "${0:,.2f}".format(row.precio)
 
         elif column == 'imagen':
                 if row.imagen.url:
@@ -825,6 +876,16 @@ class TipoPapelActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_tipo_papel')
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def tipo_papel_cambiar_estatus(request, pk):
+    tipo_papel = get_object_or_404(TipoPapel, pk=pk)
+    if tipo_papel.estatus:
+        tipo_papel.estatus = False
+    else:
+        tipo_papel.estatus = True
+    tipo_papel.save()
+    return JsonResponse({'result': 0})
+
 # Clase Textura
 class TexturaCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -855,7 +916,7 @@ class TexturaCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def textura_listar(request):
-    template_name = 'administrador/tab_textura.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Textura'
     context['btn_nuevo'] = 'Agregar textura'
@@ -889,15 +950,19 @@ class TexturaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_textura',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
+
 
         elif column == 'imagen':
                 if row.imagen.url:
@@ -936,6 +1001,17 @@ class TexturaActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_textura')
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def textura_cambiar_estatus(request, pk):
+    textura = get_object_or_404(Textura, pk=pk)
+    if textura.estatus:
+        textura.estatus = False
+    else:
+        textura.estatus = True
+    textura.save()
+    return JsonResponse({'result': 0})
+
+
 # Clase Logo
 class LogoCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -966,7 +1042,7 @@ class LogoCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def logo_listar(request):
-    template_name = 'administrador/tab_logo.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Logo'
     context['btn_nuevo'] = 'Agregar logo'
@@ -996,23 +1072,25 @@ class LogoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     max_display_length = 100
 
     def render_column(self, row, column):
-
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_logo',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
 
         elif column == 'imagen':
                 if row.imagen.url:
-                    return '<img style="width:80%" src="'+ row.imagen.url +'" />'
+                    return '<img style="max-width: 170px; width:100%" src="'+ row.imagen.url +'" />'
 
 
         return super(LogoAjaxListView, self).render_column(row, column)
@@ -1047,6 +1125,16 @@ class LogoActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_logo')
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def logo_cambiar_estatus(request, pk):
+    logo = get_object_or_404(Logo, pk=pk)
+    if logo.estatus:
+        logo.estatus = False
+    else:
+        logo.estatus = True
+    logo.save()
+    return JsonResponse({'result': 0})
+
 # Clase MenuFotopartner
 class MenuFotopartnerCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -1077,7 +1165,7 @@ class MenuFotopartnerCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def MenuFotopartner_listar(request):
-    template_name = 'administrador/tab_MenuFotopartner.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'MenuFotopartner'
     context['btn_nuevo'] = 'Agregar MenuFotopartner'
@@ -1106,19 +1194,21 @@ class MenuFotopartnerAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     max_display_length = 100
 
     def render_column(self, row, column):
-
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_MenuFotopartner',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
 
         elif column == 'imagen':
                 if row.imagen.url:
@@ -1163,6 +1253,16 @@ class MenuFotopartnerActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_MenuFotopartner')
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def MenuFotopartner_cambiar_estatus(request, pk):
+    MenuFotopartner = get_object_or_404(MenuFotopartner, pk=pk)
+    if MenuFotopartner.estatus:
+        MenuFotopartner.estatus = False
+    else:
+        MenuFotopartner.estatus = True
+    MenuFotopartner.save()
+    return JsonResponse({'result': 0})
+
 # Clase Promocion
 class PromocionCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -1170,7 +1270,7 @@ class PromocionCrear(PermissionRequiredMixin, CreateView):
     permission_required = 'administrador'
     model = Promocion
     form_class = PromocionForm
-    template_name = 'config/registro_promo.html'
+    template_name = 'config/form_1col.html'
     success_url = '/administrador/Promocion/listar'
 
     def get_context_data(self, **kwargs):
@@ -1178,9 +1278,9 @@ class PromocionCrear(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Registro de Promocion'
+            context['titulo'] = 'Registro de promoción'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar una Promocion'
+            context['instrucciones'] = 'Completa todos los campos para registrar una promocion'
         return context
 
     def form_valid(self, form):
@@ -1193,12 +1293,12 @@ class PromocionCrear(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def Promocion_listar(request):
-    template_name = 'administrador/tab_Promocion.html'
+    template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Promocion'
     context['btn_nuevo'] = 'Agregar Promocion'
     context['url_nuevo'] = reverse('administrador:nuevo_Promocion')
-    context['encabezados'] = [['Url', True],
+    context['encabezados'] = [['Código de promoción', True],
                               ['Editar', False],
                               ['Estatus', True]]
     context['url_ajax'] = reverse('administrador:tab_list_Promocion')
@@ -1212,29 +1312,31 @@ class PromocionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = Promocion
     columns = [
-        'url', 'editar', 'estatus'
+        'nombre', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'url', '', ''
+        'nombre', '', ''
     ]
 
     max_display_length = 100
 
     def render_column(self, row, column):
-
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_Promocion',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
-
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'estatus':
             if row.estatus:
-                return '<div class="switch"><label>Off<input type="checkbox" checked onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
             else:
-                return '<div class="switch"><label>Off<input type="checkbox" onchange=cambiar_estatus(' + str(
-                    row.pk) + ')><span class="lever"></span>On</label></div>'
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
 
         elif column == 'imagen':
                 if row.imagen.url:
@@ -1258,7 +1360,7 @@ class PromocionActualizar(PermissionRequiredMixin, UpdateView):
     login_url = '/webapp/login'
     permission_required = 'administrador'
     model = Promocion
-    template_name = 'config/registro_promo.html'
+    template_name = 'config/form_1col.html'
     form_class = PromocionForm
 
     def get_context_data(self, **kwargs):
@@ -1278,6 +1380,16 @@ class PromocionActualizar(PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('administrador:list_Promocion')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def Promocion_cambiar_estatus(request, pk):
+    promo = get_object_or_404(Promocion, pk=pk)
+    if promo.estatus:
+        promo.estatus = False
+    else:
+        promo.estatus = True
+    promo.save()
+    return JsonResponse({'result': 0})
 
 # Personal Administrativo
 class PersonalAdministrativoCrear(PermissionRequiredMixin, CreateView):
