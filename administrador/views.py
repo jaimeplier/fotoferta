@@ -49,8 +49,19 @@ class CodigoMarcoCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def codigo_marco_listar(request):
     template_name = 'administrador/tab_codigo_marco.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Código marco'
+    context['btn_nuevo'] = 'Agregar código'
+    context['url_nuevo'] = reverse('administrador:nuevo_codigo_marco')
+    context['encabezados'] = [['Nombre', True],
+                              ['Correo', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_codigo_marco')
+    context['url_update_estatus'] = '/administrador/codigo_marco/cambiar_estatus/'
 
+
+    return render(request, template_name, context)
 
 class CodigoMarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -80,6 +91,12 @@ class CodigoMarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
     def get_initial_queryset(self):
         return CodigoMarco.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(codigo__icontains=search) | qs.filter(id__icontains=search)
+        return qs
 
 
 class CodigoMarcoActualizar(PermissionRequiredMixin, UpdateView):
@@ -141,7 +158,19 @@ class TamanioCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def tamanio_listar(request):
     template_name = 'administrador/tab_tamanio.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Tamaño'
+    context['btn_nuevo'] = 'Agregar tamaño'
+    context['url_nuevo'] = reverse('administrador:nuevo_tamanio')
+    context['encabezados'] = [['Id', True],
+                              ['Nombre', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_tamanio')
+    context['url_update_estatus'] = '/administrador/tamanio/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
 
 class TamanioListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -172,6 +201,11 @@ class TamanioListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def get_initial_queryset(self):
         return Tamanio.objects.all()
 
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search)
+        return qs
 
 class TamanioActualizar(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
@@ -232,7 +266,28 @@ class MarcoCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def marco_listar(request):
     template_name = 'administrador/tab_marco.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Marco'
+    context['btn_nuevo'] = 'Agregar marco'
+    context['url_nuevo'] = reverse('administrador:nuevo_marco')
+    context['encabezados'] = [['Id', True],
+                              ['Nombre', True],
+                              ['Código', True],
+                              ['Tamaño', True],
+                              ['Alto', True],
+                              ['Ancho', True],
+                              ['Grosor lateral', True],
+                              ['Grosor total', True],
+                              ['Grosor final', True],
+                              ['Profundidad', True],
+                              ['Peso', True],
+                              ['Precio', True],
+                              ['Imagen horizontal', True],
+                              ['Imagen vertical', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_marco')
+    context['url_update_estatus'] = '/administrador/marco/cambiar_estatus/'
 
 class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -277,6 +332,16 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
     def get_initial_queryset(self):
         return Marco.objects.all()
+        
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(codigo__icontains=search) |
+                qs.filter(tamanio__icontains=search) | qs.filter(alto__icontains=search) | qs.filter(ancho__icontains=search) |
+                qs.filter(grosor_lado__icontains=search) | qs.filter(grosor_total__icontains=search) | qs.filter(grosor_final__icontains=search) |
+                qs.filter(profundidad__icontains=search) | qs.filter(peso__icontains=search) | qs.filter(precio__icontains=search) |
+                qs.filter(imagen_horizontal__icontains=search) | qs.filter(imagen_vertical__icontains=search)
+        return qs
 
 
 class MarcoActualizar(PermissionRequiredMixin, UpdateView):
@@ -337,7 +402,19 @@ class ModeloMarialuisaCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def modelomarialuisa_listar(request):
     template_name = 'administrador/tab_modelomarialuisa.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Marialuisa'
+    context['btn_nuevo'] = 'Agregar marialuisa'
+    context['url_nuevo'] = reverse('administrador:nuevo_modelomarialuisa')
+    context['encabezados'] = [['Id', True],
+                              ['Nombre', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_modelomarialuisa')
+    context['url_update_estatus'] = '/administrador/modelomarialuisa/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
 
 class ModeloMarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -345,11 +422,11 @@ class ModeloMarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = ModeloMariaLuisa
     columns = [
-        'modelo', 'editar'
+        'id', 'modelo', 'editar', 'estatus'
     ]
 
     order_columns = [
-    'modelo', ''
+        'id','modelo', '', ''
     ]
 
     max_display_length = 100
@@ -373,6 +450,12 @@ class ModeloMarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
     def get_initial_queryset(self):
         return ModeloMariaLuisa.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(modelo__icontains=search) | qs.filter(id__icontains=search)
+        return qs
 
 class ModeloMarialuisaActualizar(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
@@ -433,7 +516,19 @@ class MarialuisaCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def marialuisa_listar(request):
     template_name = 'administrador/tab_marialuisa.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Marialuisa'
+    context['btn_nuevo'] = 'Agregar marialuisa'
+    context['url_nuevo'] = reverse('administrador:nuevo_marialuisa')
+    context['encabezados'] = [['Id', True],
+                              ['Nombre', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_marialuisa')
+    context['url_update_estatus'] = '/administrador/marialuisa/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
 
 class MarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -477,6 +572,11 @@ class MarialuisaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def get_initial_queryset(self):
         return MariaLuisa.objects.all()
 
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(tamanio__icontains=search) | qs.filter(precio__icontains=search)
+        return qs
 
 class MarialuisaActualizar(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
@@ -504,7 +604,7 @@ class MarialuisaActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_marialuisa')
 
-# Clase GrosorPapel
+# Clase GrosorPapel <----- Este ya no existe
 class GrosorPapelCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/webapp/login'
@@ -635,7 +735,19 @@ class TipoPapelCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def tipo_papel_listar(request):
     template_name = 'administrador/tab_tipo_papel.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Tipo de papel'
+    context['btn_nuevo'] = 'Agregar papel'
+    context['url_nuevo'] = reverse('administrador:nuevo_tipo_papel')
+    context['encabezados'] = [['Grosor', True],
+                              ['Precio', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_tipo_papel')
+    context['url_update_estatus'] = '/administrador/tipo_papel/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
 
 class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -643,11 +755,11 @@ class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = GrosorPapel
     columns = [
-        'grosor', 'precio',  'editar'
+        'grosor', 'precio',  'editar', 'estatus'
     ]
 
     order_columns = [
-        'grosor', 'precio', ''
+        'grosor', 'precio', '', ''
     ]
 
     max_display_length = 100
@@ -679,6 +791,11 @@ class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def get_initial_queryset(self):
         return TipoPapel.objects.all()
 
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(grosor__icontains=search) | qs.filter(precio__icontains=search)
+        return qs
 
 class TipoPapelActualizar(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
@@ -737,19 +854,29 @@ class TexturaCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def textura_listar(request):
     template_name = 'administrador/tab_textura.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Textura'
+    context['btn_nuevo'] = 'Agregar textura'
+    context['url_nuevo'] = reverse('administrador:nuevo_textura')
+    context['encabezados'] = [['Imagen', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_textura')
+    context['url_update_estatus'] = '/administrador/textura/cambiar_estatus/'
 
+
+    return render(request, template_name, context)
 class TexturaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/webapp/login'
     permission_required = 'administrador'
     model = Textura
     columns = [
-        'imagen', 'editar'
+        'imagen', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'imagen', ''
+        'imagen', '', ''
     ]
 
     max_display_length = 100
@@ -837,7 +964,17 @@ class LogoCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def logo_listar(request):
     template_name = 'administrador/tab_logo.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Logo'
+    context['btn_nuevo'] = 'Agregar logo'
+    context['url_nuevo'] = reverse('administrador:nuevo_logo')
+    context['encabezados'] = [['Imagen', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_logo')
+    context['url_update_estatus'] = '/administrador/logo/cambiar_estatus/'
+
+    return render(request, template_name, context)
 
 class LogoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -845,11 +982,11 @@ class LogoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = Logo
     columns = [
-        'imagen', 'editar'
+        'imagen', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'imagen', ''
+        'imagen', '', ''
     ]
 
     max_display_length = 100
@@ -937,7 +1074,17 @@ class MenuFotopartnerCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def MenuFotopartner_listar(request):
     template_name = 'administrador/tab_MenuFotopartner.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'MenuFotopartner'
+    context['btn_nuevo'] = 'Agregar MenuFotopartner'
+    context['url_nuevo'] = reverse('administrador:nuevo_MenuFotopartner')
+    context['encabezados'] = [['Nombre', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_MenuFotopartner')
+    context['url_update_estatus'] = '/administrador/MenuFotopartner/cambiar_estatus/'
+
+    return render(request, template_name, context)
 
 class MenuFotopartnerAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -945,11 +1092,11 @@ class MenuFotopartnerAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = MenuFotopartner
     columns = [
-        'url', 'editar'
+        'nombre', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'url', ''
+        'nombre', '', ''
     ]
 
     max_display_length = 100
@@ -978,6 +1125,12 @@ class MenuFotopartnerAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
     def get_initial_queryset(self):
         return MenuFotopartner.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search)
+        return qs
 
 
 class MenuFotopartnerActualizar(PermissionRequiredMixin, UpdateView):
@@ -1037,7 +1190,17 @@ class PromocionCrear(PermissionRequiredMixin, CreateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def Promocion_listar(request):
     template_name = 'administrador/tab_Promocion.html'
-    return render(request, template_name)
+    context = {}
+    context['titulo'] = 'Promocion'
+    context['btn_nuevo'] = 'Agregar Promocion'
+    context['url_nuevo'] = reverse('administrador:nuevo_Promocion')
+    context['encabezados'] = [['Url', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_Promocion')
+    context['url_update_estatus'] = '/administrador/Promocion/cambiar_estatus/'
+
+    return render(request, template_name, context)
 
 class PromocionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -1045,11 +1208,11 @@ class PromocionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = Promocion
     columns = [
-        'url', 'editar'
+        'url', 'editar', 'estatus'
     ]
 
     order_columns = [
-        'url', ''
+        'url', '', ''
     ]
 
     max_display_length = 100
@@ -1078,6 +1241,12 @@ class PromocionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
     def get_initial_queryset(self):
         return Promocion.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(url__icontains=search)
+        return qs
 
 
 class PromocionActualizar(PermissionRequiredMixin, UpdateView):
