@@ -1583,6 +1583,67 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         return qs
 
 @permission_required(perm='administrador', login_url='/webapp/login')
+def historial_ventas_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Historial de ventas'
+    context['encabezados'] = [['ID', True],
+                              ['Fecha de solicitud', True],
+                              ['Fecha de compra', True],
+                              ['Usuario', True],
+                              ['Dirección', True],
+                              ['Método de pago', True],
+                              ['Detalle de pago', True],
+                              ['Total', True],
+                              ['Estatus', True],
+                              ['Detalle', False],
+                              ]
+    context['url_ajax'] = reverse('administrador:tab_list_historial_ventas')
+    return render(request, template_name, context)
+
+class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Orden
+    columns = ['id','fecha_creacion', 'fecha_compra', 'usuario.nombre', 'direccion', 'forma_pago.nombre', 'detalle_pago', 'total', 'estatus.nombre', 'detalle']
+
+    order_columns = ['id', 'fecha_creacion', 'fecha_compra', 'usuario.nombre', 'colonia', 'forma_pago.nombre', '', 'total', 'estatus.nombre', '']
+
+    max_display_length = 100
+    settingstime_zone = timezone(settings.TIME_ZONE)
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_personal_administrativo',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+
+        elif column == 'estatus':
+            return '<a class="" href ="#"><i class="material-icons">receipt</i></a>'
+        elif column == 'estatus':
+            return '<a class="" href ="#"><i class="material-icons">receipt</i></a>'
+        elif column == 'fecha_compra':
+            return row.fecha_compra.astimezone(self.settingstime_zone).strftime("%d-%b-%Y %H:%M")
+        elif column == 'direccion':
+            return row.direccion.direccion_completa()
+        elif column == 'total':
+            return "$" + "{0:,.2f}".format(row.total)
+        elif column == 'detalle_pago':
+            return '*******423'
+        return super(HistorialVentasAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Orden.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(usuario__nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
+                forma_pago__nombre__icontains=search)| qs.filter(forma_pago__nombre__icontains=search)
+        return qs
+
+@permission_required(perm='administrador', login_url='/webapp/login')
 def fotografo_cambiar_estatus(request, pk):
     personal = get_object_or_404(Fotografo, pk=pk)
     if personal.estatus:

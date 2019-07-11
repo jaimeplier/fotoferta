@@ -10,7 +10,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar, \
     UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
     TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, PapelImpresionCrear, PapelImpresionAjaxListView, \
-    PapelImpresionActualizar
+    PapelImpresionActualizar, HistorialVentasAjaxListView
 
 app_name = 'administrador'
 urlpatterns = [
@@ -95,6 +95,9 @@ urlpatterns = [
 
     path('ventas/listar/', views.ventas_listar, name='list_ventas'),
     path('ventas/ajax/', VentasAjaxListView.as_view(), name='tab_list_ventas'),
+
+    path('historial_ventas/listar/', views.historial_ventas_listar, name='list_historial_ventas'),
+    path('historial_ventas/ajax/', HistorialVentasAjaxListView.as_view(), name='tab_list_historial_ventas'),
 
     path('fotografo/cambiar_estatus/<int:pk>', views.fotografo_cambiar_estatus, name='cambiar_estatus_fotografo'),
     path('fotografo/cambiar_confiable/<int:pk>', views.fotografo_cambiar_confiable, name='fotografo_cambiar_confiable'),
