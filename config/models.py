@@ -564,3 +564,5 @@ class PersonalAdministrativo(Usuario):
     class Meta:
         managed = True
         db_table = 'personal_administrativo'
+
+# TODO Modelos de Contactanos, TiopoPapelTamañoFoto,
