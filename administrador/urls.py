@@ -4,12 +4,12 @@ from administrador import views
 from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView, CodigoMarcoActualizar, TamanioCrear, \
     TamanioListarAjaxListView, TamanioActualizar, MarcoCrear, MarcoListarAjaxListView, MarcoActualizar, MarialuisaCrear, \
     MarialuisaAjaxListView, MarialuisaActualizar, ModeloMarialuisaCrear, ModeloMarialuisaAjaxListView, \
-    ModeloMarialuisaActualizar, GrosorPapelCrear, GrosorPapelAjaxListView, GrosorPapelActualizar, TipoPapelCrear, \
-    TipoPapelAjaxListView, TipoPapelActualizar, TexturaCrear, TexturaAjaxListView, TexturaActualizar, LogoCrear, \
+    ModeloMarialuisaActualizar, TexturaCrear, TexturaAjaxListView, TexturaActualizar, LogoCrear, \
     LogoAjaxListView, LogoActualizar, PersonalAdministrativoCrear, PersonalAdministrativoAjaxListView, \
     PersonalAdministrativoActualizar, VentasAjaxListView, MenuFotopartnerCrear, MenuFotopartnerAjaxListView, \
     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar, \
-    UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView
+    UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
+    TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -49,12 +49,12 @@ urlpatterns = [
          name='modelomarialuisa_cambiar_estatus'),
 
 
-    path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
-    path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
-    path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
-    path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
-    path('tipo_papel/cambiar_estatus/<int:pk>', views.tipo_papel_cambiar_estatus,
-         name='tipo_papel_cambiar_estatus'),
+    # path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
+    # path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
+    # path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
+    # path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
+    # path('tipo_papel/cambiar_estatus/<int:pk>', views.tipo_papel_cambiar_estatus,
+    #      name='tipo_papel_cambiar_estatus'),
 
     path('textura/nuevo/', TexturaCrear.as_view(), name='nuevo_textura'),
     path('textura/listar/', views.textura_listar, name='list_textura'),
@@ -110,11 +110,10 @@ urlpatterns = [
 
     path('aprobar_foto/listar/', views.aprobar_foto_listar, name='list_aprobar_foto'),
     path('aprobar_foto/ajax/', AprobarFotoAjaxListView.as_view(), name='tab_list_aprobar_foto'),
-]
 
-'''
-    path('grosor_papel/nuevo/', GrosorPapelCrear.as_view(), name='nuevo_grosor_papel'),
-    path('grosor_papel/listar/', views.grosor_papel_listar, name='list_grosor_papel'),
-    path('grosor_papel/', GrosorPapelAjaxListView.as_view(), name='tab_list_grosor_papel'),
-    path('grosor_papel/editar/<int:pk>', GrosorPapelActualizar.as_view(), name='edit_grosor_papel'),
-'''
+    path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
+    path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
+    path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
+    path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
+    path('tipo_papel/cambiar_estatus/<int:pk>', views.tipo_papel_cambiar_estatus, name='cambiar_estatus_tipo_papel'),
+]

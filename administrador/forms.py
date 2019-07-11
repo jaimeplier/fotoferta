@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Select, BooleanField, PasswordInput
 
-from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa, PersonalAdministrativo,GrosorPapel,\
-    TipoPapel, Textura, Logo, MenuFotopartner, Promocion
+from config.models import CodigoMarco, Tamanio, Marco, MariaLuisa, ModeloMariaLuisa, PersonalAdministrativo, \
+    Textura, Logo, MenuFotopartner, Promocion, TipoPapel
 
 
 class CodigoMarcoForm(ModelForm):
@@ -92,31 +92,26 @@ class MarialuisaForm(ModelForm):
             'imagen': 'Imagen',
               }
 
-class GrosorPapelForm(ModelForm):
-    class Meta:
-        model = GrosorPapel
-
-        fields = [
-            'medida',
-        ]
-
-        labels = {
-            'medida': 'Medida',
-              }
-
+# class GrosorPapelForm(ModelForm):
+#     class Meta:
+#         model = GrosorPapel
+#
+#         fields = [
+#             'medida',
+#         ]
+#
+#         labels = {
+#             'medida': 'Medida',
+#               }
+#
 class TipoPapelForm(ModelForm):
     class Meta:
         model = TipoPapel
 
         fields = [
-            'grosor',
-            'precio'
+            'nombre',
+            'estatus'
         ]
-
-        labels = {
-            'grosor': 'Grosor',
-            'precio': 'Precio',
-              }
 
 class TexturaForm(ModelForm):
     class Meta:
