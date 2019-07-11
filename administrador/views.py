@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.urls import reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView
 from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
@@ -1820,7 +1820,7 @@ class UsuariosGeneralesAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def render_column(self, row, column):
 
         if column == 'detalle':
-            return '<a class="" href ="#"><i class="fa fa-users"></i></a>'
+            return '<a class="" href ="'+reverse('administrador:detalle_usuario', kwargs={'pk': row.pk})+'"><i class="fa fa-users"></i></a>'
         elif column == 'estatus':
             if row.estatus:
                 return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
@@ -1874,7 +1874,7 @@ class FotopartnersAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def render_column(self, row, column):
 
         if column == 'detalle':
-            return '<a class="" href ="#"><i class="fa fa-users"></i></a>'
+            return '<a class="" href ="'+reverse('administrador:detalle_usuario', kwargs={'pk': row.pk})+'"><i class="fa fa-users"></i></a>'
         elif column == 'estatus':
             if row.estatus:
                 return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
@@ -1935,7 +1935,7 @@ class UsuariosBloqueadosAjaxListView(PermissionRequiredMixin, BaseDatatableView)
     def render_column(self, row, column):
 
         if column == 'detalle':
-            return '<a class="" href ="#"><i class="fa fa-users"></i></a>'
+            return '<a class="" href ="'+reverse('administrador:detalle_usuario', kwargs={'pk': row.pk})+'"><i class="fa fa-users"></i></a>'
         elif column == 'estatus':
             if row.estatus:
                 return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
@@ -2072,3 +2072,16 @@ class ContactanosActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_contactanos')
 
+
+class DetalleUsuario(PermissionRequiredMixin, DetailView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Fotografo
+    template_name = 'administrador/detalle_usuario.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetalleUsuario, self).get_context_data(**kwargs)
+        fotografo = Fotografo.objects.get(pk=self.kwargs['pk'])
+        context['usuario'] = fotografo
+        return context
