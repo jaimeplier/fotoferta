@@ -552,7 +552,7 @@ class Promocion(models.Model):
     marco = models.ForeignKey('Marco', models.DO_NOTHING, null=True, blank=True)
     tamanio_marco = models.ForeignKey('Tamanio', models.DO_NOTHING, null=True, blank=True)
     maria_luisa = models.ForeignKey('MariaLuisa', models.DO_NOTHING, null=True, blank=True)
-    imagen = models.ImageField(upload_to='promo_fotoferta/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    imagen = models.ImageField(upload_to='promo_fotoferta/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])], null=True, blank=True)
     forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, null=True, blank=True)
     estatus = models.BooleanField(default=True)
     class Meta:
