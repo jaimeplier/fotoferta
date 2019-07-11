@@ -408,23 +408,23 @@ class MariaLuisa(Catalogo):
         db_table = 'maria_luisa'
 
 
-class GrosorPapel(models.Model):
-    medida = models.FloatField()
-
-    class Meta:
-        managed = True
-        db_table = 'grosor_papel'
-
-    def __str__(self):
-        return str(self.medida) + ' mm.'
-
-class TipoPapel(Catalogo):
-    grosor = models.ForeignKey('GrosorPapel', models.DO_NOTHING)
-    precio = models.FloatField()
-
-    class Meta:
-        managed = True
-        db_table = 'tipo_papel'
+# class GrosorPapel(models.Model):
+#     medida = models.FloatField()
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'grosor_papel'
+#
+#     def __str__(self):
+#         return str(self.medida) + ' mm.'
+#
+# class TipoPapel(Catalogo):
+#     grosor = models.ForeignKey('GrosorPapel', models.DO_NOTHING)
+#     precio = models.FloatField()
+#
+#     class Meta:
+#         managed = True
+#         db_table = 'tipo_papel'
 
 class Textura(Catalogo):
     imagen = models.ImageField(upload_to='img_texturas/',
@@ -515,7 +515,7 @@ class Producto(models.Model):
     marco = models.ForeignKey(Marco, models.DO_NOTHING, null=True, blank=True)
     maria_luisa = models.ForeignKey(MariaLuisa, models.DO_NOTHING, null=True, blank=True)
     tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
-    tipo_papel = models.ForeignKey('TipoPapel', models.DO_NOTHING, null=True, blank=True)
+    # tipo_papel = models.ForeignKey('TipoPapel', models.DO_NOTHING, null=True, blank=True)
     promocion_aplicada = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING)
 
@@ -565,7 +565,6 @@ class PersonalAdministrativo(Usuario):
         managed = True
         db_table = 'personal_administrativo'
 
-# TODO Modelos de Contactanos, TiopoPapelTamañoFoto,
 
 class Contactanos(models.Model):
     direccion = models.TextField(max_length=256)
