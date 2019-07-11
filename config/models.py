@@ -566,3 +566,13 @@ class PersonalAdministrativo(Usuario):
         db_table = 'personal_administrativo'
 
 # TODO Modelos de Contactanos, TiopoPapelTamañoFoto,
+
+class Contactanos(models.Model):
+    direccion = models.TextField(max_length=256)
+    telefono = models.CharField(max_length=12)
+    correo = models.EmailField(max_length=32)
+
+
+    class Meta:
+        managed = True
+        db_table = 'contactanos'
