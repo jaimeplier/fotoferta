@@ -418,6 +418,7 @@ class PapelImpresion(models.Model):
     tipo_papel = models.ForeignKey('TipoPapel', models.DO_NOTHING)
     tamanio = models.ForeignKey('Tamanio', models.DO_NOTHING)
     precio = models.FloatField()
+    estatus = models.BooleanField(default=True)
 
     class Meta:
         managed = True
