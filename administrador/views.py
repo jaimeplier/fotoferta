@@ -9,9 +9,10 @@ from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
     TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
-    PromocionForm, TipoPapelForm
+    PromocionForm, TipoPapelForm, PapelImpresionForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
-    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel
+    Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
+    PapelImpresion
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -766,138 +767,136 @@ def tipo_papel_cambiar_estatus(request, pk):
     tipo_papel.save()
     return JsonResponse({'result': 0})
 
-# Clase TipoPapel
-# class TipoPapelCrear(PermissionRequiredMixin, CreateView):
-#     redirect_field_name = 'next'
-#     login_url = '/webapp/login'
-#     permission_required = 'administrador'
-#     model = TipoPapel
-#     form_class = TipoPapelForm
-#     template_name = 'config/form_1col.html'
-#     success_url = '/administrador/tipo_papel/listar'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(TipoPapelCrear, self).get_context_data(**kwargs)
-#         if 'form' not in context:
-#             context['form'] = self.form_class()
-#         if 'titulo' not in context:
-#             context['titulo'] = 'Registro de tipo de papel'
-#         if 'instrucciones' not in context:
-#             context['instrucciones'] = 'Completa todos los campos para registrar un tipo de papel'
-#         return context
-#
-#     def form_valid(self, form):
-#         tipoPapel = form.save(commit=False)
-#         tipoPapel.save()
-#         return HttpResponseRedirect(self.get_success_url())
-#
-#     def get_success_url(self):
-#         return reverse('administrador:list_tipo_papel')
-#
-# @permission_required(perm='administrador', login_url='/webapp/login')
-# def tipo_papel_listar(request):
-#     template_name = 'config/tab_base.html'
-#     context = {}
-#     context['titulo'] = 'Tipo de papel'
-#     context['btn_nuevo'] = 'Agregar papel'
-#     context['url_nuevo'] = reverse('administrador:nuevo_tipo_papel')
-#     context['encabezados'] = [['Grosor', True],
-#                               ['Precio', True],
-#                               ['Editar', False],
-#                               ['Estatus', True]]
-#     context['url_ajax'] = reverse('administrador:tab_list_tipo_papel')
-#     context['url_update_estatus'] = '/administrador/tipo_papel/cambiar_estatus/'
-#
-#
-#     return render(request, template_name, context)
-#
-# class TipoPapelAjaxListView(PermissionRequiredMixin, BaseDatatableView):
-#     redirect_field_name = 'next'
-#     login_url = '/webapp/login'
-#     permission_required = 'administrador'
-#     model = TipoPapel
-#     columns = [
-#         'grosor', 'precio',  'editar', 'estatus'
-#     ]
-#
-#     order_columns = [
-#         'grosor', 'precio', '', ''
-#     ]
-#
-#     max_display_length = 100
-#
-#     def render_column(self, row, column):
-#
-#         if column == 'editar':
-#             return '<a class="" href ="' + reverse('administrador:edit_tipo_papel',
-#                                                    kwargs={
-#                                                        'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
-#         elif column == 'estatus':
-#             if row.estatus:
-#                 return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
-#                     row.pk) + ') id="customSwitch' + str(
-#                     row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
-#                     row.pk) + '">On</label></div>'
-#             else:
-#                 return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
-#                     row.pk) + ') id="customSwitch' + str(
-#                     row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
-#                     row.pk) + '">Off</label></div>'
-#
-#         elif column == 'precio':
-#             return "${0:,.2f}".format(row.precio)
-#
-#         elif column == 'imagen':
-#                 if row.imagen.url:
-#                     return '<img style="width:100%" src="'+ row.imagen.url +'" />'
-#
-#
-#         return super(TipoPapelAjaxListView, self).render_column(row, column)
-#
-#     def get_initial_queryset(self):
-#         return TipoPapel.objects.all()
-#
-#     def filter_queryset(self, qs):
-#         search = self.request.GET.get(u'search[value]', None)
-#         if search:
-#             qs = qs.filter(grosor__icontains=search) | qs.filter(precio__icontains=search)
-#         return qs
-#
-# class TipoPapelActualizar(PermissionRequiredMixin, UpdateView):
-#     redirect_field_name = 'next'
-#     login_url = '/webapp/login'
-#     permission_required = 'administrador'
-#     model = TipoPapel
-#     template_name = 'config/form_1col.html'
-#     form_class = TipoPapelForm
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(TipoPapelActualizar, self).get_context_data(**kwargs)
-#         if 'form' not in context:
-#             context['form'] = self.form_class()
-#         if 'titulo' not in context:
-#             context['titulo'] = 'Modificación de tipo papel'
-#         if 'instrucciones' not in context:
-#             context['instrucciones'] = 'Modifica los campos que requieras'
-#         return context
-#
-#     def form_valid(self, form):
-#         # form.instance.set_password(form.cleaned_data['password'])
-#         form.save()
-#         return HttpResponseRedirect(self.get_success_url())
-#
-#     def get_success_url(self):
-#         return reverse('administrador:list_tipo_papel')
-#
-# @permission_required(perm='administrador', login_url='/webapp/login')
-# def tipo_papel_cambiar_estatus(request, pk):
-#     tipo_papel = get_object_or_404(TipoPapel, pk=pk)
-#     if tipo_papel.estatus:
-#         tipo_papel.estatus = False
-#     else:
-#         tipo_papel.estatus = True
-#     tipo_papel.save()
-#     return JsonResponse({'result': 0})
+# Clase PapelImpresion
+class PapelImpresionCrear(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = PapelImpresion
+    form_class = PapelImpresionForm
+    template_name = 'config/form_1col.html'
+    success_url = '/administrador/papel_impresion/listar'
+
+    def get_context_data(self, **kwargs):
+        context = super(PapelImpresionCrear, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Registro de papel de impresión'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un papel de impresión'
+        return context
+
+    def form_valid(self, form):
+        tipoPapel = form.save(commit=False)
+        tipoPapel.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_papel_impresion')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def papel_impresion_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Papel de impresión'
+    context['btn_nuevo'] = 'Agregar papel'
+    context['url_nuevo'] = reverse('administrador:nuevo_papel_impresion')
+    context['encabezados'] = [['Tipo de papel', True],
+                              ['Tamaño', True],
+                              ['Precio', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_papel_impresion')
+    context['url_update_estatus'] = '/administrador/papel_impresion/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
+
+class PapelImpresionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = PapelImpresion
+    columns = [
+        'tipo_papel.nombre', 'tamanio.nombre', 'precio',  'editar', 'estatus'
+    ]
+
+    order_columns = [
+        'tipo_papel.nombre', 'tamanio.nombre', 'precio',  '', 'estatus'
+    ]
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_papel_impresion',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
+            else:
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
+
+        elif column == 'precio':
+            return "${0:,.2f}".format(row.precio)
+
+
+        return super(PapelImpresionAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return PapelImpresion.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(tipo_papel__nombre__icontains=search) | qs.filter(precio__icontains=search)| qs.filter(
+                tamanio__nombre__icontains=search)
+        return qs
+
+class PapelImpresionActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = PapelImpresion
+    template_name = 'config/form_1col.html'
+    form_class = PapelImpresionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PapelImpresionActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación del papel de impresión'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        # form.instance.set_password(form.cleaned_data['password'])
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_papel_impresion')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def papel_impresion_cambiar_estatus(request, pk):
+    papel_impresion = get_object_or_404(PapelImpresion, pk=pk)
+    if papel_impresion.estatus:
+        papel_impresion.estatus = False
+    else:
+        papel_impresion.estatus = True
+    papel_impresion.save()
+    return JsonResponse({'result': 0})
 
 # Clase Textura
 class TexturaCrear(PermissionRequiredMixin, CreateView):

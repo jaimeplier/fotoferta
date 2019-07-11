@@ -9,7 +9,8 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     PersonalAdministrativoActualizar, VentasAjaxListView, MenuFotopartnerCrear, MenuFotopartnerAjaxListView, \
     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar, \
     UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
-    TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar
+    TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, PapelImpresionCrear, PapelImpresionAjaxListView, \
+    PapelImpresionActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -49,12 +50,11 @@ urlpatterns = [
          name='modelomarialuisa_cambiar_estatus'),
 
 
-    # path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
-    # path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
-    # path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
-    # path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
-    # path('tipo_papel/cambiar_estatus/<int:pk>', views.tipo_papel_cambiar_estatus,
-    #      name='tipo_papel_cambiar_estatus'),
+    path('papel_impresion/nuevo/', PapelImpresionCrear.as_view(), name='nuevo_papel_impresion'),
+    path('papel_impresion/listar/', views.papel_impresion_listar, name='list_papel_impresion'),
+    path('papel_impresion/', PapelImpresionAjaxListView.as_view(), name='tab_list_papel_impresion'),
+    path('papel_impresion/editar/<int:pk>', PapelImpresionActualizar.as_view(), name='edit_papel_impresion'),
+    path('papel_impresion/cambiar_estatus/<int:pk>', views.papel_impresion_cambiar_estatus, name='papel_impresion_cambiar_estatus'),
 
     path('textura/nuevo/', TexturaCrear.as_view(), name='nuevo_textura'),
     path('textura/listar/', views.textura_listar, name='list_textura'),
