@@ -11,7 +11,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
     TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, PapelImpresionCrear, PapelImpresionAjaxListView, \
     PapelImpresionActualizar, HistorialVentasAjaxListView, ContactanosListarAjaxListView, ContactanosActualizar, \
-    CategoriaCrear, CategoriaAjaxListView, CategoriaActualizar
+    CategoriaCrear, CategoriaAjaxListView, CategoriaActualizar, DetalleUsuario
 
 app_name = 'administrador'
 urlpatterns = [
@@ -133,4 +133,6 @@ urlpatterns = [
     path('contactanos/editar/<int:pk>', ContactanosActualizar.as_view(), name='edit_contactanos'),
 
     path('detalle_usuario/<int:pk>', DetalleUsuario.as_view(), name='detalle_usuario'),
+
+    path('menu/', views.menu, name='admin_menu'),
 ]

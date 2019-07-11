@@ -2085,3 +2085,8 @@ class DetalleUsuario(PermissionRequiredMixin, DetailView):
         fotografo = Fotografo.objects.get(pk=self.kwargs['pk'])
         context['usuario'] = fotografo
         return context
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def menu(request):
+    template_name = 'administrador/menu.html'
+    return render(request, template_name)
