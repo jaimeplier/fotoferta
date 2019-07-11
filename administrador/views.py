@@ -9,10 +9,10 @@ from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
     TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
-    PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm
+    PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion, Contactanos
+    PapelImpresion, Contactanos, Categoria
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1396,6 +1396,134 @@ class PromocionActualizar(PermissionRequiredMixin, UpdateView):
 @permission_required(perm='administrador', login_url='/webapp/login')
 def Promocion_cambiar_estatus(request, pk):
     promo = get_object_or_404(Promocion, pk=pk)
+    if promo.estatus:
+        promo.estatus = False
+    else:
+        promo.estatus = True
+    promo.save()
+    return JsonResponse({'result': 0})
+
+# Clase Categoria
+class CategoriaCrear(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Categoria
+    form_class = CategoriaForm
+    template_name = 'config/form_1col.html'
+    success_url = '/administrador/categoria/listar'
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoriaCrear, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Registro de categoría'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una categoria'
+        return context
+
+    def form_valid(self, form):
+        menu = form.save(commit=False)
+        menu.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_categoria')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def Categoria_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Categoría'
+    context['btn_nuevo'] = 'Agregar categoría'
+    context['url_nuevo'] = reverse('administrador:nuevo_categoria')
+    context['encabezados'] = [['Nombre', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_categoria')
+    context['url_update_estatus'] = '/administrador/categoria/cambiar_estatus/'
+
+    return render(request, template_name, context)
+
+class CategoriaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Promocion
+    columns = [
+        'nombre', 'editar', 'estatus'
+    ]
+
+    order_columns = [
+        'nombre', '', ''
+    ]
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_categoria',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
+            else:
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
+
+        elif column == 'imagen':
+                if row.imagen.url:
+                    return '<img style="width:80%" src="'+ row.imagen.url +'" />'
+
+
+        return super(CategoriaAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Categoria.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search)
+        return qs
+
+
+class CategoriaActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Categoria
+    template_name = 'config/form_1col.html'
+    form_class = CategoriaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoriaActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación de categoria'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        # form.instance.set_password(form.cleaned_data['password'])
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_Promocion')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def Categoria_cambiar_estatus(request, pk):
+    promo = get_object_or_404(Categoria, pk=pk)
     if promo.estatus:
         promo.estatus = False
     else:

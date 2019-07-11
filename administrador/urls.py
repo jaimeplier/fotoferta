@@ -10,7 +10,8 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar, \
     UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
     TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, PapelImpresionCrear, PapelImpresionAjaxListView, \
-    PapelImpresionActualizar, HistorialVentasAjaxListView, ContactanosListarAjaxListView, ContactanosActualizar
+    PapelImpresionActualizar, HistorialVentasAjaxListView, ContactanosListarAjaxListView, ContactanosActualizar, \
+    CategoriaCrear, CategoriaAjaxListView, CategoriaActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -83,6 +84,13 @@ urlpatterns = [
     path('Promocion/editar/<int:pk>', PromocionActualizar.as_view(), name='edit_Promocion'),
     path('Promocion/cambiar_estatus/<int:pk>', views.Promocion_cambiar_estatus,
          name='Promocion_cambiar_estatus'),
+ 
+    path('categoria/nuevo/', CategoriaCrear.as_view(), name='nuevo_categoria'),
+    path('categoria/listar/', views.Categoria_listar, name='list_categoria'),
+    path('categoria/', CategoriaAjaxListView.as_view(), name='tab_list_categoria'),
+    path('categoria/editar/<int:pk>', CategoriaActualizar.as_view(), name='edit_categoria'),
+    path('categoria/cambiar_estatus/<int:pk>', views.Categoria_cambiar_estatus,
+         name='Categoria_cambiar_estatus'),
 
     path('personal_administrativo/nuevo/', PersonalAdministrativoCrear.as_view(), name='nuevo_personal_administrativo'),
     path('personal_administrativo/listar/', views.personal_administrativo_listar, name='list_personal_administrativo'),
