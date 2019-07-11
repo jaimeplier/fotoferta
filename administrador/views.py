@@ -1634,7 +1634,7 @@ class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         return super(HistorialVentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Orden.objects.all()
+        return Orden.objects.filter(estatus__pk__in=[1,2])
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
