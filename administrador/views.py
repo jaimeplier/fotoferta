@@ -9,10 +9,10 @@ from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
     TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
-    PromocionForm, TipoPapelForm, PapelImpresionForm
+    PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion
+    PapelImpresion, Contactanos
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1873,4 +1873,74 @@ class AprobarFotoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
                 correo__icontains=search)| qs.filter(estatus__icontains=search)
         return qs
+
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def contactanos_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Datos de contacto'
+    context['encabezados'] = [['Dirección', True],
+                              ['Correo', True],
+                              ['Teléfono', True],
+                              ['Editar', False]]
+    context['url_ajax'] = reverse('administrador:tab_list_contactanos')
+    context['url_update_estatus'] = '/administrador/contactanos/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
+
+class ContactanosListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Contactanos
+    columns = ['direccion', 'correo', 'telefono', 'editar']
+    order_columns = ['direccion', 'correo', 'telefono', '']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_contactanos',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
+
+        return super(ContactanosListarAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Contactanos.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(codigo__icontains=search) | qs.filter(id__icontains=search)
+        return qs
+
+
+class ContactanosActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = Contactanos
+    template_name = 'config/form_1col.html'
+    form_class = ContactanosForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ContactanosActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación de código de marco'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        # form.instance.set_password(form.cleaned_data['password'])
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_contactanos')
 

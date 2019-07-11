@@ -10,7 +10,7 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     MenuFotopartnerActualizar, PromocionCrear, PromocionAjaxListView, PromocionActualizar, \
     UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
     TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, PapelImpresionCrear, PapelImpresionAjaxListView, \
-    PapelImpresionActualizar, HistorialVentasAjaxListView
+    PapelImpresionActualizar, HistorialVentasAjaxListView, ContactanosListarAjaxListView, ContactanosActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -119,4 +119,8 @@ urlpatterns = [
     path('tipo_papel/', TipoPapelAjaxListView.as_view(), name='tab_list_tipo_papel'),
     path('tipo_papel/editar/<int:pk>', TipoPapelActualizar.as_view(), name='edit_tipo_papel'),
     path('tipo_papel/cambiar_estatus/<int:pk>', views.tipo_papel_cambiar_estatus, name='cambiar_estatus_tipo_papel'),
+
+    path('contactanos/listar/', views.contactanos_listar, name='list_contactanos'),
+    path('tabla_contactanos/', ContactanosListarAjaxListView.as_view(), name='tab_list_contactanos'),
+    path('contactanos/editar/<int:pk>', ContactanosActualizar.as_view(), name='edit_contactanos'),
 ]
