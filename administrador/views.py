@@ -352,11 +352,11 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(codigo__icontains=search) | \
-                qs.filter(tamanio__icontains=search) | qs.filter(alto__icontains=search) | qs.filter(ancho__icontains=search) | \
-                qs.filter(grosor_lado__icontains=search) | qs.filter(grosor_total__icontains=search) | qs.filter(grosor_final__icontains=search) | \
-                qs.filter(profundidad__icontains=search) | qs.filter(peso__icontains=search) | qs.filter(precio__icontains=search) | \
-                qs.filter(imagen_horizontal__icontains=search) | qs.filter(imagen_vertical__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(codigo__icontains=search) | qs.filter(tamanio__nombre__icontains=search) \
+                # qs.filter(tamanio__icontains=search) | qs.filter(alto__icontains=search) | qs.filter(ancho__icontains=search) | \
+                # qs.filter(grosor_lado__icontains=search) | qs.filter(grosor_total__icontains=search) | qs.filter(grosor_final__icontains=search) | \
+                # qs.filter(profundidad__icontains=search) | qs.filter(peso__icontains=search) | qs.filter(precio__icontains=search) | \
+                # qs.filter(imagen_horizontal__icontains=search) | qs.filter(imagen_vertical__icontains=search)
         return qs
 
 
