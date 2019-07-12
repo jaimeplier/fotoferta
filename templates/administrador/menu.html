@@ -20,21 +20,19 @@
             </a>
         </div>
         <div class="col">
-            <a href="">
-            <div class="card card-height">
-                <div class="card-body">
+            <div class="card " style="cursor: pointer">
+                <div class="card-body card-height" onclick="toggleUsuarios()">
                     <br><br>
-                    <h2 class="card-title text-center align-middle">Usuarios</h2>
+                    <h2 class="card-title text-center align-middle" >Usuarios</h2>
                 </div>
-            </div>
-              <div id="list_usuarios" style="display: none" >
                 <ul class="list-group list-group-flush" >
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
+              <div id="list_usuarios" style="display: none; position: absolute;  z-index: 1000; border: 1px solid rgba(0, 0, 0, 0.3);; width: 100%;" >
+                    <a href="#"><li class="text-center list-group-item">Usuarios Generales</li> </a>
+                    <a href="#"><li class="text-center list-group-item">Fotopartner</li></a>
+                    <a href="#"><li class="text-center list-group-item">Bloqueados</li></a>
               </div>
-            </a>
+                </ul>
+            </div>
         </div>
         <div class="col">
             <a href="{% url 'administrador:list_aprobar_foto' %}">
@@ -93,4 +91,18 @@
         </div>
     </div>
 </div>
+
+<script>
+
+function toggleUsuarios() {
+    let list = document.getElementById("list_usuarios").style.display;
+    if ( list == 'none') {
+        document.getElementById("list_usuarios").style.display = 'block'
+    } else {
+        document.getElementById("list_usuarios").style.display = 'none'
+    }
+}
+
+    </script>
+
 {% endblock %}
