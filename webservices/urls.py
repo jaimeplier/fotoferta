@@ -1,12 +1,12 @@
 from django.urls import path
 
-from webservices.views import CambiarEstatusMarco
+from webservices.views import ListContactanos
 
 app_name = 'webservices'
 
 
 
 urlpatterns = [
-    path('enviarCodigo/', CambiarEstatusMarco.as_view(), name='enviar_codigo'),
+    path('list_contactanos/', ListContactanos.as_view(), name='list_contactanos'),
 
 ]

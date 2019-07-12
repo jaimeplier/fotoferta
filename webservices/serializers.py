@@ -1,5 +1,9 @@
 from rest_framework import serializers
 
+from config.models import Contactanos
 
-class EstatusSerializer(serializers.Serializer):
-    pk = serializers.IntegerField()
+
+class ContactanosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contactanos
+        fields = '__all__'
