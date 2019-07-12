@@ -412,9 +412,9 @@ class ModeloMarialuisaCrear(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Registro de modelo de marco'
+            context['titulo'] = 'Registro de modelo de marialuisa'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un modelo marco'
+            context['instrucciones'] = 'Completa todos los campos para registrar un modelo de marialuisa'
         return context
 
     def form_valid(self, form):
@@ -429,8 +429,8 @@ class ModeloMarialuisaCrear(PermissionRequiredMixin, CreateView):
 def modelomarialuisa_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
-    context['titulo'] = 'Marialuisa'
-    context['btn_nuevo'] = 'Agregar marialuisa'
+    context['titulo'] = 'Modelos de Marialuisa'
+    context['btn_nuevo'] = 'Agregar modelo marialuisa'
     context['url_nuevo'] = reverse('administrador:nuevo_modelomarialuisa')
     context['encabezados'] = [['Id', True],
                               ['Nombre', True],
@@ -496,7 +496,7 @@ class ModeloMarialuisaActualizar(PermissionRequiredMixin, UpdateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de maria luisa'
+            context['titulo'] = 'Modificación del modelo de maria luisa'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context
@@ -534,9 +534,9 @@ class MarialuisaCrear(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Registro de marco'
+            context['titulo'] = 'Registro de Marialuisa'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un marco'
+            context['instrucciones'] = 'Completa todos los campos para registrar una marialuisa'
         return context
 
     def form_valid(self, form):
@@ -628,7 +628,7 @@ class MarialuisaActualizar(PermissionRequiredMixin, UpdateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de maria luisa'
+            context['titulo'] = 'Modificación de Marialuisa'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context
@@ -666,9 +666,9 @@ class TipoPapelCrear(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Registro de grosor de papel'
+            context['titulo'] = 'Registro de tipo de papel'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un grosor de papel'
+            context['instrucciones'] = 'Completa todos los campos para registrar un tipo de papel'
         return context
 
     def form_valid(self, form):
@@ -684,7 +684,7 @@ def tipo_papel_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
     context['titulo'] = 'Tipo de papel'
-    context['btn_nuevo'] = 'Agregar tipo un de papel'
+    context['btn_nuevo'] = 'Agregar un tipo de papel'
     context['url_nuevo'] = reverse('administrador:nuevo_tipo_papel')
     context['encabezados'] = [['Nombre', True],
                               ['Editar', False],
@@ -913,7 +913,7 @@ class TexturaCrear(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Registro de tipo de textura'
+            context['titulo'] = 'Registro de textura'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar una textura'
         return context
@@ -1000,7 +1000,7 @@ class TexturaActualizar(PermissionRequiredMixin, UpdateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de tipo papel'
+            context['titulo'] = 'Modificación de textura'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context
@@ -1039,7 +1039,7 @@ class LogoCrear(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Registro de tipo de logo'
+            context['titulo'] = 'Registro de logo'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar un logo'
         return context
@@ -1307,8 +1307,8 @@ class PromocionCrear(PermissionRequiredMixin, CreateView):
 def Promocion_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
-    context['titulo'] = 'Promocion'
-    context['btn_nuevo'] = 'Agregar Promocion'
+    context['titulo'] = 'Promoción'
+    context['btn_nuevo'] = 'Agregar Promoción'
     context['url_nuevo'] = reverse('administrador:nuevo_Promocion')
     context['encabezados'] = [['Código de promoción', True],
                               ['Editar', False],
@@ -1508,7 +1508,7 @@ class CategoriaActualizar(PermissionRequiredMixin, UpdateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Modificación de categoria'
+            context['titulo'] = 'Modificación de categoría'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica los campos que requieras'
         return context

@@ -79,11 +79,11 @@ urlpatterns = [
     path('MenuFotopartner/cambiar_estatus/<int:pk>', views.MenuFotopartner_cambiar_estatus,
          name='MenuFotopartner_cambiar_estatus'),
 
-    path('Promocion/nuevo/', PromocionCrear.as_view(), name='nuevo_Promocion'),
-    path('Promocion/listar/', views.Promocion_listar, name='list_Promocion'),
-    path('Promocion/', PromocionAjaxListView.as_view(), name='tab_list_Promocion'),
-    path('Promocion/editar/<int:pk>', PromocionActualizar.as_view(), name='edit_Promocion'),
-    path('Promocion/cambiar_estatus/<int:pk>', views.Promocion_cambiar_estatus,
+    path('promocion/nuevo/', PromocionCrear.as_view(), name='nuevo_Promocion'),
+    path('promocion/listar/', views.Promocion_listar, name='list_Promocion'),
+    path('promocion/', PromocionAjaxListView.as_view(), name='tab_list_Promocion'),
+    path('promocion/editar/<int:pk>', PromocionActualizar.as_view(), name='edit_Promocion'),
+    path('promocion/cambiar_estatus/<int:pk>', views.Promocion_cambiar_estatus,
          name='Promocion_cambiar_estatus'),
  
     path('categoria/nuevo/', CategoriaCrear.as_view(), name='nuevo_categoria'),
