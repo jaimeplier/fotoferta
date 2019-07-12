@@ -1846,7 +1846,7 @@ class UsuariosGeneralesAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 def fotopartners_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
-    context['titulo'] = 'Usuarios generales'
+    context['titulo'] = 'Usuarios Fotopartners'
     context['encabezados'] = [['ID', True],
                               ['Nombre', True],
                               ['Correo', True],
@@ -1910,7 +1910,7 @@ class FotopartnersAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 def usuarios_bloqueados_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
-    context['titulo'] = 'Usuarios generales'
+    context['titulo'] = 'Usuarios bloqueados'
     context['encabezados'] = [['ID', True],
                               ['Nombre', True],
                               ['Correo', True],
