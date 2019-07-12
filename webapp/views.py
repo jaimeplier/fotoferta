@@ -24,7 +24,7 @@ def login(request):
                 auth_login(request, user)
                 if request.POST.get('next') is not None:
                     return redirect(request.POST.get('next'))
-                elif user.rol.pk == 2: # Administrador Fotofertas
+                elif user.rol.pk in [2,5]: # Administrador Fotofertas
                     return redirect(reverse('administrador:admin_menu'))
                 elif user.rol.pk in [3,4]: # Cliente o Fotopartner
                     return redirect(reverse('webapp:sitio_en_construccion'))
