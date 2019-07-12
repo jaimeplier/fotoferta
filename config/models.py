@@ -291,6 +291,7 @@ class Fotografia(models.Model):
     categorias = models.ManyToManyField('Categoria', related_name='fotografias_cat')
     orientacion = models.ForeignKey("Orientacion", models.DO_NOTHING)
     tamanio = models.ForeignKey("Tamanio", models.DO_NOTHING)
+    precio = models.FloatField()
 
     publica = models.BooleanField(default=True) # Si la foto se mostrara en la red social
     aprobada = models.BooleanField(default=False) # Si fue aprobada por un administrador
@@ -423,6 +424,19 @@ class PapelImpresion(models.Model):
     class Meta:
         managed = True
         db_table = 'papel_impresion'
+
+
+    def __str__(self):
+        return self.tipo_papel.nombre + ' ' + self.tamanio.nombre
+
+class FotoPrecio(models.Model):
+    tamanio = models.ForeignKey('Tamanio', models.DO_NOTHING)
+    precio = models.FloatField()
+    estatus = models.BooleanField(default=True)
+
+    class Meta:
+        managed = True
+        db_table = 'foto_precio'
 
 
     def __str__(self):
