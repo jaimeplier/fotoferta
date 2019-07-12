@@ -320,7 +320,6 @@ class Reaccion(Catalogo):
 
 
 class TipoFoto(Catalogo):
-    precio = models.FloatField()
 
     class Meta:
         managed = True
@@ -431,6 +430,7 @@ class PapelImpresion(models.Model):
 
 class FotoPrecio(models.Model):
     tamanio = models.ForeignKey('Tamanio', models.DO_NOTHING)
+    tipo_foto = models.ForeignKey("TipoFoto", models.DO_NOTHING)  # Default tipo normal
     precio = models.FloatField()
     estatus = models.BooleanField(default=True)
 
