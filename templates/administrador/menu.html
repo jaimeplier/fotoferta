@@ -27,9 +27,9 @@
                 </div>
                 <ul class="list-group list-group-flush" >
               <div id="list_usuarios" style="display: none; position: absolute;  z-index: 1000; border: 1px solid rgba(0, 0, 0, 0.3);; width: 100%;" >
-                    <a href="#"><li class="text-center list-group-item">Usuarios Generales</li> </a>
-                    <a href="#"><li class="text-center list-group-item">Fotopartner</li></a>
-                    <a href="#"><li class="text-center list-group-item">Bloqueados</li></a>
+                    <a href="{% url 'administrador:list_usuarios_generales' %}"><li class="text-center list-group-item">Usuarios Generales</li> </a>
+                    <a href="{% url 'administrador:list_fotopartners' %}"><li class="text-center list-group-item">Fotopartner</li></a>
+                    <a href="{% url 'administrador:list_usuarios_bloqueados' %}"><li class="text-center list-group-item">Bloqueados</li></a>
               </div>
                 </ul>
             </div>
