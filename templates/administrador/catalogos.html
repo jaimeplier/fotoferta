@@ -215,6 +215,26 @@
                     </div>
                 </div>
             </div>
+            <div class="col-4">
+                <div class="card card-height">
+                    <div class="card-body">
+                        <h4 class="card-title text-center align-middle">Precio de fotografías</h4>
+                        <div class="row">
+                            <div class="col" style="padding-left: 29px;">
+                                <a href="{% url 'administrador:list_foto_precio' %}">
+                                    <button type="button" class="btn btn-min btn-sm btn-outline-secondary">Ver</button>
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="{% url 'administrador:nuevo_foto_precio' %}">
+                                    <button type="button" class="btn btn-min btn-sm btn-outline-secondary">+ Agregar
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

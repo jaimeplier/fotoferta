@@ -11,7 +11,8 @@ from administrador.views import CodigoMarcoCrear, CodigoMarcoListarAjaxListView,
     UsuariosGeneralesAjaxListView, FotopartnersAjaxListView, UsuariosBloqueadosAjaxListView, AprobarFotoAjaxListView, \
     TipoPapelCrear, TipoPapelAjaxListView, TipoPapelActualizar, PapelImpresionCrear, PapelImpresionAjaxListView, \
     PapelImpresionActualizar, HistorialVentasAjaxListView, ContactanosListarAjaxListView, ContactanosActualizar, \
-    CategoriaCrear, CategoriaAjaxListView, CategoriaActualizar, DetalleUsuario
+    CategoriaCrear, CategoriaAjaxListView, CategoriaActualizar, DetalleUsuario, FotoPrecioCrear, FotoPrecioAjaxListView, \
+    FotoPrecioActualizar
 
 app_name = 'administrador'
 urlpatterns = [
@@ -137,4 +138,10 @@ urlpatterns = [
     path('menu/', views.menu, name='admin_menu'),
 
     path('catalogo/', views.vista_catalogos, name='admin_catalogo'),
+
+    path('foto_precio/nuevo/', FotoPrecioCrear.as_view(), name='nuevo_foto_precio'),
+    path('foto_precio/listar/', views.foto_precio_listar, name='list_foto_precio'),
+    path('foto_precio/', FotoPrecioAjaxListView.as_view(), name='tab_list_foto_precio'),
+    path('foto_precio/editar/<int:pk>', FotoPrecioActualizar.as_view(), name='edit_foto_precio'),
+    path('foto_precio/cambiar_estatus/<int:pk>', views.foto_precio_cambiar_estatus, name='foto_precio_cambiar_estatus'),
 ]

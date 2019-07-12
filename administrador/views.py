@@ -9,10 +9,10 @@ from pytz import timezone
 
 from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, TamanioForm, ModeloMarialuisaForm, \
     TexturaForm, LogoForm, PersonalAdministrativoForm, MenuFotopartnerForm, \
-    PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm
+    PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm, FotoPrecioForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion, Contactanos, Categoria
+    PapelImpresion, Contactanos, Categoria, FotoPrecio
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -2095,3 +2095,133 @@ def menu(request):
 def vista_catalogos(request):
     template_name = 'administrador/catalogos.html'
     return render(request, template_name)
+
+class FotoPrecioCrear(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = FotoPrecio
+    form_class = FotoPrecioForm
+    template_name = 'config/form_1col.html'
+    success_url = '/administrador/foto_precio/listar'
+
+    def get_context_data(self, **kwargs):
+        context = super(FotoPrecioCrear, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Registro de precios de fotos'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un costo de foto por tamaño'
+        return context
+
+    def form_valid(self, form):
+        tipoPapel = form.save(commit=False)
+        tipoPapel.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_foto_precio')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def foto_precio_listar(request):
+    template_name = 'config/tab_base.html'
+    context = {}
+    context['titulo'] = 'Precios de fotografías'
+    context['btn_nuevo'] = 'Agregar precio'
+    context['url_nuevo'] = reverse('administrador:nuevo_foto_precio')
+    context['encabezados'] = [['Tipo de foto', True],
+                              ['Tamaño', True],
+                              ['Precio', True],
+                              ['Editar', False],
+                              ['Estatus', True]]
+    context['url_ajax'] = reverse('administrador:tab_list_foto_precio')
+    context['url_update_estatus'] = '/administrador/foto_precio/cambiar_estatus/'
+
+
+    return render(request, template_name, context)
+
+class FotoPrecioAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = FotoPrecio
+    columns = [
+        'tipo_foto.nombre', 'tamanio.nombre', 'precio',  'editar', 'estatus'
+    ]
+
+    order_columns = [
+        'tipo_foto.nombre', 'tamanio.nombre', 'precio',  '', 'estatus'
+    ]
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_foto_precio',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
+            else:
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
+
+        elif column == 'precio':
+            return "${0:,.2f}".format(row.precio)
+
+
+        return super(FotoPrecioAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return FotoPrecio.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(tipo_papel__nombre__icontains=search) | qs.filter(precio__icontains=search)| qs.filter(
+                tamanio__nombre__icontains=search)
+        return qs
+
+class FotoPrecioActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'administrador'
+    model = FotoPrecio
+    template_name = 'config/form_1col.html'
+    form_class = FotoPrecioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(FotoPrecioActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación del precio de fotografías'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        # form.instance.set_password(form.cleaned_data['password'])
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('administrador:list_foto_precio')
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def foto_precio_cambiar_estatus(request, pk):
+    foto_precio = get_object_or_404(FotoPrecio, pk=pk)
+    if foto_precio.estatus:
+        foto_precio.estatus = False
+    else:
+        foto_precio.estatus = True
+    foto_precio.save()
+    return JsonResponse({'result': 0})
