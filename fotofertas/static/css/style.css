@@ -683,7 +683,7 @@ footer {
     color: #ffffff;
     padding: 2rem 1rem;
     text-align: left;
-
+    z-index: 1002;
 }
 
 footer hr {
@@ -1105,6 +1105,7 @@ footer .footerMenu {
     -moz-border-radius-bottomleft: 10px;
     border-bottom-left-radius: 10px;
     margin-bottom: 1rem;
+    width: 100%;
 }
 
 .generalBtn:hover {
@@ -1273,8 +1274,16 @@ thead {
 
 /*Tables*/
 /*Forms Containers*/
+form {
+    margin-bottom: 2rem;
+}
+
 .formsContainer {
     margin-top: 1rem;
+}
+
+.formsContainer:last-child {
+    margin-bottom: 2rem;
 }
 
 .formsContainer input {
