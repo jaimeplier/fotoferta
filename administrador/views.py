@@ -2090,3 +2090,8 @@ class DetalleUsuario(PermissionRequiredMixin, DetailView):
 def menu(request):
     template_name = 'administrador/menu.html'
     return render(request, template_name)
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def vista_catalogos(request):
+    template_name = 'administrador/catalogos.html'
+    return render(request, template_name)

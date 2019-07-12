@@ -135,4 +135,6 @@ urlpatterns = [
     path('detalle_usuario/<int:pk>', DetalleUsuario.as_view(), name='detalle_usuario'),
 
     path('menu/', views.menu, name='admin_menu'),
+
+    path('catalogo/', views.vista_catalogos, name='admin_catalogo'),
 ]
