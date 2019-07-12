@@ -12,8 +12,8 @@ def login(request):
     if request.user.is_authenticated:
         if request.user.rol.pk == 2:  # Administrador Fotofertas
             return redirect(reverse('administrador:list_marco'))
-        # elif user.rol.pk in [3,4]: # Cliente o Fotopartner
-        #     return redirect(reverse('webapp:'))
+        elif request.user.rol.pk in [3,4]: # Cliente o Fotopartner
+            return redirect(reverse('webapp:sitio_en_construccion'))
         logout(request)
     if request.method == 'POST':
         correo = request.POST['correo']
@@ -25,7 +25,7 @@ def login(request):
                 if request.POST.get('next') is not None:
                     return redirect(request.POST.get('next'))
                 elif user.rol.pk == 2: # Administrador Fotofertas
-                    return redirect(reverse('administrador:list_marco'))
+                    return redirect(reverse('administrador:admin_menu'))
                 elif user.rol.pk in [3,4]: # Cliente o Fotopartner
                     return redirect(reverse('webapp:sitio_en_construccion'))
                 logout(request)
