@@ -16,11 +16,3 @@ class ListContactanos(ListAPIView):
     def get_queryset(self):
         queryset = Contactanos.objects.all()
         return queryset
-
-class ListCategorias(ListAPIView):
-
-    serializer_class = CategoriasSerializer
-
-    def get_queryset(self):
-        queryset = Categoria.objects.filter(estatus=True)
-        return queryset
