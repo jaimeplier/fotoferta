@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Contactanos
-from webservices.serializers import ContactanosSerializer
+from config.models import Contactanos, Categoria
+from webservices.serializers import ContactanosSerializer, CategoriasSerializer
 
 
 class ListContactanos(ListAPIView):
@@ -15,4 +15,12 @@ class ListContactanos(ListAPIView):
 
     def get_queryset(self):
         queryset = Contactanos.objects.all()
+        return queryset
+
+class ListCategorias(ListAPIView):
+
+    serializer_class = CategoriasSerializer
+
+    def get_queryset(self):
+        queryset = Categoria.objects.filter(estatus=True)
         return queryset
