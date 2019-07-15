@@ -13,7 +13,7 @@ def login(request):
         if request.user.rol.pk == 2:  # Administrador Fotofertas
             return redirect(reverse('administrador:list_marco'))
         elif request.user.rol.pk in [3,4]: # Cliente o Fotopartner
-            return redirect(reverse('webapp:sitio_en_construccion'))
+            return redirect(reverse('webapp:home'))
         logout(request)
     if request.method == 'POST':
         correo = request.POST['correo']
@@ -27,9 +27,9 @@ def login(request):
                 elif user.rol.pk in [2,5]: # Administrador Fotofertas
                     return redirect(reverse('administrador:admin_menu'))
                 elif user.rol.pk in [3,4]: # Cliente o Fotopartner
-                    return redirect(reverse('webapp:sitio_en_construccion'))
+                    return redirect(reverse('webapp:home'))
                 logout(request)
-                return redirect(reverse('webapp:login_unauthorized'))
+                return redirect(reverse('webapp:sitio_en_construccion'))
             else:
                 error_message = "Usuario inactivo"
         else:
@@ -44,6 +44,10 @@ def login(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('webapp:login'))
+
+def index(request):
+    template_name = 'fotopartner/index.html'
+    return render(request, template_name)
 
 def sitio_construccion(request):
     return render(request, 'config/sitio_en_construccion.html')
