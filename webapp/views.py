@@ -103,3 +103,20 @@ class ClienteRegistro(CreateView):
                                        'error_message': 'Ocurrió un error en el registro, intenta mas tarde o con otro correo'})
         else:
             return self.render_to_response(self.get_context_data(form=form))
+
+
+def vista_perfil(request):
+    template_name = 'cliente/perfil.html'
+    return render(request, template_name)
+
+def vista_carrito(request):
+    template_name = 'cliente/carrito.html'
+    return render(request, template_name)
+
+def vista_foto(request):
+    template_name = 'cliente/carrito.html'
+    return render(request, template_name)
+
+def vista_editar_perfil(request):
+    template_name = 'cliente/editar_perfil.html'
+    return render(request, template_name)

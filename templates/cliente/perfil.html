@@ -1,0 +1,711 @@
+{% extends 'config/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+<section class="row promosCarousel">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="row">
+            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+                <img class="card-img-top" src="https://via.placeholder.com/728x250.png?" alt="Card image top">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="row userProfile">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="row">
+            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-11 col-11 centerDiv">
+                <div class="row profileDataContainer">
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 profilePicture">
+                        <div class="profilePictureContainer">
+                            <img src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 profileData">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 profileName">
+                                <h2>Nombre Apellido Apellido <a href="userProfileEdit.html"><i class="fas fa-cog"></i></a></h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 profileFollowers">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p>325 <br>fotos</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p>425<br>seguidores</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p>325<br>siguiendo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row profileToggles">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                        <h3><a href="javascript:;" onclick="userProfileToggle('userGallery', 'favoritesGallery', 'sell', 'buy', 'following', 'historyToggle')">Tus fotografias <i class="fas fa-images"></i></a></h3>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                        <h3><a href="javascript:;" onclick="userProfileToggle('favoritesGallery', 'userGallery', 'sell', 'buy', 'following', 'historyToggle')">Favoritos <i class="fas fa-heart"></i></a></h3>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                        <h3><a href="javascript:;" class="submenuProfile" onclick="toggle_visibility('historyToggle')">Historial <i class="fas fa-clock"></i></a>
+                            <ul id="historyToggle" class="historyMenu">
+                                <li><a href="javascript:;" onclick="userProfileToggle('sell', 'userGallery', 'favoritesGallery', 'buy', 'following', 'historyToggle')">Fotografias vendidas</a></li>
+                                <li><a href="javascript:;" onclick="userProfileToggle('buy', 'userGallery', 'favoritesGallery', 'sell', 'following', 'historyToggle')">Fotografias compradas</a></li>
+                            </ul>
+                        </h3>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                        <h3><a href="javascript:;" onclick="userProfileToggle('following', 'userGallery', 'favoritesGallery', 'sell', 'buy', 'historyToggle')">Siguiendo <i class="fas fa-users"></i></a></h3>
+                    </div>
+                </div>
+                <div id="userGallery" class="row masonryGallery">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h1>Tus fotografias</h1>
+                            </div>
+                        </div>
+                        <div class="row uploadButton">
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 centerDiv">
+                                <a id="photoUploadToggle" href="#" class="btn generalBtn" data-toggle="modal" data-target="#modalPhotoUpload"><i class="fas fa-arrow-up"></i> Subir fotografìa</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
+                                <div class="card-columns">
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://via.placeholder.com/300/09f.png/fff" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://via.placeholder.com/728x90.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://via.placeholder.com/680x950.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://via.placeholder.com/420x350.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://via.placeholder.com/550x780.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="favoritesGallery" class="row masonryGallery">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h1>Fotografias favoritas</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv favoritesGalleryContainer">
+                                <div class="card-columns">
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href="" class="favourite"><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href="" class="favourite"><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://via.placeholder.com/300/09f.png/fff" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://via.placeholder.com/728x90.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://via.placeholder.com/680x950.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://via.placeholder.com/420x350.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://via.placeholder.com/550x780.png?" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                                    </div>
+                                    <div class="card">
+                                        <div class="userProfileGalleryIcons">
+                                            <a href=""><i class="far fa-heart"></i></a>
+                                            <a href=""><i class="fas fa-cart-plus"></i></a>
+                                        </div>
+                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sell" class="row sellphotos">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h1>Fotografias vendidas</h1>
+                            </div>
+                        </div>
+                        <div class="row tableContainer">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
+                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                            <td>@fat</td>
+                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
+                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Larry</td>
+                                            <td>the Bird</td>
+                                            <td>@twitter</td>
+                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
+                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="buy" class="row buyphotos">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h1>Fotografias compradas</h1>
+                            </div>
+                        </div>
+                        <div class="row tableContainer">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
+                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Jacob</td>
+                                            <td>Thornton</td>
+                                            <td>@fat</td>
+                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
+                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Larry</td>
+                                            <td>the Bird</td>
+                                            <td>@twitter</td>
+                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
+                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="following" class="row followingContainer">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <h1>Siguiendo</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-11 profileWidgetContainer centerDiv">
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-6 col-12">
+                                                <div class="profileWidgetImage">
+                                                    <img src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h4>Nombre Apellido Apellido</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#" class="btn generalBtn specialBtn"><i class="fas fa-plus"></i> Seguir</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-11 profileWidgetContainer centerDiv">
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-6 col-12">
+                                                <div class="profileWidgetImage">
+                                                    <img src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h4>Nombre Apellido Apellido</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#" class="btn generalBtn specialBtn"><i class="fas fa-plus"></i> Seguir</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="modalPhotoUpload" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Subir fotografía</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row uploadStepCounter">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-11 centerDiv">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="row">
+                                                <div id="paso1" class="col-11 centerDiv stepCounter active"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="row">
+                                                <div id="paso2" class="col-11 centerDiv stepCounter"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="row">
+                                                <div id="paso3" class="col-11 centerDiv stepCounter"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                            <img id="foto_subir" class="uploadedImage">
+                        </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 uploadMenu">
+                            <div id="form1">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="file" id="input_foto" placeholder="Foto" > 
+                                        <!-- onchange="cargarfoto(event)" -->
+                                        <h6>¿Como quieres subir tu fotografia? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
+                                    </div>
+                                </div>
+                                <form id="formTipoFoto">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="tipoFoto"
+                                                type="radio" value="1" id="tipo1" >
+                                                <label class="form-check-label" for="tipo1">Privada para Impresión</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="tipoFoto"
+                                                type="radio" value="2" id="tipo2" >
+                                                <label class="form-check-label" for="tipo2">Pública para venta</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="form2" style="display:none">
+                                <form id="formTipoVenta">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h6>¿Como quieres vender tu fotografía? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="tipoVenta"
+                                                type="radio" value="1" id="venta1">
+                                                <label class="form-check-label" for="venta1">Fotografía gratuita</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="tipoVenta"
+                                                type="radio" value="2" id="venta2"
+                                                >
+                                                <label class="form-check-label" for="venta2">Venta general</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="tipoVenta"
+                                                type="radio" value="3" id="venta3">
+                                                <label class="form-check-label" for="venta3">Venta exclusiva</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="form3" style="display:none">
+                                <form class="row">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <select class="custom-select" id="categorias">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nombre de la fotogafia">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Etiquetas">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <textarea class="form-control" id="textarea" rows="3" placeholder="Historia o descripción de la fotografía"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row finishedUpload" id="subidaExitosa" style="display:none">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h5>¡Tu fotografía ha sido cargada con éxito!</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <div class="col-12 centerDiv">
+                                                                <a href="#"><i class="fas fa-arrow-up"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <div class="col-12 centerDiv">
+                                                                <a href="#"><i class="fas fa-arrow-left"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="row modalTerms">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">Acepto los terminos y condiciones</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div onclick="cancelarFoto()">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" 
+                        >Cancelar</button>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="etapasFoto()">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+    var foto = null;
+
+    $('document').ready(function(){
+        $("#input_foto").change(function() {
+        readURL(this);
+        });
+
+        $.ajax({
+			url: "/ws/list_categorias/",
+			type: "GET",
+			cache: false,
+			success: function (json) {
+                    $('#categorias').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Categoría")
+                    );
+
+				for (i in json) {
+                    $('#categorias').append(
+                        $("<option></option>")
+                            .attr("value", json[i].pk)
+                            .text(json[i].nombre)
+                    );
+                }
+			}
+        })
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#foto_subir').attr('src', e.target.result);
+                foto = e.target.result;
+            }        
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function etapasFoto() {
+        // Etapa 1
+
+        var etapa1 = $("#formTipoFoto input[type='radio']:checked").val();
+        var etapa2 = $("#formTipoVenta input[type='radio']:checked").val();
+
+        if (etapa1 && !etapa2 && foto) {
+            $('#form1').hide()
+            $('#form2').show()
+
+            $( "#paso2" ).addClass( "active" );
+            $( "#paso1" ).removeClass( "active" )
+            $( "#paso3" ).removeClass( "active" )
+        } 
+
+        if (etapa2) {
+            $('#form2').hide()
+            $('#form3').show()
+
+            $( "#paso1" ).removeClass( "active" )
+            $( "#paso2" ).removeClass( "active" )
+            $( "#paso3" ).addClass( "active" );
+        } 
+    }
+
+    function cancelarFoto() {
+        var etapa1 = $("#formTipoFoto input[type='radio']:checked").val(null);
+        var etapa2 = $("#formTipoVenta input[type='radio']:checked").val(null);
+        foto = null;
+
+        $('#foto_subir').attr('src', '');
+
+        $('#form1').show()
+        $('#form2').hide()
+        $('#form3').hide()
+
+        
+        $( "#paso1" ).addClass( "active" );
+        $( "#paso2" ).removeClass( "active" )
+        $( "#paso3" ).removeClass( "active" )
+    }
+
+    </script>
+{% endblock %}

@@ -144,4 +144,5 @@ urlpatterns = [
     path('foto_precio/', FotoPrecioAjaxListView.as_view(), name='tab_list_foto_precio'),
     path('foto_precio/editar/<int:pk>', FotoPrecioActualizar.as_view(), name='edit_foto_precio'),
     path('foto_precio/cambiar_estatus/<int:pk>', views.foto_precio_cambiar_estatus, name='foto_precio_cambiar_estatus'),
+
 ]

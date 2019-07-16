@@ -11,4 +11,10 @@ urlpatterns = [
     path('home/', views.index, name='home'),
     path('sitio_en_construccion/', views.sitio_construccion, name='sitio_en_construccion'),
     path('registrar/', ClienteRegistro.as_view(), name='add_cliente'),
+
+    path('editar_perfil/', views.vista_editar_perfil, name='vista_editar_perfil'),
+    path('perfil/', views.vista_perfil, name='vista_perfil'),
+    path('carrito/', views.vista_carrito, name='vista_carrito'),
+    path('foto/', views.vista_foto, name='vista_foto'),
+
 ]

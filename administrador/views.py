@@ -2225,3 +2225,9 @@ def foto_precio_cambiar_estatus(request, pk):
         foto_precio.estatus = True
     foto_precio.save()
     return JsonResponse({'result': 0})
+
+
+# @permission_required(perm='', login_url='/webapp/login')
+def vista_perfil(request):
+    template_name = 'cliente/perfil.html'
+    return render(request, template_name)
