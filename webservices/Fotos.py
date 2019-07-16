@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo
+from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import RegistroFotografiaSerializer
 
@@ -26,6 +26,12 @@ class SubirFotografia(APIView):
         etiquetas = serializer.validated_data['etiquetas']
         foto_original = serializer.validated_data['foto']
         foto_muestra = serializer.validated_data['foto']
+
+        # list de etiquetas
+        etiquetas = etiquetas.split(',')
+        etiquetas_objts = []
+        for etiqueta in etiquetas:
+            etiquetas_objts.append(Etiqueta.objects.get(pk=etiqueta))
 
         # Revisar tipo de imagen
         tipo_foto = TipoFoto.objects.get(pk=1)

@@ -34,7 +34,7 @@ class RegistroFotografiaSerializer(serializers.Serializer):
     categoria = serializers.IntegerField(min_value=0)
     nombre = serializers.CharField(max_length=64)
     descripcion = serializers.CharField(max_length=256)
-    etiquetas = serializers.ListField(child=TagsSerializer(), required=True)
+    etiquetas = serializers.CharField(max_length=100)
 
     def validate_categoria(self, value):
         try:
