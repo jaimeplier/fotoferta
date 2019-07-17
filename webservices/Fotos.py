@@ -11,7 +11,7 @@ from webservices.serializers import RegistroFotografiaSerializer
 
 class SubirFotografia(APIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
-    authentication_classes = (SessionAuthentication)
+    authentication_classes = (SessionAuthentication,)
 
     def post(self, request):
         serializer = RegistroFotografiaSerializer(data=request.data)
