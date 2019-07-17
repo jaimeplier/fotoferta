@@ -42,3 +42,8 @@ class RegistroFotografiaSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe la categoría seleccionada')
         return value
+
+class FotografiaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fotografia
+        fields = '__all__'
