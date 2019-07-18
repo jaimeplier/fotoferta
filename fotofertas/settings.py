@@ -36,7 +36,7 @@ SECRET_KEY = 'ay(=pvyl!8l30t3!17uzqx+k38wpnxwp#!m)g-_35ngxq2$#dh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', 'ec2-34-220-71-42.us-west-2.compute.amazonaws.com']
 
 AUTH_USER_MODEL = 'config.Usuario'
 
