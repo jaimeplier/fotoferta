@@ -46,7 +46,8 @@ class RegistroFotografiaSerializer(serializers.Serializer):
 class FotografiaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fotografia
-        fields = ['nombre',
+        fields = ['pk',
+                  'nombre',
                   'usuario',
                   'foto_muestra',
                   'descripcion',
