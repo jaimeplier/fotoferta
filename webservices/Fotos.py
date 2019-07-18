@@ -1,17 +1,19 @@
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta
+from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import RegistroFotografiaSerializer
+from webservices.serializers import RegistroFotografiaSerializer, FotografiaSerializer
 
 
 class SubirFotografia(APIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
-    authentication_classes = (SessionAuthentication)
+    authentication_classes = (SessionAuthentication,)
 
     def post(self, request):
         serializer = RegistroFotografiaSerializer(data=request.data)
@@ -76,3 +78,12 @@ class SubirFotografia(APIView):
 
     def get_serializer(self):
         return RegistroFotografiaSerializer()
+
+class ListFotosHome(ListAPIView):
+
+    serializer_class = FotografiaSerializer
+    pagination_class = SmallPagesPagination
+
+    def get_queryset(self):
+        queryset = Fotografia.objects.all().order_by('?')
+        return queryset

@@ -204,3 +204,20 @@
             </div>
         </section>
 {% endblock %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/crsfajax.js' %}"></script>
+
+<script>
+    $('document').ready(function(){
+        console.log('funcion')
+        $.ajax({
+            url: "/ws/list_fotos_home/",
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log(json)
+            }
+        })
+    });
+
+</script>
