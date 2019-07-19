@@ -8,7 +8,14 @@
                 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-11 col-11 centerDiv photoProfileContent">
                     <div class="row photoUser">
                         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 col-8 photoUserProfileImage">
-                            <a href="profile.html"><img src="images/52475675_10216002426126828_3273778910877188096_n.jpg"> Ana Garcia Luna</a>
+                            <a href="profile.html">
+                                {% if foto.usuario.foto_perfil %}
+                                    <img src="{{ foto.usuario.foto_perfil.url }}">
+                                {% else %}
+                                    <img src="{% static "/images/user.png" %}">
+                                {%  endif %}
+
+                                {{ foto.usuario.nombre }}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-4">
                             <a href="#" class="btn generalBtn"><i class="fas fa-plus"></i> Seguir</a>
@@ -16,12 +23,13 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 photoSaleContainer">
-                            <img class="card-img-top" src="https://via.placeholder.com/350x350.png?" alt="Card image top">
+                            <img class="card-img-top" src="{{ foto.foto_muestra.url }}" alt="Card image top">
                         </div>
                         <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 photoDataSale">
                             <div class="row">
                                 <div class="col-12 photoSaleTitle">
-                                    <h3>Título de foto <a href="javascript:;" onclick="toggle_visibility('reportUser')"><i class="fas fa-ellipsis-h"></i></a></h3>
+                                    <h3 id="titulo_foto">{{ foto.nombre }}  <a href="javascript:;" onclick="toggle_visibility('reportUser')">
+                                        <i class="fas fa-ellipsis-h"></i></a></h3>
                                     <div id="reportUser" class="reportContainer">
                                         <div class="reportContent">
                                             <a href="#">Reportar usuario <i class="fas fa-ban"></i></a>
@@ -31,12 +39,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 photoPriceContainer">
-                                    <h4>$<span class="photoPrice">120.00</span></h4>
+                                    <h4>$<span class="photoPrice">{{ foto.precio }}</span></h4>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12 photoSaleDescription">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultricies nulla et imperdiet suscipit. Vestibulum porta, lorem eu eleifend semper.</p>
+                                    <p>{{ foto.descripcion }}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -105,4 +113,9 @@
             </div>
         </div>
     </section>
+
+{% endblock %}
+
+{% block scripts %}
+
 {% endblock %}

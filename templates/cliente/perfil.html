@@ -2,6 +2,8 @@
 {% load widget_tweaks %}
 {% load static %}
 {% block content %}
+
+
 <section class="row promosCarousel">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="row">
@@ -547,9 +549,9 @@
                                 <form class="row">
                                     <div class="col-12">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <select class="custom-select" id="categorias">
-                                                </select>
+                                            <div class="col-12" style="padding-bottom: 15px;">
+                                              <select id="categorias" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                              </select>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -561,9 +563,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="form-group">
-                                                    <input type="email" class="form-control" id="etiquetas_foto" placeholder="Etiquetas">
-                                                </div>
+                                                <div class="col-12" style="padding-bottom: 15px;">
+                                                    <select id="etiquetas_foto" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                                    </select>
+                                            </div>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -637,6 +640,8 @@
     var foto = null;
 
     $('document').ready(function(){
+        $('.js-example-basic-multiple').select2();
+
         $("#input_foto").change(function() {
         readURL(this);
         });
@@ -646,14 +651,38 @@
 			type: "GET",
 			cache: false,
 			success: function (json) {
+			    /*
                     $('#categorias').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("Categoría")
-                    );
+                    ); */
 
 				for (i in json) {
                     $('#categorias').append(
+                        $("<option></option>")
+                            .attr("value", json[i].pk)
+                            .text(json[i].nombre)
+                    );
+                }
+			}
+        })
+
+
+        $.ajax({
+			url: "/ws/list_etiquetas/",
+			type: "GET",
+			cache: false,
+			success: function (json) {
+			    /*
+                    $('#categorias').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Categoría")
+                    ); */
+
+				for (i in json) {
+                    $('#etiquetas_foto').append(
                         $("<option></option>")
                             .attr("value", json[i].pk)
                             .text(json[i].nombre)
@@ -687,21 +716,21 @@
 
     function etapasFoto() {
         // Etapa 1
-
         var data_foto = new FormData();
         var radio1 = $("#formTipoFoto input[type='radio']:checked").val();
         var radio2 = $("#formTipoVenta input[type='radio']:checked").val();
 
-        var categoria = $('#categorias').val();
+        var categoria = arrayToString($('#categorias').val());
         var nombre_foto = $('#nombre_foto').val();
         // Cambiar etiquetas por arr
-        // var etiquetas_foto = $('#etiquetas_foto').val();
+        var etiquetas_foto = $('#etiquetas_foto').val();
 
-        var etiquetas = "1,2,3";
+        var etiquetas = arrayToString($('#etiquetas_foto').val());
         var descripcion_foto = $('#descripcion_foto').val();
         var terminos= $("#terminos_condiciones").prop('checked');
 
-console.log('radio y foto', radio1, foto);
+        console.log('cat y etiqueta', categoria, etiquetas_foto);
+
         if (radio1 && foto) {
             $('#form1').hide()
             $('#form3').hide()
@@ -798,6 +827,15 @@ console.log('radio y foto', radio1, foto);
         $( "#paso2" ).removeClass( "active" )
         $( "#paso3" ).removeClass( "active" )
     }
+
+    function arrayToString(arr) {
+        var formattedString = arr.toString()
+            .replace("[", "")  //remove the right bracket
+            .replace("]", "")  //remove the left bracket
+            .trim(); // remove empty spaces
+        return formattedString
+    }
+
 
     function subirFoto() {
 

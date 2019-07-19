@@ -31,55 +31,7 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="row">
                     <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
-                        <div class="card-columns">
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/300/09f.png/fff" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/728x90.png?" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/680x950.png?" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/420x350.png?" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://via.placeholder.com/550x780.png?" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                            </div>
-                            <div class="card">
-                                <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                            </div>
+                        <div class="card-columns" id="sec1_fotos">
                         </div>
                     </div>
                 </div>
@@ -119,7 +71,7 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="row">
                     <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
-                        <div class="card-columns">
+                        <div class="card-columns" id="sec2_fotos">
                             <div class="card">
                                 <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
                             </div>
@@ -203,21 +155,71 @@
                 </div>
             </div>
         </section>
-{% endblock %}
+
+    <h2 onclick="cargarFotos()" class="text-center"
+        style="padding: 40px 40px; cursor: pointer">+ Ver Más</h2>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="{% static 'js/crsfajax.js' %}"></script>
 
 <script>
+    var url_next_foto;
+
     $('document').ready(function(){
-        console.log('funcion')
         $.ajax({
             url: "/ws/list_fotos_home/",
             type: "GET",
             cache: false,
             success: function (json) {
                 console.log(json)
+                for (let [idx, i] of json.results.entries()) {
+                    $('#sec1_fotos').append(`
+                        <div class="card">
+                            <a href= "/webapp/foto/` + i.pk + `"><img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top"
+                            ></a>
+                        </div>
+                    `)
+                }
+                    if (json.next) {
+                        $.ajax({
+                            url: json.next,
+                            type: "GET",
+                            cache: false,
+                            success: function (json2) {
+                                for (let j of json2) {
+                                    $('#sec2_fotos').append(`
+                                    <div class="card">
+                                        <a href= "/webapp/foto/` + j.pk + `><img class="card-img-top" src="` + j.foto_muestra + `" alt="Card image top"
+                                        ></a>
+                                    </div>
+                                    `)
+                                }
+                                url_next_foto = json2.next
+                            }
+                        })
+                    }
+
             }
         })
     });
 
+function cargarFotos() {
+    if(url_next_foto) {
+        $.ajax({
+            url: url_next_foto,
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                for (let i of json) {
+                    $('#sec3_fotos').append(`
+                        <div class="card">
+                            <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top"
+                            id= "` + 98 + `">
+                        </div>
+                    `)
+                }
+            }
+        })
+    }
+}
 </script>
+{% endblock %}

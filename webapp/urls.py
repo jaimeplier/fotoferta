@@ -15,6 +15,6 @@ urlpatterns = [
     path('editar_perfil/', views.vista_editar_perfil, name='vista_editar_perfil'),
     path('perfil/', views.vista_perfil, name='vista_perfil'),
     path('carrito/', views.vista_carrito, name='vista_carrito'),
-    path('foto/', views.vista_foto, name='vista_foto'),
+    path('foto/<int:pk>', views.vista_foto, name='vista_foto'),
 
 ]

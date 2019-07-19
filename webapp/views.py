@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import CreateView
 
-from config.models import Fotografo, Rol
+from config.models import Fotografo, Rol, Fotografia
 from webapp.forms import RegistroForm
 
 
@@ -113,9 +113,14 @@ def vista_carrito(request):
     template_name = 'cliente/carrito.html'
     return render(request, template_name)
 
-def vista_foto(request):
-    template_name = 'cliente/carrito.html'
-    return render(request, template_name)
+def vista_foto(request, pk):
+    foto = Fotografia.objects.get(pk=pk)
+    template_name = 'cliente/foto.html'
+
+    context = {
+        'foto': foto
+    }
+    return render(request, template_name, context)
 
 def vista_editar_perfil(request):
     template_name = 'cliente/editar_perfil.html'
