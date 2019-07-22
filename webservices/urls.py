@@ -2,7 +2,7 @@ from django.urls import path
 
 from webservices.Catalogos import ListCategorias, ListEtiquetas
 from webservices.Fotos import SubirFotografia, ListFotosHome
-from webservices.carrito import AgregarCarrrito, ListCarrito
+from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito
 from webservices.views import ListContactanos
 
 app_name = 'webservices'
@@ -20,5 +20,6 @@ urlpatterns = [
     # Carrito
     path('agregar_carrito/', AgregarCarrrito.as_view(), name='agregar_carrito'),
     path('listar_carrito/', ListCarrito.as_view(), name='listar_carrito'),
+    path('eliminar_producto_carrito/', DeleteCarrito.as_view(), name='eliminar_producto_carrito'),
 
 ]

@@ -541,6 +541,7 @@ class Producto(models.Model):
     papel_impresion = models.ForeignKey('PapelImpresion', models.DO_NOTHING, null=True, blank=True)
     promocion_aplicada = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING, default=1)
+    subtotal = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = True

@@ -96,4 +96,15 @@ class ProductoSerializer(serializers.ModelSerializer):
     tipo_compra = TipoCompra()
     class Meta:
         model = Producto
-        fields = ['usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion', 'promocion_aplicada']
+        fields = ['usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
+                  'promocion_aplicada', 'subtotal']
+
+class ProductoPKSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
+
+    def validate_pk(self, value):
+        try:
+            Producto.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe el producto seleccionado')
+        return value

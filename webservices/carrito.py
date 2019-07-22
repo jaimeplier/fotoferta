@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer
+from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -53,3 +53,22 @@ class ListCarrito(ListAPIView):
     def get_queryset(self):
         queryset = Producto.objects.filter(usuario=self.request.user, orden__estatus_compra__pk=1)
         return queryset
+
+class DeleteCarrito(APIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+        serializer = ProductoPKSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # ---> OBTENER FOTOGRAFIA <---
+
+        producto = Producto.objects.filter(pk=serializer.validated_data['pk'], usuario=request.user)
+        producto.delete()
+
+        return Response({'exito': 'Producto eliminado del carrito exitosamente'}, status=status.HTTP_200_OK)
+
+
+    def get_serializer(self):
+        return ProductoPKSerializer()
