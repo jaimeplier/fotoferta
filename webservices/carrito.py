@@ -1,12 +1,13 @@
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import AddFotoCarritoSerializer
+from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -41,4 +42,14 @@ class AgregarCarrrito(APIView):
 
 
     def get_serializer(self):
-        return AddFotoCarritoSerializer ()
+        return AddFotoCarritoSerializer()
+
+class ListCarrito(ListAPIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    serializer_class = ProductoSerializer
+
+    def get_queryset(self):
+        queryset = Producto.objects.filter(usuario=self.request.user, orden__estatus_compra__pk=1)
+        return queryset

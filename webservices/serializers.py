@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra
+from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -74,3 +74,26 @@ class AddFotoCarritoSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe el tipo de compra seleccionado')
         return value
+
+class OrdenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Orden
+        fields = ['direccion', 'tarjeta', 'oxxo_order', 'num_guia', 'peso', 'costo_envio', 'forma_pago', 'comision',
+                  'promocion', 'estatus', 'estatus_compra', 'order_id', 'total']
+
+class FotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fotografia
+        fields = ['nombre', 'descripcion', 'tamanio']
+
+class TipoCompraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoCompra
+        fields = ['nombre']
+
+class ProductoSerializer(serializers.ModelSerializer):
+    foto = FotoSerializer()
+    tipo_compra = TipoCompra()
+    class Meta:
+        model = Producto
+        fields = ['usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion', 'promocion_aplicada']
