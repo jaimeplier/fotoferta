@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from config.models import Contactanos, Fotografia, Categoria, Etiqueta
+from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -56,3 +56,21 @@ class FotografiaSerializer(serializers.ModelSerializer):
                   'categorias',
                   'tamanio',
                   'precio']
+
+class AddFotoCarritoSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
+    tipo_compra = serializers.IntegerField()
+
+    def validate_pk(self, value):
+        try:
+            Fotografia.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe la foto seleccionada')
+        return value
+
+    def validate_tipo_compra(self, value):
+        try:
+            TipoCompra.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe el tipo de compra seleccionado')
+        return value
