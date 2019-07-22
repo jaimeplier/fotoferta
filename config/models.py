@@ -474,6 +474,11 @@ class EstatusPago(Catalogo):
         managed = True
         db_table = 'estatus_pago'
 
+class EstatusCompra(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'estatus_compra'
+
 class TipoCompra(Catalogo):
     class Meta:
         managed = True
@@ -506,18 +511,20 @@ class Orden(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_compra = models.DateField(null=True, blank=True)
     usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
-    direccion = models.ForeignKey('Direccion', models.DO_NOTHING)
+    direccion = models.ForeignKey('Direccion', models.DO_NOTHING, null=True, blank=True)
     tarjeta = models.ForeignKey('Tarjeta', models.DO_NOTHING, null=True, blank=True)
-    oxxo_order = models.CharField(max_length=12)
+    oxxo_order = models.CharField(max_length=12, null=True, blank=True)
     num_guia = models.CharField(max_length=12, null=True, blank=True)
     peso = models.FloatField(default=0)
-    costo_envio = models.FloatField()
-    forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING)
+    costo_envio = models.FloatField(default=96)
+    forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, null=True, blank=True)
     comision = models.ForeignKey('Comision', models.DO_NOTHING, null=True, blank=True)
     promocion = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
-    estatus = models.ForeignKey('EstatusPago', models.DO_NOTHING)
+    estatus = models.ForeignKey('EstatusPago', models.DO_NOTHING, default=1)
+    estatus_compra = models.ForeignKey('EstatusCompra', models.DO_NOTHING)
     order_id = models.CharField(max_length=512, blank=True, null=True)
     total = models.FloatField(blank=True, null=True)
+
 
     class Meta:
         managed = True
@@ -533,7 +540,7 @@ class Producto(models.Model):
     tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
     papel_impresion = models.ForeignKey('PapelImpresion', models.DO_NOTHING, null=True, blank=True)
     promocion_aplicada = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
-    estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING)
+    estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING, default=1)
 
     class Meta:
         managed = True
