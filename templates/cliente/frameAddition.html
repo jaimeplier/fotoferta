@@ -1,5 +1,3 @@
-{% load static %}
-{% load widget_tweaks %}
 <!doctype html>
 <html lang="es">
 
@@ -219,24 +217,244 @@
                 </div>
             </div>
         </header>
-        <div class="row">
+        <section class="row frameSelectionContainer">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="row">
-                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 centerDiv">
-                        <div class="row constructionTitle">
+                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-11 col-11 centerDiv">
+                        <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <h1>Estamos trabajando para ti.</h1>
+                                <h1>Compra para impresión y envío</h1>
                             </div>
                         </div>
-                        <div class="row underConstructionRow">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <img src="images/underConstLogo.svg">
+                        <div class="row frameSizeSelectionContent">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 frameImage">
+                                <img src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                            </div>
+                            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 frameSelection">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 frameSelectionTitle">
+                                        <h5>Paso 1. Selecciona un tamaño para tu imagen</h5>
+                                    </div>
+                                </div>
+                                <div class="row cc-selector frameSizesSelection">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-6">
+                                        <input id="frameXs" type="radio" name="frameSelection" value="frameXs" />
+                                        <label class="drinkcard-cc sizeSelection xs" for="frameXs"></label>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-6">
+                                        <input id="frameSm" type="radio" name="frameSelection" value="frameSm" />
+                                        <label class="drinkcard-cc sizeSelection sm" for="frameSm"></label>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-6">
+                                        <input id="frameMd" type="radio" name="frameSelection" value="frameMd" />
+                                        <label class="drinkcard-cc sizeSelection md" for="frameMd"></label>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-6">
+                                        <input id="frameLg" type="radio" name="frameSelection" value="frameLg" />
+                                        <label class="drinkcard-cc sizeSelection lg" for="frameLg"></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 centerDiv">
+                                        <a href="#" class="btn generalBtn">Continuar</a>
+                                    </div>
+                                </div>
+                                <div class="row paperSelection">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h5>Paso 2. Selecciona el tipo de papel</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row paperSelectionContent">
+                                            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div id="paperCarousel" class="owl-carousel owl-theme">
+                                                            <div class="item">
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 paperFrame"></div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paperdetails">
+                                                                            <p>Grosor: 5mm<br>$0.00</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 paperFrame"></div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paperdetails">
+                                                                            <p>Grosor: 1mm<br>$0.00</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 paperFrame"></div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paperdetails">
+                                                                            <p>Grosor: 2mm<br>$0.00</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 centerDiv">
+                                                        <a href="#" class="btn generalBtn">Regresar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row woodenFrameContainer">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h5>Paso 3. Selecciona un marco</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row woodenFrameSelection">
+                                            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <div id="woodenFrameCarousel" class="owl-carousel owl-theme">
+                                                            <div class="item">
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="row frameImageSelector">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                            <a href="#"><img src="images/frame1.png"></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row frameImageDetails">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                            <h5>$176.00</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="row frameImageSelector">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                            <a href="#"><img src="images/frame2.png"></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row frameImageDetails">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                            <h5>$176.00</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                    <div class="row frameImageSelector">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                            <a href="#"><img src="images/frame3.png"></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row frameImageDetails">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                            <h5>$176.00</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 centerDiv">
+                                                        <a href="#" class="btn generalBtn">Regresar</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row marginSelectionContainer">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <h5>Paso 3. Selecciona una marialuisa</h5>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
+                                                <select class="form-control">
+                                                    <option>3cm</option>
+                                                    <option>5cm</option>
+                                                    <option>10cm</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+                                                <div class="row">
+                                                    <div class="col-lx-12 col-lg-12 col-md-12 col-sm-12 col-12 centerDiv">
+                                                        <div id="marginCarousel" class="owl-carousel owl-theme">
+                                                            <div class="item">
+                                                                <div class="row">
+                                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 noMargin">
+                                                                        <a href="#"><img src="images/dont.svg"></a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                        <h5>Sin marialuisa</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                <div class="row">
+                                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                        <a href="#"><img src="images/margin1.png"></a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                        <h5>$12.00</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="item">
+                                                                <div class="row">
+                                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                        <a href="#"><img src="images/margin2.png"></a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                                        <h5>$12.00</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         <footer id="contactFooter" class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div class="row">

@@ -58,8 +58,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12 btnSaleDigital">
-                                    <a href="#" class="btn generalBtn specialBtn"><i class="fas fa-cart-plus"></i> Agregar al carrito</a>
+                                <div class="col-12 btnSaleDigital" >
+                                    <button class="btn generalBtn specialBtn" onclick="agregarCarrito({{ foto.pk }})">
+                                        <i class="fas fa-cart-plus"></i> Agregar al carrito
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -113,9 +115,29 @@
             </div>
         </div>
     </section>
-
+    
 {% endblock %}
+{% csrf_token %}
 
 {% block scripts %}
-
+<script>
+    function agregarCarrito(id) {
+        console.log('test')
+        var data = {
+            pk: id,
+            tipo_compra: 1
+        }
+        $.ajax({
+            url: "/ws/agregar_carrito/",
+            type: "POST",
+            cache: false,
+            data: data,
+            success: function (res) {
+                console.log(res)
+                // window.location.href =  url 'administrador:list_historial_ventas' 
+            },
+            error: (err) => {console.log(err)}
+        })
+    }
+</script>
 {% endblock %}

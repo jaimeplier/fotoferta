@@ -125,3 +125,11 @@ def vista_foto(request, pk):
 def vista_editar_perfil(request):
     template_name = 'cliente/editar_perfil.html'
     return render(request, template_name)
+
+def vista_marco(request):
+    template_name = 'cliente/marco.html'
+    return render(request, template_name)
+
+def vista_exclusivas(request):
+    template_name = 'cliente/exclusivas.html'
+    return render(request, template_name)
