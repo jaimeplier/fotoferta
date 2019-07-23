@@ -96,7 +96,7 @@ class ProductoSerializer(serializers.ModelSerializer):
     tipo_compra = TipoCompra()
     class Meta:
         model = Producto
-        fields = ['usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
+        fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
                   'promocion_aplicada', 'subtotal']
 
 class ProductoPKSerializer(serializers.Serializer):
