@@ -84,7 +84,7 @@ class OrdenSerializer(serializers.ModelSerializer):
 class FotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fotografia
-        fields = ['nombre', 'descripcion', 'tamanio']
+        fields = ['nombre', 'descripcion', 'tamanio', 'foto_muestra']
 
 class TipoCompraSerializer(serializers.ModelSerializer):
     class Meta:
