@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden
+from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -108,3 +108,14 @@ class ProductoPKSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe el producto seleccionado')
         return value
+
+class DireccionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Direccion
+        fields = ['pk', 'usuario', 'nombre', 'calle', 'num_exterior', 'num_interior', 'colonia', 'referencias',
+                  'entre_calles']
+
+class TarjetaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tarjeta
+        fields = ['pk', 'usuario', 'alias', 'terminacion', 'nombre_propietario']
