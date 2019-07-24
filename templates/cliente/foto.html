@@ -116,13 +116,12 @@
         </div>
     </section>
     
-{% endblock %}
-{% csrf_token %}
+{% endblock %}}
 
 {% block scripts %}
+    <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
     function agregarCarrito(id) {
-        console.log('test')
         var data = {
             pk: id,
             tipo_compra: 1
@@ -134,7 +133,7 @@
             data: data,
             success: function (res) {
                 console.log(res)
-                // window.location.href =  url 'administrador:list_historial_ventas' 
+                window.location.href = "{% url 'webapp:vista_carrito' %}"
             },
             error: (err) => {console.log(err)}
         })

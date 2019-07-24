@@ -84,7 +84,7 @@ class OrdenSerializer(serializers.ModelSerializer):
 class FotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fotografia
-        fields = ['nombre', 'descripcion', 'tamanio']
+        fields = ['nombre', 'descripcion', 'tamanio', 'foto_muestra']
 
 class TipoCompraSerializer(serializers.ModelSerializer):
     class Meta:
@@ -96,7 +96,7 @@ class ProductoSerializer(serializers.ModelSerializer):
     tipo_compra = TipoCompra()
     class Meta:
         model = Producto
-        fields = ['usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
+        fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
                   'promocion_aplicada', 'subtotal']
 
 class ProductoPKSerializer(serializers.Serializer):
