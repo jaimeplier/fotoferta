@@ -266,16 +266,17 @@
 
 {% block scripts %}
 <script>
-        $('document').ready(function(){
-            $.ajax({
-                url: "/ws/listar_carrito/",
-                type: "GET",
-                cache: false,
-                success: function (json) {
-                    console.log(json)
-                    
-                }
-            })
-        });
-    </script>
+    $('document').ready(function() {
+        $.ajax({
+            url: "/ws/listar_carrito/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                console.log(json)
+
+            }
+        })
+    });
+
+</script>
 {% endblock %}

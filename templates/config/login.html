@@ -15,6 +15,16 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.theme.green.min.css' %}">
     <title>Fotofertas - Login</title>
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .signInMainContainer {
+            overflow: auto;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -150,33 +160,35 @@
                         <div class="col-12 loginFormContainer">
                             <form method="post">
                                 {% csrf_token %}
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     <input name="correo" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Correo electrónico">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     <input name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
                                 </div>
-                                <div class="form-group forgotPassword">
+                                <div class="form-group forgotPassword col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     <a href="#">¿Olvidaste tu contraseña?</a>
                                 </div>
                                 {% if error_message %}
-                                    <strong style="color: darkred">{{ error_message }}</strong>
+                                <strong style="color: darkred">{{ error_message }}</strong>
                                 {% endif %}
                                 {% if form.errors %}
-                                    {% for field in form %}
-                                        {% for error in field.errors %}
-                                            <div class="alert alert-danger">
-                                                <strong class="box_error">{{ field.label }}{{ error|escape }}</strong>
-                                            </div>
-                                        {% endfor %}
-                                    {% endfor %}
-                                    {% for error in form.non_field_errors %}
-                                        <div class="alert alert-danger">
-                                            <strong class="box_error">{{ error|escape }}</strong>
-                                        </div>
-                                    {% endfor %}
+                                {% for field in form %}
+                                {% for error in field.errors %}
+                                <div class="alert alert-danger">
+                                    <strong class="box_error">{{ field.label }}{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong class="box_error">{{ error|escape }}</strong>
+                                </div>
+                                {% endfor %}
                                 {% endif %}
-                                <button type="submit" class="btn col-12 centerDiv generalBtn">Iniciar Sesión</button>
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
+                                    <button type="submit" class="btn col-12 centerDiv generalBtn">Iniciar sesión</button>
+                                </div>
                             </form>
                         </div>
                     </div>

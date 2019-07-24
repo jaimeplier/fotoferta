@@ -15,6 +15,16 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css'%}">
     <link rel="stylesheet" href="{% static 'css/owl.theme.green.min.css'%}">
     <title>Fotofertas - Registro</title>
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .signInMainContainer {
+            overflow: auto;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -143,26 +153,26 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <h5>Inicia sesión</h5>
+                            <h5>Regístrate</h5>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 loginFormContainer">
                             <form method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     {% render_field form.nombre class+="form-control" aria-describedby="emailHelp" placeholder="Nombre completo" %}
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     {% render_field form.correo class+="form-control" placeholder="Correo electrónico" %}
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     <input name="password" type="password" class="form-control" id="PasswordSignIn" placeholder="Contraseña" maxlength="256" required>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     <input type="password" class="form-control" id="checkPasswordSignIn" placeholder="Confirmar contraseña" maxlength="256" required>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="signInCheckCheck" required>
                                         <label class="form-check-label" for="signInCheckCheck">
@@ -171,9 +181,11 @@
                                     </div>
                                 </div>
                                 {% if error_message %}
-                                    <strong style="color: darkred">{{ error_message }}</strong>
+                                <strong style="color: darkred">{{ error_message }}</strong>
                                 {% endif %}
-                                <button type="submit" class="btn col-12 centerDiv generalBtn">Regístrate</button>
+                                <div class="form-group col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
+                                    <button type="submit" class="btn col-12 centerDiv generalBtn">Regístrate</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -221,8 +233,8 @@
     <script src="{% static 'js/owl.carousel.min.js'%}"></script>
     <script src="{% static 'js/functions.js'%}"></script>
     <script type="text/javascript">
-        var password = document.getElementById("PasswordSignIn")
-            , confirm_password = document.getElementById("checkPasswordSignIn");
+        var password = document.getElementById("PasswordSignIn"),
+            confirm_password = document.getElementById("checkPasswordSignIn");
 
         function validatePassword() {
             if (password.value != confirm_password.value) {
@@ -234,6 +246,7 @@
 
         password.onchange = validatePassword;
         confirm_password.onkeyup = validatePassword;
+
     </script>
 </body>
 

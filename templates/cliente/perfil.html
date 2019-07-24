@@ -277,7 +277,6 @@
                                             <th scope="col">Last</th>
                                             <th scope="col">Handle</th>
                                             <th scope="col">Edit</th>
-                                            <th scope="col">Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -287,7 +286,6 @@
                                             <td>Otto</td>
                                             <td>@mdo</td>
                                             <td><a href="#"><i class="far fa-edit"></i></a></td>
-                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">2</th>
@@ -295,7 +293,6 @@
                                             <td>Thornton</td>
                                             <td>@fat</td>
                                             <td><a href="#"><i class="far fa-edit"></i></a></td>
-                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
                                         </tr>
                                         <tr>
                                             <th scope="row">3</th>
@@ -303,7 +300,6 @@
                                             <td>the Bird</td>
                                             <td>@twitter</td>
                                             <td><a href="#"><i class="far fa-edit"></i></a></td>
-                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -429,80 +425,78 @@
 </section>
 
 <div id="modalPhotoUpload" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Subir fotografía</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row uploadStepCounter">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="row">
-                                <div class="col-11 centerDiv">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <div class="row">
-                                                <div id="paso1" class="col-11 centerDiv stepCounter active"></div>
-                                            </div>
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Subir fotografía</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row uploadStepCounter">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-11 centerDiv">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div id="paso1" class="col-11 centerDiv stepCounter active"></div>
                                         </div>
-                                        <div class="col-4">
-                                            <div class="row">
-                                                <div id="paso2" class="col-11 centerDiv stepCounter"></div>
-                                            </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div id="paso2" class="col-11 centerDiv stepCounter"></div>
                                         </div>
-                                        <div class="col-4">
-                                            <div class="row">
-                                                <div id="paso3" class="col-11 centerDiv stepCounter"></div>
-                                            </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div id="paso3" class="col-11 centerDiv stepCounter"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                            <img id="foto_subir" class="uploadedImage">
-                        </div>
-                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 uploadMenu">
-                            <div id="form1">
+                </div>
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <img id="foto_subir" class="uploadedImage">
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 uploadMenu">
+                        <div id="form1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <input type="file" id="input_foto" placeholder="Foto">
+                                    <!-- onchange="cargarfoto(event)" -->
+                                    <h6>¿Como quieres subir tu fotografia? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
+                                </div>
+                            </div>
+                            <form id="formTipoFoto">
                                 <div class="row">
                                     <div class="col-12">
-                                        <input type="file" id="input_foto" placeholder="Foto" > 
-                                        <!-- onchange="cargarfoto(event)" -->
-                                        <h6>¿Como quieres subir tu fotografia? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="tipoFoto" onchange="displayVenta()" type="radio" value="1" id="tipo1">
+                                            <label class="form-check-label" for="tipo1">Privada para Impresión</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <form id="formTipoFoto">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" name="tipoFoto" onchange="displayVenta()"
-                                                type="radio" value="1" id="tipo1" >
-                                                <label class="form-check-label" for="tipo1">Privada para Impresión</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" name="tipoFoto" onchange="displayVenta()"
-                                                type="radio" value="2" id="tipo2" >
-                                                <label class="form-check-label" for="tipo2">Pública para venta</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
                                 <div class="row">
                                     <div class="col-12">
-                                        <hr>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="tipoFoto" onchange="displayVenta()" type="radio" value="2" id="tipo2">
+                                            <label class="form-check-label" for="tipo2">Pública para venta</label>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="tipoVenta" style="display: none">
-                                <form id="formTipoVenta" >
+                            </form>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                            </div>
+                            <div id="tipoVenta" style="display: none">
+                                <form id="formTipoVenta">
                                     <div class="row">
                                         <div class="col-12">
                                             <h6>¿Como quieres vender tu fotografía? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
@@ -511,8 +505,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" name="tipoVenta" 
-                                                type="radio" value="1" id="venta1">
+                                                <input class="form-check-input" name="tipoVenta" type="radio" value="1" id="venta1">
                                                 <label class="form-check-label" for="venta1">Fotografía gratuita</label>
                                             </div>
                                         </div>
@@ -520,9 +513,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" name="tipoVenta"
-                                                type="radio" value="2" id="venta2"
-                                                >
+                                                <input class="form-check-input" name="tipoVenta" type="radio" value="2" id="venta2">
                                                 <label class="form-check-label" for="venta2">Venta general</label>
                                             </div>
                                         </div>
@@ -530,8 +521,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" name="tipoVenta"
-                                                type="radio" value="3" id="venta3">
+                                                <input class="form-check-input" name="tipoVenta" type="radio" value="3" id="venta3">
                                                 <label class="form-check-label" for="venta3">Venta exclusiva</label>
                                             </div>
                                         </div>
@@ -543,73 +533,72 @@
                                     </div>
                                 </div>
                             </div>
-                            </div>
+                        </div>
 
-                            <div id="form2" style="display:none">
-                                <form class="row">
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-12" style="padding-bottom: 15px;">
-                                              <select id="categorias" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
-                                              </select>
-                                            </div>
+                        <div id="form2" style="display:none">
+                            <form class="row">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12" style="padding-bottom: 15px;">
+                                            <select id="categorias" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                            </select>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <input type="email" class="form-control" id="nombre_foto" placeholder="Nombre de la fotogafia">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="col-12" style="padding-bottom: 15px;">
-                                                    <select id="etiquetas_foto" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
-                                                    </select>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <textarea class="form-control" id="descripcion_foto" rows="3" placeholder="Historia o descripción de la fotografía"></textarea>
-                                            </div>
-                                        </div>
-
                                     </div>
-                                </form>
-                                 <div class="row modalTerms">
-                                    <div class="col-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="terminos_condiciones">
-                                            <label class="form-check-label" for="terminos_condiciones">Acepto los terminos y condiciones</label>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="email" class="form-control" id="nombre_foto" placeholder="Nombre de la fotogafia">
+                                            </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="col-12" style="padding-bottom: 15px;">
+                                                <select id="etiquetas_foto" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <textarea class="form-control" id="descripcion_foto" rows="3" placeholder="Historia o descripción de la fotografía"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                            <div class="row modalTerms">
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="terminos_condiciones">
+                                        <label class="form-check-label" for="terminos_condiciones">Acepto los terminos y condiciones</label>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div id="form3" style="display:none">
-                                <div class="row finishedUpload" id="subidaExitosa" >
-                                    <div class="col-12">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <h5>¡Tu fotografía ha sido cargada con éxito!</h5>
-                                            </div>
+                        <div id="form3" style="display:none">
+                            <div class="row finishedUpload" id="subidaExitosa">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h5>¡Tu fotografía ha sido cargada con éxito!</h5>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-12 centerDiv" onclick="cancelarFoto()">
-                                                        <a href="#"><i class="fas fa-arrow-up"></i></a>
-                                                        <p>Subir otra fotografía</p>
-                                                    </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-12 centerDiv" onclick="cancelarFoto()">
+                                                    <a href="#"><i class="fas fa-arrow-up"></i></a>
+                                                    <p>Subir otra fotografía</p>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="row">
-                                                    <div class="col-12 centerDiv" data-dismiss="modal" onclick="cancelarFoto()">
-                                                        <a href="#"><i class="fas fa-arrow-left"></i></a>
-                                                        <p>Regresar a mi perfil</p>
-                                                    </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row">
+                                                <div class="col-12 centerDiv" data-dismiss="modal" onclick="cancelarFoto()">
+                                                    <a href="#"><i class="fas fa-arrow-left"></i></a>
+                                                    <p>Regresar a mi perfil</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -619,76 +608,75 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <div onclick="cancelarFoto()">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" 
-                        >Cancelar</button>
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="etapasFoto()">Siguiente</button>
+            </div>
+            <div class="modal-footer">
+                <div onclick="cancelarFoto()">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
+                <button type="button" class="btn btn-primary" onclick="etapasFoto()">Siguiente</button>
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script src="{% static 'js/crsfajax.js' %}"></script>
-    <script>
-
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/crsfajax.js' %}"></script>
+<script>
     var foto_form = {
-        tipo_venta_foto : null,
+        tipo_venta_foto: null,
     }
 
     var foto = null;
 
-    $('document').ready(function(){
+    $('document').ready(function() {
         $('.js-example-basic-multiple').select2();
 
         $("#input_foto").change(function() {
-        readURL(this);
+            readURL(this);
         });
 
         $.ajax({
-			url: "/ws/list_categorias/",
-			type: "GET",
-			cache: false,
-			success: function (json) {
-			    /*
+            url: "/ws/list_categorias/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                /*
                     $('#categorias').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("Categoría")
                     ); */
 
-				for (i in json) {
+                for (i in json) {
                     $('#categorias').append(
                         $("<option></option>")
-                            .attr("value", json[i].pk)
-                            .text(json[i].nombre)
+                        .attr("value", json[i].pk)
+                        .text(json[i].nombre)
                     );
                 }
-			}
+            }
         })
 
 
         $.ajax({
-			url: "/ws/list_etiquetas/",
-			type: "GET",
-			cache: false,
-			success: function (json) {
-			    /*
+            url: "/ws/list_etiquetas/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                /*
                     $('#categorias').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("Categoría")
                     ); */
 
-				for (i in json) {
+                for (i in json) {
                     $('#etiquetas_foto').append(
                         $("<option></option>")
-                            .attr("value", json[i].pk)
-                            .text(json[i].nombre)
+                        .attr("value", json[i].pk)
+                        .text(json[i].nombre)
                     );
                 }
-			}
+            }
         })
     });
 
@@ -699,7 +687,7 @@
                 console.log(e)
                 $('#foto_subir').attr('src', e.target.result);
                 foto = e.target.result;
-            }        
+            }
             reader.readAsDataURL(input.files[0]);
         }
     }
@@ -707,7 +695,7 @@
     function displayVenta() {
         var radio1 = $("#formTipoFoto input[type='radio']:checked").val();
         console.log(radio1)
-        if (radio1 == 2 ) {
+        if (radio1 == 2) {
             $('#tipoVenta').show()
         } else {
             $('#tipoVenta').hide()
@@ -727,7 +715,7 @@
 
         var etiquetas = arrayToString($('#etiquetas_foto').val());
         var descripcion_foto = $('#descripcion_foto').val();
-        var terminos= $("#terminos_condiciones").prop('checked');
+        var terminos = $("#terminos_condiciones").prop('checked');
 
         console.log('cat y etiqueta', categoria, etiquetas_foto);
 
@@ -736,14 +724,14 @@
             $('#form3').hide()
             $('#form2').show()
 
-            $( "#paso2" ).addClass( "active" );
-            $( "#paso1" ).removeClass( "active" )
-            $( "#paso3" ).removeClass( "active" )
+            $("#paso2").addClass("active");
+            $("#paso1").removeClass("active")
+            $("#paso3").removeClass("active")
             // foto_form.tipo = radio1;
             foto_form.tipo_venta_foto = radio2;
         }
 
-        if (categoria && nombre_foto && descripcion_foto && terminos && foto && radio1 ) {
+        if (categoria && nombre_foto && descripcion_foto && terminos && foto && radio1) {
             foto_form.categoria = categoria;
             foto_form.nombre = nombre_foto;
             foto_form.descripcion = descripcion_foto;
@@ -751,46 +739,46 @@
             foto_form.etiquetas = etiquetas;
 
 
-                // console.log('key', key)
-                // console.log('val' ,foto_form[key])
+            // console.log('key', key)
+            // console.log('val' ,foto_form[key])
             data_foto.append('foto', $('#input_foto')[0].files[0]);
-               // foto_form.append('FILES', foto )
-                // nombre_foto)
+            // foto_form.append('FILES', foto )
+            // nombre_foto)
             data_foto.append('tipo_venta_foto', radio2);
             data_foto.append('categoria', categoria);
-            data_foto.append('nombre',nombre_foto);
+            data_foto.append('nombre', nombre_foto);
             data_foto.append('descripcion', descripcion_foto);
-            data_foto.append('etiquetas',etiquetas);
+            data_foto.append('etiquetas', etiquetas);
 
 
 
             // Aca el ws que agrega la foto
-        console.log(foto_form);
+            console.log(foto_form);
 
-        $.ajax({
-			url: "/ws/subir_foto/",
-			type: "POST",
-			cache: false,
-            contentType: false,
-            processData: false,
-            data: data_foto,
-			success: function (json) {
-                $('#form2').hide()
-                $('#form1').hide()
-                $('#form3').show()
+            $.ajax({
+                url: "/ws/subir_foto/",
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data_foto,
+                success: function(json) {
+                    $('#form2').hide()
+                    $('#form1').hide()
+                    $('#form3').show()
 
-                $("#paso1").removeClass("active")
-                $("#paso2").removeClass("active")
-                $("#paso3").addClass("active");
-                $('#categorias').val('');
-                $('#nombre_foto').val('');
-                $('#descripcion_foto').val('');
-                // Cambiar etiquetas por arr
-                // var etiquetas_foto = $('#etiquetas_foto').val();
-			}
-        });
+                    $("#paso1").removeClass("active")
+                    $("#paso2").removeClass("active")
+                    $("#paso3").addClass("active");
+                    $('#categorias').val('');
+                    $('#nombre_foto').val('');
+                    $('#descripcion_foto').val('');
+                    // Cambiar etiquetas por arr
+                    // var etiquetas_foto = $('#etiquetas_foto').val();
+                }
+            });
 
-                /*    $.ajax({
+            /*    $.ajax({
                 url: "/ws/add_direccion_cliente/" ,
                 type: "POST",
                 cache: false,
@@ -804,7 +792,7 @@
         }); */
 
 
-            
+
         }
         console.log(foto_form);
 
@@ -813,8 +801,8 @@
     function cancelarFoto() {
         // $(this).prop('checked', false);
         // $( "input" ).prop( "checked", true );
-        $("#formTipoFoto input[type='radio']").prop( "checked", false );
-        $("#formTipoVenta input[type='radio']").prop( "checked", false );
+        $("#formTipoFoto input[type='radio']").prop("checked", false);
+        $("#formTipoVenta input[type='radio']").prop("checked", false);
         foto = null;
 
         $('#foto_subir').attr('src', '');
@@ -822,16 +810,16 @@
         $('#form1').show()
         $('#form2').hide()
         $('#form3').hide()
-        
-        $( "#paso1" ).addClass( "active" );
-        $( "#paso2" ).removeClass( "active" )
-        $( "#paso3" ).removeClass( "active" )
+
+        $("#paso1").addClass("active");
+        $("#paso2").removeClass("active")
+        $("#paso3").removeClass("active")
     }
 
     function arrayToString(arr) {
         var formattedString = arr.toString()
-            .replace("[", "")  //remove the right bracket
-            .replace("]", "")  //remove the left bracket
+            .replace("[", "") //remove the right bracket
+            .replace("]", "") //remove the left bracket
             .trim(); // remove empty spaces
         return formattedString
     }
@@ -841,27 +829,27 @@
 
 
         $.ajax({
-			url: "/ws/WEBSERVICE/",
-			type: "POST",
-			cache: false,
+            url: "/ws/WEBSERVICE/",
+            type: "POST",
+            cache: false,
             data: foto_form,
-			success: function (json) {
-                    $('#categorias').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Categoría")
-                    );
+            success: function(json) {
+                $('#categorias').append(
+                    $("<option></option>")
+                    .attr("value", "")
+                    .text("Categoría")
+                );
 
-				for (i in json) {
+                for (i in json) {
                     $('#categorias').append(
                         $("<option></option>")
-                            .attr("value", json[i].pk)
-                            .text(json[i].nombre)
+                        .attr("value", json[i].pk)
+                        .text(json[i].nombre)
                     );
                 }
-			}
+            }
         })
     }
 
-    </script>
+</script>
 {% endblock %}
