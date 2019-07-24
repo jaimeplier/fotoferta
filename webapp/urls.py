@@ -2,7 +2,7 @@ from django.urls import path
 
 from webapp.views import ClienteRegistro
 from . import views
-from webapp.views import DireccionCrear, DireccionListarAjaxListView, DireccionActualizar
+from webapp.views import DireccionCrear, DireccionAjaxListView, DireccionActualizar
 
 app_name = 'webapp'
 
@@ -23,7 +23,7 @@ urlpatterns = [
     #Direccion
     path('direccion/nuevo/', DireccionCrear.as_view(), name='nuevo_direccion'),
     path('direccion/listar/', views.direccion_listar, name='list_direccion'),
-    path('direccion/', DireccionListarAjaxListView.as_view(), name='tab_list_direccion'),
+    path('direccion/', DireccionAjaxListView.as_view(), name='tab_list_direccion'),
     path('direccion/editar/<int:pk>', DireccionActualizar.as_view(), name='edit_direccion'),
     path('direccion/cambiar_estatus/<int:pk>', views.direccion_cambiar_estatus,
          name='tamanio_cambiar_estatus'),
