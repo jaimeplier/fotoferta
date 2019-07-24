@@ -13,6 +13,8 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                        <div id="cont_ordenes"></div>
+                        <!--
                         <div class="row itemCartContainer">
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 imageBuyCart">
                                 <div class="row">
@@ -105,6 +107,7 @@
                                 </div>
                             </div>
                         </div>
+                        -->
                     </div>
                     <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
                         <div class="row continueToPayment">
@@ -123,20 +126,20 @@
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paymentMethods">
                                         <div class="row cc-selector">
                                             <div class="col-xl-12 col-lg-12 col-md-4 col-sm-4 col-4 paymentMethod">
-                                                <input id="oxxoPayment" type="radio" name="paymentMethod" value="oxxoPayment" />
+                                                <input id="oxxoPayment" type="radio" name="paymentMethod" value="oxxoPayment" onclick="showOxxo()" />
                                                 <label class="drinkcard-cc oxxo" for="oxxoPayment"></label>
                                             </div>
                                             <div class="col-xl-12 col-lg-12 col-md-4 col-sm-4 col-4 paymentMethod">
-                                                <input id="cardPayment" type="radio" name="paymentMethod" value="cardPayment" />
+                                                <input id="cardPayment" type="radio" name="paymentMethod" value="cardPayment" onclick="showTarjeta()" />
                                                 <label class="drinkcard-cc cardImage" for="cardPayment"></label>
                                             </div>
                                             <div class="col-xl-12 col-lg-12 col-md-4 col-sm-4 col-4 paymentMethod">
-                                                <input id="speiPayment" type="radio" name="paymentMethod" value="speiPayment" />
+                                                <input id="speiPayment" type="radio" name="paymentMethod" value="speiPayment" onclick="showSpei()" />
                                                 <label class="drinkcard-cc spei" for="speiPayment"></label>
                                             </div>
                                         </div>
                                         <!--De acuerdo con la seleccion de usuario, se muestra la opción de pago-->
-                                        <div class="row oxxoPaymentSelected">
+                                        <div id="oxxoForm" class="row oxxoPaymentSelected" style="display: none">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="row">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -168,7 +171,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row cardPaymentSelected">
+                                        <div id="tarjetaForm" class="row cardPaymentSelected" style="display: none">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="row">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -214,7 +217,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row speiPaymentSelected">
+                                        <div id="speiForm" class="row speiPaymentSelected" style="display: none">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="row">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -265,6 +268,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
         $('document').ready(function(){
             $.ajax({
@@ -272,10 +276,156 @@
                 type: "GET",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
-                    
+                    console.log(json);
+                    for(let i of json) {
+                        var text = `
+                    <div id="orden`+ i.pk +`">
+                        <div class="row itemCartContainer">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 imageBuyCart">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <img src="`+ i.foto.foto_muestra +`">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pricesDetailsContainer">
+                                <div class="row editCartContains">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 offset-9">
+                                        <p>`
+
+                            if(i.tipo_compra != 1) {
+                                text += `<button onclick="editarOrden(`+ i.pk +`)"><i class="fas fa-pencil-alt"></i></button>`
+                            }
+
+                                text += `<button onclick="eliminarOrden(`+ i.pk +`)"><i class="far fa-trash-alt"></i></button></p>
+                                    </div>
+                                </div>
+                                <div class="row imagePriceDetails">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <h4 class="imageName">Nombre de la Imagen:</h4>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <h5 class="imagePrice">`+ i.foto.nombre +`</h5>
+                                    </div>
+                                </div>
+                                `
+
+                        if(i.marco) {
+                            text += `
+                                <div class="row framePriceDetails">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <h4><i class="fas fa-plus"></i> Tipo de marco:</h4>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <h5 class="framePrice">` + i.marco + `</h5>
+                                    </div>
+                                </div>
+                                <div class="row marginPriceDetails">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <h4><i class="fas fa-plus"></i> Tipo de Marialuisa:</h4>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <h5 class="marginPrice">` + i.maria_luisa + `</h5>
+                                    </div>
+                                </div>
+                                <div class="row marginPriceDetails">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <h4><i class="fas fa-plus"></i> Tipo de papel:</h4>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <h5 class="marginPrice">` + i.papel_impresion + `</h5>
+                                    </div>
+                                </div>
+                                <div class="row shippingPriceDetails">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <h4><i class="fas fa-plus"></i> Envío:</h4>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                        <h5 class="shippingPrice">$ 99.99</h5>
+                                    </div>
+                                </div>
+                             `
+                                } else {
+                                text += `
+                                <div class="row framePriceDetails">
+                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                        <h4><i class="fas fa-plus"></i> Digital:</h4>
+                                    </div>
+                                </div>`
+                            }
+                                text += `
+                                    <div class="row totalPriceDetails">
+                                        <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 offset-xl-6 offset-lg-4 offset-md-2">
+                                            <h4>Subtotal: <span class="totalPrice">$`+ i.subtotal +`</span></h4>`
+
+                            if(i.tipo_compra == 1) {
+
+                                text += `<button type="button" class="btn btn-warning" onclick="agregarMarco(`+ i.pk +`)">+ Agrega un marco a tu foto</button>`
+                            }
+                                 text += `</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                    $('#cont_ordenes').append(text)
+                    }
+
                 }
             })
+
+
         });
-    </script>
+
+    function editarOrden(id) {
+       console.log(id)
+       /* $.ajax({
+            url: "/ws/agregar_carrito/",
+            type: "POST",
+            cache: false,
+            data: data,
+            success: function (res) {
+                console.log(res)
+                window.location.href = "{% url 'webapp:vista_carrito' %}"
+            },
+            error: (err) => {console.log(err)}
+        }) */
+    }
+
+     function eliminarOrden(id) {
+        $.ajax({
+            url: "/ws/eliminar_producto_carrito/",
+            type: "POST",
+            cache: false,
+            data: {
+                pk: id
+            },
+            success: function (res) {
+                console.log(res)
+                window.location.href = "{% url 'webapp:vista_carrito' %}"
+            },
+            error: (err) => {console.log(err)}
+        })
+    }
+     function agregarMarco(id) {
+                window.location.href = "{% url 'webapp:vista_marco' %}"
+     }
+
+     function showOxxo() {
+        $('#oxxoForm').show();
+        $('#tarjetaForm').hide();
+        $('#speiForm').hide();
+     }
+     function showTarjeta() {
+        $('#tarjetaForm').show()
+         $('#oxxoForm').hide();
+        $('#speiForm').hide();
+     }
+     function showSpei() {
+        $('#speiForm').show();
+        $('#tarjetaForm').hide();
+        $('#oxxoForm').hide();
+     }
+
+</script>
 {% endblock %}

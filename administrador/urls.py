@@ -145,4 +145,11 @@ urlpatterns = [
     path('foto_precio/editar/<int:pk>', FotoPrecioActualizar.as_view(), name='edit_foto_precio'),
     path('foto_precio/cambiar_estatus/<int:pk>', views.foto_precio_cambiar_estatus, name='foto_precio_cambiar_estatus'),
 
+    path('tamanio/nuevo/', TamanioCrear.as_view(), name='nuevo_tamanio'),
+    path('tamanio/listar/', views.tamanio_listar, name='list_tamanio'),
+    path('tamanio/', TamanioListarAjaxListView.as_view(), name='tab_list_tamanio'),
+    path('tamanio/editar/<int:pk>', TamanioActualizar.as_view(), name='edit_tamanio'),
+    path('tamanio/cambiar_estatus/<int:pk>', views.tamanio_cambiar_estatus,
+         name='tamanio_cambiar_estatus'),
+
 ]
