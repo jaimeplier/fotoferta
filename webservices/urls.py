@@ -1,7 +1,7 @@
 from django.urls import path
 
 from webservices.Catalogos import ListCategorias, ListEtiquetas
-from webservices.Fotos import SubirFotografia, ListFotosHome
+from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito
 from webservices.pago import ListDirecciones, ListTarjetas
 from webservices.views import ListContactanos
