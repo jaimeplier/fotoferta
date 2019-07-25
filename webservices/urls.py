@@ -16,6 +16,7 @@ urlpatterns = [
     path('list_etiquetas/', ListEtiquetas.as_view(), name='list_etiquetas'),
 
     path('list_fotos_home/', ListFotosHome.as_view(), name='list_fotos_home'),
+    path('list_mis_fotos/', ListMisFotos.as_view(), name='list_mis_fotos'),
     path('subir_foto/', SubirFotografia.as_view(), name='subir_foto'),
 
     # Carrito

@@ -87,3 +87,11 @@ class ListFotosHome(ListAPIView):
     def get_queryset(self):
         queryset = Fotografia.objects.all().order_by('?')
         return queryset
+
+class ListMisFotos(ListAPIView):
+
+    serializer_class = FotografiaSerializer
+
+    def get_queryset(self):
+        queryset = Fotografia.objects.filter(usuario=self.request.user).order_by('-fecha_alta')
+        return queryset
