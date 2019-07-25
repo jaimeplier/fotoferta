@@ -79,55 +79,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
-                                <div class="card-columns">
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://via.placeholder.com/300/09f.png/fff" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://via.placeholder.com/728x90.png?" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://via.placeholder.com/680x950.png?" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://via.placeholder.com/420x350.png?" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://via.placeholder.com/550x780.png?" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image cap">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?rock" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                                    </div>
-                                    <div class="card">
-                                        <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                                    </div>
+                                <div class="card-columns" id="fotos_usuario">
                                 </div>
                             </div>
                         </div>
@@ -678,6 +630,22 @@
                 }
             }
         })
+
+
+          $.ajax({
+            url: "/ws/list_mis_fotos/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                for (i of json) {
+                    $('#fotos_usuario').append(`
+                    <div class="card">
+                        <img class="card-img-top" src="`+ i.foto_muestra + `" alt="Card image top">
+                    </div>
+                        `)
+                }
+            }
+        })
     });
 
     function readURL(input) {
@@ -826,8 +794,6 @@
 
 
     function subirFoto() {
-
-
         $.ajax({
             url: "/ws/WEBSERVICE/",
             type: "POST",
