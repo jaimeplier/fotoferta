@@ -142,12 +142,12 @@ def direccion_listar(request):
     context = {}
     context['titulo'] = 'Direccion'
     context['btn_nuevo'] = 'Agregar direccion'
-    context['url_nuevo'] = reverse('webapp:direccion')
+    context['url_nuevo'] = reverse('webapp:nuevo_direccion')
     context['encabezados'] = [['Id', True],
                               ['Dirección', True],
                               ['Editar', False],
                               ['Estatus', True]]
-    context['url_ajax'] = reverse('webapp:direccion')
+    context['url_ajax'] = reverse('webapp:tab_list_direccion')
     context['url_update_estatus'] = '/webapp/direccion/cambiar_estatus/'
 
     return render(request, template_name, context)
