@@ -89,7 +89,7 @@ class ListFotosHome(ListAPIView):
         return queryset
 
 class ListMisFotos(ListAPIView):
-
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
     serializer_class = FotografiaSerializer
 
     def get_queryset(self):
