@@ -31,17 +31,11 @@ class TagsSerializer(serializers.Serializer):
 class RegistroFotografiaSerializer(serializers.Serializer):
     foto = serializers.ImageField()
     tipo_venta_foto = serializers.IntegerField(min_value=1, max_value=3)
-    categoria = serializers.IntegerField(min_value=0)
+    categoria = serializers.CharField(max_length=100)
     nombre = serializers.CharField(max_length=64)
     descripcion = serializers.CharField(max_length=256)
     etiquetas = serializers.CharField(max_length=100)
 
-    def validate_categoria(self, value):
-        try:
-            Categoria.objects.get(pk=value)
-        except:
-            raise serializers.ValidationError('No existe la categoría seleccionada')
-        return value
 
 class FotografiaSerializer(serializers.ModelSerializer):
     class Meta:

@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta
+from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta, Categoria
 from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import RegistroFotografiaSerializer, FotografiaSerializer
@@ -34,6 +34,12 @@ class SubirFotografia(APIView):
         etiquetas_objts = []
         for etiqueta in etiquetas:
             etiquetas_objts.append(Etiqueta.objects.get(pk=etiqueta))
+
+        # list de categorias
+        categorias = categoria.split(',')
+        categorias_objts = []
+        for categoria in categorias:
+            categorias_objts.append(Categoria.objects.get(pk=categoria))
 
         # Revisar tipo de imagen
         tipo_foto = TipoFoto.objects.get(pk=1)
@@ -71,6 +77,8 @@ class SubirFotografia(APIView):
                                          foto_muestra=foto_muestra, descripcion=descripcion, alto=alto_foto,
                                          ancho=ancho_foto, tipo_foto=tipo_foto, orientacion=orientacion, tamanio=tamanio,
                                          precio = precio, aprobada=aprobada)
+        foto.categorias.add(categorias_objts)
+        foto.etiquetas.add(etiquetas_objts)
 
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
