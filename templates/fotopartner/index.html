@@ -72,6 +72,7 @@
                 <div class="row">
                     <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
                         <div class="card-columns" id="sec2_fotos">
+                            <!--
                             <div class="card">
                                 <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
                             </div>
@@ -120,6 +121,7 @@
                             <div class="card">
                                 <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
                             </div>
+                            -->
                         </div>
                     </div>
                 </div>
@@ -156,7 +158,18 @@
             </div>
         </section>
 
-    <h2 onclick="cargarFotos()" class="text-center"
+    <section class="row masonryGallery">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
+                        <div class="card-columns" id="sec3_fotos">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <h2 onclick="cargarFotos()" class="text-center" id="ver_mas"
         style="padding: 40px 40px; cursor: pointer">+ Ver Más</h2>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -179,43 +192,55 @@
                         </div>
                     `)
                 }
-                    if (json.next) {
-                        $.ajax({
-                            url: json.next,
-                            type: "GET",
-                            cache: false,
-                            success: function (json2) {
-                                for (let j of json2) {
-                                    $('#sec2_fotos').append(`
-                                    <div class="card">
-                                        <a href= "/webapp/foto/` + j.pk + `><img class="card-img-top" src="` + j.foto_muestra + `" alt="Card image top"
-                                        ></a>
-                                    </div>
-                                    `)
-                                }
-                                url_next_foto = json2.next
+                // url_next_foto = json.next
+                if (json.next) {
+                    $.ajax({
+                        url: json.next,
+                        type: "GET",
+                        cache: false,
+                        success: function (json2) {
+                            console.log('EN JSON 2',json2)
+                            for (let [idx, j] of json2.results.entries()) {
+                                $('#sec2_fotos').append(`
+                                <div class="card">
+                                    <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_muestra + `" alt="Card image top"
+                                    ></a>
+                                </div>
+                                `)
                             }
-                        })
-                    }
+                            url_next_foto = json2.next
+                            if (!url_next_foto) {
+                                $('#ver_mas').hide();
+                            }
+                        }
+                    })
+                }
 
             }
         })
     });
 
 function cargarFotos() {
+    console.log('TEST1',url_next_foto )
     if(url_next_foto) {
         $.ajax({
             url: url_next_foto,
             type: "GET",
             cache: false,
             success: function (json) {
-                for (let i of json) {
+                console.log('TEST2');
+                for (let [idx, j] of json.results.entries()) {
                     $('#sec3_fotos').append(`
                         <div class="card">
-                            <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top"
-                            id= "` + 98 + `">
+                            <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_muestra + `" alt="Card image top"
+                            ></a>
                         </div>
                     `)
+                }
+
+                url_next_foto = json.next;
+                if (!url_next_foto) {
+                    $('#ver_mas').hide();
                 }
             }
         })
