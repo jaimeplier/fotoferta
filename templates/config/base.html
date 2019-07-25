@@ -267,12 +267,12 @@ footer {
             <div class="row">
                 <nav class="col-xl-12 col-lg-12 d-xl-block d-lg-block d-md-none d-sm-none d-none mainMenuContainer">
                     <ul class="row">
-                        <li><a href="#">Sube tu foto</a></li>
+                        <li><a href="{% url 'webapp:vista_perfil' %}">Sube tu foto</a></li>
                         <li><a href="#">Fotopartners</a></li>
-                        <li><a href="#">Fotos exclusivas</a></li>
-                        <li><a href="#">Fotos Gratuitas</a></li>
-                        <li><a href="underConstruction.html">Blog</a></li>
-                        <li><a href="underConstruction.html">Revista</a></li>
+                        <li><a href="{% url 'webapp:vista_exclusivas' %}">Fotos exclusivas</a></li>
+                        <li><a href="{% url 'webapp:home' %}">Fotos Gratuitas</a></li>
+                        <li><a href="{% url 'webapp:sitio_en_construccion' %}">Blog</a></li>
+                        <li><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a></li>
                         <li><a href="#contactFooter">Contáctanos</a></li>
                     </ul>
                 </nav>
@@ -483,12 +483,12 @@ footer {
             </div>
         </div>
         <ul class="row mobileNav">
-            <li class="col-12"><a href="#">Súbe tu foto</a></li>
+            <li class="col-12"><a  href="{% url 'webapp:vista_perfil' %}">Súbe tu foto</a></li>
             <li class="col-12"><a href="#">Fotopartners</a></li>
-            <li class="col-12"><a href="#">Fotos exclusivas</a></li>
-            <li class="col-12"><a href="#">Fotos gratuitas</a></li>
-            <li class="col-12"><a href="underConstruction.html">Blog</a></li>
-            <li class="col-12"><a href="underConstruction.html">Revista</a></li>
+            <li class="col-12"><a href="{% url 'webapp:vista_exclusivas' %}">Fotos exclusivas</a></li>
+            <li class="col-12"><a href="{% url 'webapp:home' %}">Fotos gratuitas</a></li>
+            <li class="col-12"><a href="{% url 'webapp:sitio_en_construccion' %}">Blog</a></li>
+            <li class="col-12"><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a></li>
             <li class="col-12"><a href="#contactFooter">Contáctanos</a></li>
         </ul>
         <div class="row mobileNetworks">
