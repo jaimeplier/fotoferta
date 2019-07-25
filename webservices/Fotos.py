@@ -77,8 +77,8 @@ class SubirFotografia(APIView):
                                          foto_muestra=foto_muestra, descripcion=descripcion, alto=alto_foto,
                                          ancho=ancho_foto, tipo_foto=tipo_foto, orientacion=orientacion, tamanio=tamanio,
                                          precio = precio, aprobada=aprobada)
-        foto.categorias.add(categorias_objts)
-        foto.etiquetas.add(etiquetas_objts)
+        foto.categorias.add(*categorias_objts)
+        foto.etiquetas.add(*etiquetas_objts)
 
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
