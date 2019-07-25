@@ -706,13 +706,15 @@
             // cambiar etiquetaws
             foto_form.etiquetas = etiquetas;
 
+            if (radio2) {
+                data_foto.append('tipo_venta_foto', radio2);
+            }
 
             // console.log('key', key)
             // console.log('val' ,foto_form[key])
-            data_foto.append('foto', $('#input_foto')[0].files[0]);
             // foto_form.append('FILES', foto )
             // nombre_foto)
-            data_foto.append('tipo_venta_foto', radio2);
+            data_foto.append('foto', $('#input_foto')[0].files[0]);
             data_foto.append('categoria', categoria);
             data_foto.append('nombre', nombre_foto);
             data_foto.append('descripcion', descripcion_foto);
