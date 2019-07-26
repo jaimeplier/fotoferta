@@ -98,8 +98,9 @@ class ClienteRegistro(CreateView):
                 # }
                 # message = get_template("mailing/correo_registro.html").render(ctx)
                 # sendMail(to, 'Registro inderspace', message)
-
-                return redirect(reverse('webapp:sitio_en_construccion'))
+                user = authenticate(correo=user.correo, password=user.password)
+                auth_login(request, user)
+                return redirect(reverse('webapp:home'))
             except:
                 return render(self.request, template_name=self.template_name,
                               context={'form': form,
