@@ -693,7 +693,7 @@ header {
 footer {
     background: #12284c;
     color: #ffffff;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 0 1rem;
     text-align: left;
     z-index: 1002;
 }
@@ -719,12 +719,11 @@ footer .footerLogoContainer {
 
 footer .footerLogoContainer svg {
     max-width: 200px;
-    margin-bottom: 3rem;
-    padding-bottom: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
 }
 
 footer .footerMenu {
-    margin-bottom: 3rem;
     border-right: solid 1px #fafafa;
 }
 
@@ -1440,6 +1439,10 @@ form {
 /*Contact Row*/
 .contactRow {
     text-align: left;
+}
+
+.contactRow form {
+    margin-bottom: 0;
 }
 
 .contactRow input,
