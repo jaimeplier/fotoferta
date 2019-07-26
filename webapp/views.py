@@ -83,10 +83,10 @@ class ClienteRegistro(CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             try:
-                user = form.save(commit=False)
-                user.rol = rol
-                user.set_password(user.password)
-                user.save()
+                fotopartner = form.save(commit=False)
+                fotopartner.rol = rol
+                fotopartner.set_password(fotopartner.password)
+                fotopartner.save()
 
                 # Cosas para envio de correo
                 # to = [user.correo]
@@ -98,8 +98,9 @@ class ClienteRegistro(CreateView):
                 # }
                 # message = get_template("mailing/correo_registro.html").render(ctx)
                 # sendMail(to, 'Registro inderspace', message)
-
-                return redirect(reverse('webapp:sitio_en_construccion'))
+                user = authenticate(correo=fotopartner.correo, password=form.cleaned_data['password'])
+                auth_login(request, user)
+                return redirect(reverse('webapp:home'))
             except:
                 return render(self.request, template_name=self.template_name,
                               context={'form': form,
