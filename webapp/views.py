@@ -235,7 +235,7 @@ def direccion_cambiar_estatus(request, pk):
 
 
 
-
+@permission_required(perm='fotopartner', login_url='/webapp/login')
 def vista_perfil(request):
     template_name = 'cliente/perfil.html'
     return render(request, template_name)
