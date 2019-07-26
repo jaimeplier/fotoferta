@@ -637,6 +637,10 @@ header {
     max-width: 100%;
 }
 
+.btnPreviewModal {
+    margin-top: 1rem;
+}
+
 .frameSelection {
     text-align: center;
 }

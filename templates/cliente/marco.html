@@ -14,7 +14,16 @@
                 </div>
                 <div class="row frameSizeSelectionContent">
                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 frameImage">
-                        <img src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                        <div class="row">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <img src="/static/images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                            </div>
+                        </div>
+                        <div class="row btnPreviewModal">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <a href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 frameSelection">
                         <div class="row">
@@ -121,7 +130,7 @@
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                             <div class="row frameImageSelector">
                                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                    <a href="#"><img src="images/frame1.png"></a>
+                                                                    <a href="#"><img src="/static/images/frame1.png"></a>
                                                                 </div>
                                                             </div>
                                                             <div class="row frameImageDetails">
@@ -135,7 +144,7 @@
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                             <div class="row frameImageSelector">
                                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                    <a href="#"><img src="images/frame2.png"></a>
+                                                                    <a href="#"><img src="/static/images/frame2.png"></a>
                                                                 </div>
                                                             </div>
                                                             <div class="row frameImageDetails">
@@ -149,7 +158,7 @@
                                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                             <div class="row frameImageSelector">
                                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                    <a href="#"><img src="images/frame3.png"></a>
+                                                                    <a href="#"><img src="/static/images/frame3.png"></a>
                                                                 </div>
                                                             </div>
                                                             <div class="row frameImageDetails">
@@ -195,7 +204,7 @@
                                                     <div class="item">
                                                         <div class="row">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 noMargin">
-                                                                <a href="#"><img src="images/dont.svg"></a>
+                                                                <a href="#"><img src="/static/images/dont.svg"></a>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -207,7 +216,7 @@
                                                     <div class="item">
                                                         <div class="row">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                <a href="#"><img src="images/margin1.png"></a>
+                                                                <a href="#"><img src="/static/images/margin1.png"></a>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -219,7 +228,7 @@
                                                     <div class="item">
                                                         <div class="row">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                <a href="#"><img src="images/margin2.png"></a>
+                                                                <a href="#"><img src="/static/images/margin2.png"></a>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -242,6 +251,46 @@
     </div>
 </section>
 
+
+<!-- Gallery Modal -->
+<div class="modal fade" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="GalleryModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tu Fotografía</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-interval="10000">
+                            <img src="../fotofertas/static/images/previews/preview1.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item active" data-interval="10000">
+                            <img src="../../fotofertas/static/images/previews/preview1.jpg" class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item active" data-interval="10000">
+                            <img src="fotofertas/static/images/previews/preview3.jpg" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn specialBtn" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
