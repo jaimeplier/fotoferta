@@ -344,7 +344,6 @@ class Categoria(Catalogo):
         db_table = 'categoria'
 
 class Tamanio(Catalogo):
-
     class Meta:
         managed = True
         db_table = 'tamanio'
@@ -433,6 +432,13 @@ class FotoPrecio(models.Model):
     tipo_foto = models.ForeignKey("TipoFoto", models.DO_NOTHING)  # Default tipo normal
     precio = models.FloatField()
     estatus = models.BooleanField(default=True)
+    min_altura = models.PositiveIntegerField()
+    min_ancho = models.PositiveIntegerField()
+    min_area = models.PositiveIntegerField()
+
+    max_altura = models.PositiveIntegerField()
+    max_ancho = models.PositiveIntegerField()
+    max_area = models.PositiveIntegerField()
 
     class Meta:
         managed = True

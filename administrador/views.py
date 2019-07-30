@@ -2117,6 +2117,8 @@ class FotoPrecioCrear(PermissionRequiredMixin, CreateView):
 
     def form_valid(self, form):
         tipoPapel = form.save(commit=False)
+        tipoPapel.min_area  = tipoPapel.min_altura * tipoPapel.min_ancho
+        tipoPapel.max_area  = tipoPapel.max_altura * tipoPapel.max_ancho
         tipoPapel.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -2132,6 +2134,7 @@ def foto_precio_listar(request):
     context['url_nuevo'] = reverse('administrador:nuevo_foto_precio')
     context['encabezados'] = [['Tipo de foto', True],
                               ['Tamaño', True],
+                              ['Rango (Ancho x Alto) Px.', True],
                               ['Precio', True],
                               ['Editar', False],
                               ['Estatus', True]]
@@ -2147,11 +2150,11 @@ class FotoPrecioAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
     model = FotoPrecio
     columns = [
-        'tipo_foto.nombre', 'tamanio.nombre', 'precio',  'editar', 'estatus'
+        'tipo_foto.nombre', 'tamanio.nombre', 'rango', 'precio',  'editar', 'estatus'
     ]
 
     order_columns = [
-        'tipo_foto.nombre', 'tamanio.nombre', 'precio',  '', 'estatus'
+        'tipo_foto.nombre', 'tamanio.nombre', 'min_area', 'precio',  '', 'estatus'
     ]
 
     max_display_length = 100
@@ -2173,6 +2176,8 @@ class FotoPrecioAjaxListView(PermissionRequiredMixin, BaseDatatableView):
                     row.pk) + ') id="customSwitch' + str(
                     row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
                     row.pk) + '">Off</label></div>'
+        elif column == 'rango':
+            return str(row.min_ancho)+'x'+str(row.min_altura)+' - '+str(row.max_ancho)+'x'+str(row.max_altura)
 
         elif column == 'precio':
             return "${0:,.2f}".format(row.precio)
@@ -2209,8 +2214,10 @@ class FotoPrecioActualizar(PermissionRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        # form.instance.set_password(form.cleaned_data['password'])
-        form.save()
+        tipoPapel = form.save(commit=False)
+        tipoPapel.min_area = tipoPapel.min_altura * tipoPapel.min_ancho
+        tipoPapel.max_area = tipoPapel.max_altura * tipoPapel.max_ancho
+        tipoPapel.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
