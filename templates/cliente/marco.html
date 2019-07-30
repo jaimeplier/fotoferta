@@ -70,6 +70,17 @@
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                     <div id="paperCarousel" class="owl-carousel owl-theme">
+
+                            <!--
+                <div class="d-flex justify-content-center" >
+                    <div class="btn-group btn-group-lg text-center">
+                            <button type="button" class="btn btn-primary">Apple</button>
+                            <button type="button" class="btn btn-primary">Samsung</button>
+                            <button type="button" class="btn btn-primary">Sony</button>
+                    </div>
+                </div>
+-->
+
                                                         <div class="item">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <div class="row">
@@ -107,6 +118,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -286,13 +298,13 @@
                 <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active" data-interval="10000">
-                            <img src="../fotofertas/static/images/previews/preview1.jpg" class="d-block w-100" alt="...">
+                            <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item active" data-interval="10000">
-                            <img src="../../fotofertas/static/images/previews/preview1.jpg" class="d-block w-100" alt="...">
+                            <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item active" data-interval="10000">
-                            <img src="fotofertas/static/images/previews/preview3.jpg" class="d-block w-100" alt="...">
+                            <img src="{% static 'images/previews/preview3.jpg' %}" class="d-block w-100" alt="...">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
