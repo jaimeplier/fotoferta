@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="card">
                                         <div class="userProfileGalleryIcons">
-                                            <a href="" class="favourite"><i class="far fa-heart"></i></a>
+                                            <a href="" id="123" class="favourite"><i class="far fa-heart"></i></a>
                                             <a href=""><i class="fas fa-cart-plus"></i></a>
                                         </div>
                                         <img class="card-img-top" src="https://source.unsplash.com/daily?nature" alt="Card image top">
@@ -317,7 +317,7 @@
                                 <h1>Siguiendo</h1>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" id="contenedorSeguidores">
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="row">
                                     <div class="col-11 profileWidgetContainer centerDiv">
@@ -807,17 +807,128 @@
                     .attr("value", "")
                     .text("Categoría")
                 );
+            }
+        })
+    }
 
-                for (i in json) {
-                    $('#categorias').append(
-                        $("<option></option>")
-                        .attr("value", json[i].pk)
-                        .text(json[i].nombre)
-                    );
+    function cargarFavoritas() {
+         $.ajax({
+            url: "/ws/PENDING/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                for (i of json) {
+                    $('#fotos_usuario').append(`
+                        <div class="card">
+                            <div class="userProfileGalleryIcons">
+                                <button id="h + i.pk" class="favourite" onclick="marcarFavorita( i.pk ) ">
+                                <i class="far fa-heart"></i></button>
+                                <button id="cart + i.pk"  onclick="agregarCarrito( i.pk )"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
+                        </div>
+                        `)
                 }
             }
         })
     }
+
+    function marcarFavorita(id) {
+        var val = $(id).hasClass("favourite");
+        if(val) {
+            $.ajax({
+            url: "/ws/WEBSERVICE/",
+            type: "POST",
+            cache: false,
+            data: foto_form,
+            success: function(json) {
+                // poner de color el corazon
+                $("#" + id).addClass("favourite");
+            }
+            })
+        } else {
+            $.ajax({
+            url: "/ws/WEBSERVICE/",
+            type: "POST",
+            cache: false,
+            data: foto_form,
+            success: function(json) {
+                $("#" + id).removeClass("favourite");
+            }
+            })
+        }
+    }
+
+        function agregarCarrito(id) {
+        var data = {
+            pk: id,
+            tipo_compra: 1
+        }
+        $.ajax({
+            url: "/ws/agregar_carrito/",
+            type: "POST",
+            cache: false,
+            data: data,
+            success: function (res) {
+                $("#"+ id).addClass("favourite");
+            },
+            error: (err) => {console.log(err)}
+        })
+    }
+
+    function cargarSeguidores() {
+        $.ajax({
+            url: "/ws/PENDING/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                for (i of json) {
+                    $('#contenedorSeguidores').append(`
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-11 profileWidgetContainer centerDiv">
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-12 col-sm-6 col-12">
+                                                <div class="profileWidgetImage">
+                                                    <img src="+ i.imagen + ">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h4> + i.nombre </h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button onclick="noseguir(+ i.pk +)" class="btn generalBtn specialBtn">
+                                                        <i class="fas fa-plus"></i> Seguir</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `)
+                }
+            }
+        })
+    }
+
+    function noseguir(id) {
+        var seguidor = {pk: id}
+        $.ajax({
+            url: "/ws/WEBSERVICE/",
+            type: "POST",
+            cache: false,
+            data: seguidor,
+            success: function(json) {
+                $("#"+ id).addClass("favourite");
+            }
+        })
+    }
+
 
 </script>
 {% endblock %}
