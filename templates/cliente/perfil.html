@@ -47,13 +47,13 @@
                     </div>
                 </div>
                 <div class="row profileToggles">
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 profileToggle">
                         <h3><a href="javascript:;" onclick="userProfileToggle('userGallery', 'favoritesGallery', 'sell', 'buy', 'following', 'historyToggle')">Tus fotografias <i class="fas fa-images"></i></a></h3>
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 profileToggle">
                         <h3><a href="javascript:;" onclick="userProfileToggle('favoritesGallery', 'userGallery', 'sell', 'buy', 'following', 'historyToggle')">Favoritos <i class="fas fa-heart"></i></a></h3>
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 profileToggle">
                         <h3><a href="javascript:;" class="submenuProfile" onclick="toggle_visibility('historyToggle')">Historial <i class="fas fa-clock"></i></a>
                             <ul id="historyToggle" class="historyMenu">
                                 <li><a href="javascript:;" onclick="userProfileToggle('sell', 'userGallery', 'favoritesGallery', 'buy', 'following', 'historyToggle')">Fotografias vendidas</a></li>
@@ -61,7 +61,7 @@
                             </ul>
                         </h3>
                     </div>
-                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-6 profileToggle">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 profileToggle">
                         <h3><a href="javascript:;" onclick="userProfileToggle('following', 'userGallery', 'favoritesGallery', 'sell', 'buy', 'historyToggle')">Siguiendo <i class="fas fa-users"></i></a></h3>
                     </div>
                 </div>
@@ -499,16 +499,14 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" id="nombre_foto" placeholder="Nombre de la fotogafia">
+                                                <input type="email" class="form-control" id="nombre_foto" placeholder="Nombre de la fotografia">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div class="col-12" style="padding-bottom: 15px;">
-                                                <select id="etiquetas_foto" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
-                                                </select>
-                                            </div>
+                                        <div class="col-12" style="padding-bottom: 15px;">
+                                            <select id="etiquetas_foto" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -632,7 +630,7 @@
         })
 
 
-          $.ajax({
+        $.ajax({
             url: "/ws/list_mis_fotos/",
             type: "GET",
             cache: false,
@@ -640,7 +638,7 @@
                 for (i of json) {
                     $('#fotos_usuario').append(`
                     <div class="card">
-                        <img class="card-img-top" src="`+ i.foto_muestra + `" alt="Card image top">
+                        <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top">
                     </div>
                         `)
                 }
@@ -649,9 +647,9 @@
 
 
         var hash = window.location.hash;
-            if(hash.length > 0){
-                $('#modalPhotoUpload').modal('show');
-            }
+        if (hash.length > 0) {
+            $('#modalPhotoUpload').modal('show');
+        }
 
     });
 
@@ -693,7 +691,7 @@
         var terminos = $("#terminos_condiciones").prop('checked');
         var publico =
 
-        console.log('cat y etiqueta', categoria, etiquetas_foto);
+            console.log('cat y etiqueta', categoria, etiquetas_foto);
 
         if (radio1 && foto) {
             $('#form1').hide()
@@ -825,7 +823,7 @@
     }
 
     function cargarFavoritas() {
-         $.ajax({
+        $.ajax({
             url: "/ws/PENDING/",
             type: "GET",
             cache: false,
@@ -848,31 +846,31 @@
 
     function marcarFavorita(id) {
         var val = $(id).hasClass("favourite");
-        if(val) {
+        if (val) {
             $.ajax({
-            url: "/ws/WEBSERVICE/",
-            type: "POST",
-            cache: false,
-            data: foto_form,
-            success: function(json) {
-                // poner de color el corazon
-                $("#" + id).addClass("favourite");
-            }
+                url: "/ws/WEBSERVICE/",
+                type: "POST",
+                cache: false,
+                data: foto_form,
+                success: function(json) {
+                    // poner de color el corazon
+                    $("#" + id).addClass("favourite");
+                }
             })
         } else {
             $.ajax({
-            url: "/ws/WEBSERVICE/",
-            type: "POST",
-            cache: false,
-            data: foto_form,
-            success: function(json) {
-                $("#" + id).removeClass("favourite");
-            }
+                url: "/ws/WEBSERVICE/",
+                type: "POST",
+                cache: false,
+                data: foto_form,
+                success: function(json) {
+                    $("#" + id).removeClass("favourite");
+                }
             })
         }
     }
 
-        function agregarCarrito(id) {
+    function agregarCarrito(id) {
         var data = {
             pk: id,
             tipo_compra: 1
@@ -882,10 +880,12 @@
             type: "POST",
             cache: false,
             data: data,
-            success: function (res) {
-                $("#"+ id).addClass("favourite");
+            success: function(res) {
+                $("#" + id).addClass("favourite");
             },
-            error: (err) => {console.log(err)}
+            error: (err) => {
+                console.log(err)
+            }
         })
     }
 
@@ -930,14 +930,16 @@
     }
 
     function dejarDeSeguir(id) {
-        var seguidor = {pk: id}
+        var seguidor = {
+            pk: id
+        }
         $.ajax({
             url: "/ws/WEBSERVICE/",
             type: "POST",
             cache: false,
             data: seguidor,
             success: function(json) {
-                $("#seguidor"+ id).clear();
+                $("#seguidor" + id).clear();
             }
         })
     }
@@ -960,7 +962,6 @@
             }
         })
     }
-
 
 </script>
 {% endblock %}

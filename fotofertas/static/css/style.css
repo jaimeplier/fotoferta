@@ -49,10 +49,27 @@ header {
 }
 
 .dropdown-menu {
-    background: #FFB600;
+    background: #FFFFFF;
     width: 100%;
     padding: 0;
     margin-top: 0;
+}
+
+.dropdown-item,
+.dropdown-item {
+    border: solid 2px #ffffff;
+    -webkit-border-bottom-left-radius: 10px;
+    -moz-border-radius-bottomleft: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 1) !important;
+    border: solid 2px #FFB600 !important;
+
 }
 
 .shoppingCartContainer {
@@ -196,6 +213,16 @@ header {
     display: block;
     width: 100%;
     background: #12284c;
+}
+
+.userMenuContainer i {
+    font-size: 3rem;
+}
+
+.userMenuContainer a {
+    font-size: 1.5rem;
+    position: relative;
+    top: 5px;
 }
 
 .mainMenuContainer {
@@ -1494,14 +1521,16 @@ form {
 /*Card Addition*/
 /*Exclusive Gallery*/
 .exclusiveRow {
-    background: #FFB600;
+    background: #000000;
     color: rgba(18, 40, 76, 1);
     padding-bottom: 2rem;
     padding-top: 2rem;
 }
-.exclusiveRow h1{
+
+.exclusiveRow h1 {
     margin-bottom: 2rem;
     margin-top: 2rem;
+    color: rgba(255, 255, 255, 1) !important;
 }
 
 /*Exclusive Gallery*/
