@@ -14,7 +14,7 @@
                 </div>
                 <div class="row exclusiveGallery">
                     <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
-                        <div class="card-columns">
+                        <div id="listaFotos" class="card-columns">
                             <div class="card">
                                 <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
                             </div>
@@ -74,5 +74,25 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+    $('document').ready(function() {
+        /*   LISTAR FOTOS, pendiente de WS
+        $.ajax({
+            url: "/ws/list_categorias/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                for (i in json) {
+                    $('#listaFotos').append(`
+                        <div class="card">
+                            <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                        </div>`
+                    );
+                }
+            }
+        })
+        */
+    });
 
+</script>
 {% endblock %}
