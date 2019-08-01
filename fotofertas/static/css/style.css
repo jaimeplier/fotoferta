@@ -617,19 +617,23 @@ header {
 }
 
 .drinkcard-cc.xs {
-    height: 50px;
+    height: 90px;
+    margin-bottom: 1rem;
 }
 
 .drinkcard-cc.sm {
-    height: 75px;
+    height: 105px;
+    margin-bottom: 1rem;
 }
 
 .drinkcard-cc.md {
-    height: 100px;
+    height: 140px;
+    margin-bottom: 1rem;
 }
 
 .drinkcard-cc.lg {
-    height: 150px;
+    height: 190px;
+    margin-bottom: 1rem;
 }
 
 .sizeSelection {
@@ -662,6 +666,10 @@ header {
 
 .frameImage img {
     max-width: 100%;
+}
+
+.btnPreviewModal {
+    margin-top: 1rem !important;
 }
 
 .frameSelection {
@@ -1172,9 +1180,14 @@ footer .footerMenu {
 
 .specialBtn {
     background: #12284c;
-    ;
-
+    color: #ffffff;
 }
+
+.specialBtn:hover {
+    color: #ffffff;
+}
+
+
 
 /*Buttons*/
 
