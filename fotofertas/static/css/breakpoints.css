@@ -71,7 +71,7 @@
         text-align: center;
     }
 
-    .profileToggle:nth-child(2) {
+    .profileToggle {
         border-right: solid 4px #FFB600;
     }
 
@@ -102,7 +102,7 @@
     }
 
     .shoppingCartContainer {
-        text-align: right;
+        text-align: center;
     }
 
     .shoppingCartContainer i {
