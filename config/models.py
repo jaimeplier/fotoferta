@@ -522,14 +522,14 @@ class Orden(models.Model):
     oxxo_order = models.CharField(max_length=12, null=True, blank=True)
     num_guia = models.CharField(max_length=12, null=True, blank=True)
     peso = models.FloatField(default=0)
-    costo_envio = models.FloatField(default=96)
+    costo_envio = models.FloatField(default=0)
     forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, null=True, blank=True)
     comision = models.ForeignKey('Comision', models.DO_NOTHING, null=True, blank=True)
     promocion = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus = models.ForeignKey('EstatusPago', models.DO_NOTHING, default=1)
     estatus_compra = models.ForeignKey('EstatusCompra', models.DO_NOTHING)
     order_id = models.CharField(max_length=512, blank=True, null=True)
-    total = models.FloatField(blank=True, null=True)
+    total = models.FloatField(default=0)
 
 
     class Meta:
@@ -547,7 +547,7 @@ class Producto(models.Model):
     papel_impresion = models.ForeignKey('PapelImpresion', models.DO_NOTHING, null=True, blank=True)
     promocion_aplicada = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING, default=1)
-    subtotal = models.FloatField(blank=True, null=True)
+    subtotal = models.FloatField(default=0)
 
     class Meta:
         managed = True
