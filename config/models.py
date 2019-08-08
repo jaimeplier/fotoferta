@@ -446,7 +446,7 @@ class FotoPrecio(models.Model):
 
 
     def __str__(self):
-        return self.tipo_papel.nombre + ' ' + self.tamanio.nombre
+        return self.tipo_foto.nombre + ' ' + self.tamanio.nombre
 
 class Textura(Catalogo):
     imagen = models.ImageField(upload_to='img_texturas/',

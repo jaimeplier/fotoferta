@@ -1,3 +1,8 @@
+from PIL import Image
+from io import BytesIO
+import sys
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
@@ -5,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta, Categoria
+from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta, Categoria, FotoPrecio
 from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import RegistroFotografiaSerializer, FotografiaSerializer
@@ -27,13 +32,18 @@ class SubirFotografia(APIView):
         descripcion = serializer.validated_data['descripcion']
         etiquetas = serializer.validated_data['etiquetas']
         foto_original = serializer.validated_data['foto']
-        foto_muestra = serializer.validated_data['foto']
+        #publica = serializer.validated_data['publica']
+        publica = True
 
         # list de etiquetas
         etiquetas = etiquetas.split(',')
         etiquetas_objts = []
         for etiqueta in etiquetas:
-            etiquetas_objts.append(Etiqueta.objects.get(pk=etiqueta))
+            try:
+                etiquetas_objts.append(Etiqueta.objects.get(pk=etiqueta))
+            except:
+                nva_etiqueta = Etiqueta.objects.create(nombre=etiqueta)
+                etiquetas_objts.append(nva_etiqueta)
 
         # list de categorias
         categorias = categoria.split(',')
@@ -42,29 +52,51 @@ class SubirFotografia(APIView):
             categorias_objts.append(Categoria.objects.get(pk=categoria))
 
         # Revisar tipo de imagen
-        tipo_foto = TipoFoto.objects.get(pk=1)
-        if tipo_venta_foto == 3:
+        if publica or tipo_venta_foto==1 or tipo_venta_foto==2:
+            tipo_foto = TipoFoto.objects.get(pk=1)
+        else:
             tipo_foto = TipoFoto.objects.get(pk=2)
 
         # Revisar orientacion
-        orientacion = Orientacion.objects.get(pk=1)
+        altura_foto = foto_original.image.height
+        ancho_foto = foto_original.image.width
+        if altura_foto > ancho_foto:
+            orientacion = Orientacion.objects.get(pk=2)  # Vertical
+            # invertir valores de variables para comparar con tamaños del sistema
+            altura_vertical = ancho_foto
+            ancho_vertical = altura_foto
+
+        else:
+            orientacion = Orientacion.objects.get(pk=1)  # Horizontal
 
         # Revisar tamaño de fotografia
-        tamanio = Tamanio.objects.get(pk=1)
+        area_foto = altura_foto * ancho_foto
+        tam_precios = FotoPrecio.objects.filter(tipo_foto=tipo_foto, tamanio__estatus=True) # Filtro de tam foto por tipo de foto
+        # (max_area__gte=5992704, min_area__lte=5992704)
+        tama = tam_precios.filter(max_area__gte=area_foto)
+        # tama2 = tama.filter(min_area__gte=area_foto)
+        if orientacion.pk == 2: # si es vertical compara con altura y ancho invertido
+            tama.filter(min_ancho__gte=ancho_vertical, max_ancho__lte=ancho_vertical)
+            tama.filter(min_altura__gte=altura_vertical, max_altura__lte=altura_vertical)
+        else:
+            tama.filter(min_ancho__gte=ancho_foto, max_ancho__lte=ancho_foto)
+            tama.filter(min_altura__gte=altura_foto, max_altura__lte=altura_foto)
+
+        # Si no se categoriza la imagen en tamaño se regresa un error
+        if len(tama)<=0:
+            return Response({'error': 'No se puede guardar la imagen porque no se pudo categorizar su tamaño.'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        tama.order_by('min_area') # Se ordena por tamaños de menor a mayor
+        foto_precio = tama.first() # Se toma el tamaño mas pequeño (FotoPrecio)
+        tamanio = foto_precio.tamanio
 
         usuario = self.request.user
-        alto_foto = 1234
-        ancho_foto = 1234
 
-        # revisar precio fotografía
-
+        # Asignar precio fotografía
         precio = 0
-        if tipo_venta_foto == 2:
-            # Precio foto normal revisando tamaño
-            precio = 100
-        elif tipo_venta_foto == 3:
-            # Precio foto exclusiva revisando tamaño
-            precio = 200
+        if tipo_venta_foto == 2 or tipo_venta_foto == 3:
+            # Precio foto normal o exclusiva
+            precio = foto_precio.precio
 
         # Aprobacion de fotografia por ser fotopartner
         fotografo = Fotografo.objects.get(pk=self.request.user.pk)
@@ -72,9 +104,40 @@ class SubirFotografia(APIView):
         if fotografo.is_fotopartner:
             aprobada = True
 
-        # ---> REGISTRO DE Fotografia<---
+        # Valores de redimensionamiento de imagen muestra
+        reduccion_tamanio = 0.5
+        tamanio_horizontal_muestra = foto_original.image.width * reduccion_tamanio
+        tamanio_vertical_muestra = foto_original.image.height * reduccion_tamanio
+
+        # Copiar foto original
+        foto_muestra = foto_original
+
+        import os
+        module_dir = os.path.dirname(__file__)
+        archivo_wm = os.path.join(module_dir, 'marca_agua.png')
+        marca_agua = Image.open(archivo_wm) # Abrir archivo de marca de agua
+
+        imagen_temporal = Image.open(foto_muestra)
+        outputIoStream = BytesIO()
+
+        # Redimensionamiento de imagen
+        imagen_temporal_redimensionada = imagen_temporal.resize((int(tamanio_horizontal_muestra), int(tamanio_vertical_muestra)))
+
+        # Marca de agua en mosaico
+        for left in range(0, imagen_temporal_redimensionada.width, marca_agua.width):
+            for top in range(0, imagen_temporal_redimensionada.height, marca_agua.height):
+                imagen_temporal_redimensionada.paste(marca_agua, (left, top),marca_agua)
+
+        # Guarda flujo de datos
+        imagen_temporal_redimensionada.save(outputIoStream, format='JPEG')
+        outputIoStream.seek(0)
+        foto_muestra = InMemoryUploadedFile(outputIoStream, 'ImageField',
+                                               "%s.jpg" % foto_muestra.name.split('.')[0], 'image/jpeg',
+                                               sys.getsizeof(outputIoStream), None)
+
+        # ---> REGISTRO DE FOTOGRAFIA<---
         foto = Fotografia.objects.create(nombre = nombre, usuario= usuario, foto_original=foto_original,
-                                         foto_muestra=foto_muestra, descripcion=descripcion, alto=alto_foto,
+                                         foto_muestra=foto_muestra, descripcion=descripcion, alto=altura_foto,
                                          ancho=ancho_foto, tipo_foto=tipo_foto, orientacion=orientacion, tamanio=tamanio,
                                          precio = precio, aprobada=aprobada)
         foto.categorias.add(*categorias_objts)

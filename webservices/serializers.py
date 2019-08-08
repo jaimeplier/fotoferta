@@ -31,10 +31,16 @@ class TagsSerializer(serializers.Serializer):
 class RegistroFotografiaSerializer(serializers.Serializer):
     foto = serializers.ImageField()
     tipo_venta_foto = serializers.IntegerField(min_value=1, max_value=3)
+    #publica = serializers.BooleanField()
     categoria = serializers.CharField(max_length=100)
     nombre = serializers.CharField(max_length=64)
     descripcion = serializers.CharField(max_length=256)
     etiquetas = serializers.CharField(max_length=100)
+
+    def validate_foto(self, value):
+        if value.size > 25000000:
+            raise serializers.ValidationError('La foto debe ser menor a 25MB')
+        return value
 
 
 class FotografiaSerializer(serializers.ModelSerializer):
