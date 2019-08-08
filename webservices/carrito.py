@@ -37,7 +37,7 @@ class AgregarCarrrito(APIView):
         producto = Producto.objects.create(usuario=request.user, foto=foto, orden=orden_carrito.first(), tipo_compra=tipo_compra)
 
         actualizar_costo_envio(orden_carrito.first())
-        actualizar_costo_producto_orden(producto, orden_carrito.first())
+        actualizar_costo_producto_orden(producto, orden_carrito.first(), 'add')
 
 
         return Response({'exito': 'producto agregado a carrito exitosamente'}, status=status.HTTP_200_OK)
@@ -67,8 +67,11 @@ class DeleteCarrito(APIView):
         # ---> OBTENER FOTOGRAFIA <---
 
         producto = Producto.objects.filter(pk=serializer.validated_data['pk'], usuario=request.user)
+        orden_pk = producto.first().orden.pk
+        actualizar_costo_producto_orden(producto.first(), producto.first().orden, 'delete')
         producto.delete()
-
+        orden = Orden.objects.get(pk=orden_pk)
+        actualizar_costo_envio(orden)
         return Response({'exito': 'Producto eliminado del carrito exitosamente'}, status=status.HTTP_200_OK)
 
     def get_serializer(self):
@@ -92,18 +95,22 @@ def actualizar_costo_envio(orden):
     return
 
 
-def actualizar_costo_producto_orden(producto, orden):
-    if producto.tipo_compra.pk == 1:  # Compra digital
-        producto.subtotal = producto.foto.precio
-    else:  # Compra Fisica
-        producto.subtotal += producto.foto.precio
-        if producto.marco:
-            producto.subtotal += producto.marco.precio
-        if producto.maria_luisa:
-            producto.subtotal += producto.maria_luisa.precio
-        if producto.papel_impresion:
-            producto.subtotal += producto.papel_impresion.precio
-    producto.save()
-    orden.total += producto.subtotal
-    orden.save()
+def actualizar_costo_producto_orden(producto, orden, accion):
+    if accion == 'add':
+        if producto.tipo_compra.pk == 1:  # Compra digital
+            producto.subtotal = producto.foto.precio
+        else:  # Compra Fisica
+            producto.subtotal += producto.foto.precio
+            if producto.marco:
+                producto.subtotal += producto.marco.precio
+            if producto.maria_luisa:
+                producto.subtotal += producto.maria_luisa.precio
+            if producto.papel_impresion:
+                producto.subtotal += producto.papel_impresion.precio
+        producto.save()
+        orden.total += producto.subtotal
+        orden.save()
+    elif accion == 'delete':
+        orden.total -= producto.subtotal
+        orden.save()
     return
