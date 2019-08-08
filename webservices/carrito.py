@@ -5,9 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra
+from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra, Marco, \
+    PapelImpresion
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer
+from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
+    EditProductoSerializer
+
 
 class AgregarCarrrito(APIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
@@ -46,6 +49,42 @@ class AgregarCarrrito(APIView):
     def get_serializer(self):
         return AddFotoCarritoSerializer()
 
+
+class ModificarProductoCarrito(APIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+        serializer = EditProductoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # ---> OBTENER Producto <---
+        producto = Producto.objects.select_for_update().get(pk=serializer.validated_data['producto'])
+        marco = Marco.objects.get(pk=serializer.validated_data['marco'])
+        papel = PapelImpresion.objects.get(pk=serializer.validated_data['papel_impresion'])
+        maria_luisa = PapelImpresion.objects.filter(pk=serializer.data['maria_luisa']).first()
+        tipo_compra = TipoCompra.objects.get(pk=2)
+
+        producto.marco = marco
+        producto.papel_impresion = papel
+        producto.maria_luisa = maria_luisa
+        producto.tipo_compra = tipo_compra
+        producto.save()
+
+        actualizar_costo_envio(producto)
+
+        # Actualiza costos de la orden
+        orden=Orden.objects.get(pk=producto.orden.pk)
+        actualizar_costo_producto_orden(producto, orden, 'delete')
+        actualizar_costo_producto_orden(producto, orden, 'add')
+
+
+        return Response({'exito': 'producto modificado exitosamente'}, status=status.HTTP_200_OK)
+
+
+    def get_serializer(self):
+        return EditProductoSerializer()
+
 class ListCarrito(ListAPIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
     authentication_classes = (SessionAuthentication,)
@@ -78,7 +117,7 @@ class DeleteCarrito(APIView):
         return ProductoPKSerializer()
 
 def actualizar_costo_envio(orden):
-    productos = Producto.objects.filter(orden=orden)
+    productos = Producto.objects.filter(orden=orden, tipo_compra__pk=2)
     cantidad_productos = len(productos)
 
     orden.total -= orden.costo_envio
