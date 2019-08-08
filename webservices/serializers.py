@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
-    FormaPago
+    FormaPago, Marco, PapelImpresion
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -75,6 +75,36 @@ class AddFotoCarritoSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe el tipo de compra seleccionado')
         return value
+
+class EditProductoSerializer(serializers.Serializer):
+    producto = serializers.IntegerField()
+    marco = serializers.IntegerField()
+    papel_impresion = serializers.IntegerField()
+    maria_luisa = serializers.IntegerField(allow_null=True, required=False)
+
+    def validate_pk(self, value):
+        try:
+            prod = Producto.objects.get(pk=value)
+            if prod.usuario != self.request.user:
+                raise serializers.ValidationError('No puedes modificar éste producto')
+        except:
+            raise serializers.ValidationError('No existe el producto seleccionado')
+        return value
+
+    def validate_marco(self, value):
+        try:
+            Marco.objects.get(pk=value, estatus=True)
+        except:
+            raise serializers.ValidationError('No existe el marco seleccionado')
+        return value
+
+    def validate_papel_impresion(self, value):
+        try:
+            PapelImpresion.objects.get(pk=value, estatus=True)
+        except:
+            raise serializers.ValidationError('No existe el papel seleccionado')
+        return value
+
 
 class OrdenSerializer(serializers.ModelSerializer):
     class Meta:
