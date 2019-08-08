@@ -156,7 +156,7 @@ class ListFotosHome(ListAPIView):
     pagination_class = SmallPagesPagination
 
     def get_queryset(self):
-        queryset = Fotografia.objects.all().order_by('?')
+        queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True).order_by('?')
         return queryset
 
 class ListMisFotos(ListAPIView):
