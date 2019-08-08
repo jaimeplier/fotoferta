@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta
+from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
+    FormaPago
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -119,3 +120,52 @@ class TarjetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tarjeta
         fields = ['pk', 'usuario', 'alias', 'terminacion', 'nombre_propietario']
+
+class PagarOrdenSerializer(serializers.Serializer):
+    orden = serializers.IntegerField()
+    metodo_pago = serializers.IntegerField()
+    direccion = serializers.IntegerField()
+    tarjeta = serializers.IntegerField(allow_null=True, required=False)
+
+    def validate_orden(self, value):
+        try:
+            orden = Orden.objects.get(pk=value)
+            orden_usuario = Orden.objects.filter(pk=orden.pk, usuario=self.request.user)
+            if len(orden_usuario)<=0:
+                raise serializers.ValidationError('No es posible pagar la orden de pago seleccionada')
+        except:
+            raise serializers.ValidationError('No existe el producto seleccionado')
+        return value
+
+    def validate_metodo_pago(self, value):
+        try:
+            FormaPago.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe el método de pago seleccionado')
+        return value
+
+    def validate_tarjeta(self, value):
+        try:
+            forma_pago = FormaPago.objects.get(pk=value)
+            if forma_pago.nombre == 'Tarjeta':
+                try:
+                    Tarjeta.objects.get(pk=value)
+                    tarjeta_usuario = Tarjeta.objects.filter(pk=value, usuario=self.request.user)
+                    if tarjeta_usuario <=0:
+                        raise serializers.ValidationError('Debes seleccionar una tarjeta')
+                except:
+                    raise serializers.ValidationError('Debes seleccionar una tarjeta')
+
+        except:
+            raise serializers.ValidationError('No existe el método de pago seleccionado')
+        return value
+
+    def validate_direccion(self, value):
+        try:
+            direccion=Direccion.objects.get(pk=value)
+            direccion_usuario = Direccion.objects.filter(pk=direccion.pk, usuario=self.request.user)
+            if len(direccion_usuario) <= 0:
+                raise serializers.ValidationError('No es posible elegir la dirección seleccionada')
+        except:
+            raise serializers.ValidationError('No existe el método de pago seleccionado')
+        return value
