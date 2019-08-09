@@ -7,10 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra, Marco, \
-    PapelImpresion, FotoPrecio
+    PapelImpresion, FotoPrecio, Tamanio
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
-    EditProductoSerializer, MarcoSerializer
+    EditProductoSerializer, MarcoSerializer, TamanioSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -135,6 +135,26 @@ class ListMarco(ListAPIView):
             area = tamanio_foto_precio.min_area
             tamanios = FotoPrecio.objects.filter(min_area__gte=area).values_list('tamanio__pk', flat=True)
             queryset = Marco.objects.filter(tamanio__pk__in=tamanios)
+        return queryset
+
+class ListTamanio(ListAPIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    serializer_class = TamanioSerializer
+
+    def get_queryset(self):
+        producto_pk = self.request.query_params.get('producto', None)
+        queryset = Marco.objects.none()
+        if producto_pk is not None:
+            try:
+                producto = Producto.objects.get(pk=producto_pk)
+            except:
+                raise ValidationError({"error": ["No existe el producto seleccionado"]})
+            tamanio_foto_precio = FotoPrecio.objects.get(tamanio=producto.foto.tamanio, tipo_foto=producto.foto.tipo_foto)
+            area = tamanio_foto_precio.min_area
+            tamanios = FotoPrecio.objects.filter(min_area__gte=area).values_list('tamanio__pk', flat=True)
+            queryset = Tamanio.objects.filter(pk__in=tamanios)
         return queryset
 
 def actualizar_costo_envio(orden):
