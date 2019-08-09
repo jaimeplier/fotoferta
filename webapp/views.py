@@ -264,9 +264,11 @@ def vista_editar_perfil(request):
     template_name = 'cliente/editar_perfil.html'
     return render(request, template_name)
 
-def vista_marco(request):
+def vista_marco(request, producto):
     template_name = 'cliente/marco.html'
-    return render(request, template_name)
+    prod = Producto.objects.get(pk=producto)
+    context = {'producto': prod}
+    return render(request, template_name, context)
 
 def vista_exclusivas(request):
     template_name = 'cliente/exclusivas.html'
