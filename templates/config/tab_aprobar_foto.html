@@ -76,7 +76,7 @@
 
             function rechazar(id) {
                 $.ajax({
-                    url: "{{ url_rechazar }}"+id,
+                    url: "{{ url_update_rechazar }}"+id,
                     data: {pk: id},
                     type: "POST", // http method
                     // handle a successful response
@@ -86,6 +86,7 @@
 
                     // handle a non-successful response
                     error: function (xhr, errmsg, err) {
+                        console.log(xhr);
                         alert("Ocurrio un error: " + xhr.responseJSON.Error);
                         $('#tabla').dataTable()._fnAjaxUpdate();
                     }
