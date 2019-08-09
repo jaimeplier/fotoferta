@@ -125,16 +125,24 @@ class ListMarco(ListAPIView):
 
     def get_queryset(self):
         producto_pk = self.request.query_params.get('producto', None)
+        tamanio_pk = self.request.query_params.get('tamanio', None)
         queryset = Marco.objects.none()
         if producto_pk is not None:
             try:
                 producto = Producto.objects.get(pk=producto_pk)
             except:
                 raise ValidationError({"error": ["No existe el producto"]})
+            try:
+                tamanio = Tamanio.objects.get(pk=tamanio_pk)
+            except:
+                raise ValidationError({"error": ["No existe el tamaño seleccionado"]})
+
             tamanio_foto_precio = FotoPrecio.objects.get(tamanio=producto.foto.tamanio, tipo_foto=producto.foto.tipo_foto)
             area = tamanio_foto_precio.min_area
             tamanios = FotoPrecio.objects.filter(min_area__gte=area).values_list('tamanio__pk', flat=True)
-            queryset = Marco.objects.filter(tamanio__pk__in=tamanios)
+            if producto.foto.tamanio.pk not in tamanios:
+                raise ValidationError({"error": ["El tamaño no es elegible para este producto"]})
+            queryset = Marco.objects.filter(tamanio__pk=tamanio.pk, estatus=True)
         return queryset
 
 class ListTamanio(ListAPIView):
