@@ -44,7 +44,7 @@ class AgregarCarrrito(APIView):
         actualizar_costo_producto_orden(producto, orden_carrito.first(), 'add')
 
 
-        return Response({'exito': 'producto agregado a carrito exitosamente'}, status=status.HTTP_200_OK)
+        return Response({'exito': 'producto agregado a carrito exitosamente', 'producto_pk':producto.pk}, status=status.HTTP_200_OK)
 
 
     def get_serializer(self):
