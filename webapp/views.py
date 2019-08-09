@@ -245,7 +245,10 @@ def vista_carrito(request):
     template_name = 'cliente/carrito.html'
     context = {}
     productos = Producto.objects.filter(usuario=request.user, orden__estatus_compra__pk=1)
-    context['total'] = productos.first().total_orden
+    if productos.first():
+        context['total'] = productos.first().total_orden
+    else:
+        context['total'] = 0.0
     return render(request, template_name, context)
 
 def vista_foto(request, pk):
