@@ -554,6 +554,10 @@ class Producto(models.Model):
         managed = True
         db_table = 'producto'
 
+    @property
+    def total_orden(self):
+        return self.orden.total
+
 class Descarga(models.Model):
     producto = models.ForeignKey('Producto', models.DO_NOTHING)
     token = models.CharField(max_length=64)
