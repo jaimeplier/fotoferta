@@ -10,7 +10,7 @@ from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPa
     PapelImpresion, FotoPrecio, Tamanio
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
-    EditProductoSerializer, MarcoSerializer, TamanioSerializer
+    EditProductoSerializer, MarcoSerializer, TamanioSerializer, PapelImpresionSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -163,6 +163,23 @@ class ListTamanio(ListAPIView):
             area = tamanio_foto_precio.min_area
             tamanios = FotoPrecio.objects.filter(min_area__gte=area).values_list('tamanio__pk', flat=True)
             queryset = Tamanio.objects.filter(pk__in=tamanios)
+        return queryset
+
+class ListTipoPapel(ListAPIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    serializer_class = PapelImpresionSerializer
+
+    def get_queryset(self):
+        tamanio_pk = self.request.query_params.get('tamanio', None)
+        queryset = PapelImpresion.objects.none()
+        if tamanio_pk is not None:
+            try:
+                tamanio = Tamanio.objects.get(pk=tamanio_pk)
+            except:
+                raise ValidationError({"error": ["No existe el tamaño seleccionado"]})
+            queryset = PapelImpresion.objects.filter(tamanio=tamanio, estatus=True)
         return queryset
 
 def actualizar_costo_envio(orden):
