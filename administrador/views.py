@@ -323,7 +323,6 @@ class MarcoListarAjaxListView(PermissionRequiredMixin, BaseDatatableView):
                                                        'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
         elif column == 'imagen_horizontal':
             if row.imagen_horizontal.url:
-                print(row)
                 return '<img style="width:100%" src="'+ row.imagen_horizontal.url +'" />'
         elif column == 'imagen_vertical':
             if row.imagen_vertical.url:
@@ -1958,7 +1957,7 @@ class UsuariosBloqueadosAjaxListView(PermissionRequiredMixin, BaseDatatableView)
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def aprobar_foto_listar(request):
-    template_name = 'config/tab_base.html'
+    template_name = 'config/tab_aprobar_foto.html'
     context = {}
     context['titulo'] = 'Aprobar fotografías'
     context['encabezados'] = [['ID', True],
@@ -1968,11 +1967,12 @@ def aprobar_foto_listar(request):
                               ['Tamaño', True],
                               ['Tipo de fotografía', True],
                               ['Descripción técnica', True],
-                              ['Estatus', False],
+                              ['Aprobar', False],
                               ['Foto', False],
                               ]
     context['url_ajax'] = reverse('administrador:tab_list_aprobar_foto')
-    context['url_update_estatus'] = '/administrador/fotografo/cambiar_estatus/'
+    context['url_update_estatus'] = '/administrador/foto/cambiar_estatus/'
+    context['url_update_rechazar'] = '/administrador/foto/rechazar/'
     return render(request, template_name, context)
 
 class AprobarFotoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
@@ -1988,12 +1988,17 @@ class AprobarFotoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     settingstime_zone = timezone(settings.TIME_ZONE)
     def render_column(self, row, column):
 
-        if column == 'aprobar':
-            return '<a class="" href ="#"><i class="fa fa-users"></i></a>'
+        if column == 'foto':
+            return '<img style="width:100%" src="' + row.foto_original.url + '" />'
+        elif column == 'aprobar':
+            return '<div  class="buttons-copy buttons-html5" tabindex="0" aria-controls="tabla" onclick=cambiar_estatus('+ str(
+                row.pk) +')><a class="btn generalBtn"><i class="fa fa-check" aria-hidden="true"></i> Aprobar</a></div>' \
+                         '<div  class="buttons-copy buttons-html5" tabindex="0" aria-controls="tabla" onclick=rechazar('+ str(
+                row.pk) +')><a class="btn generalBtn" style="background: #dc3545 !important"><i class="fa fa-check" aria-hidden="true"></i> Rechazar</a></div>'
         return super(AprobarFotoAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Fotografia.objects.filter(aprobada=False)
+        return Fotografia.objects.filter(aprobada=False, estatus=True)
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
@@ -2002,6 +2007,19 @@ class AprobarFotoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
                 correo__icontains=search)| qs.filter(estatus__icontains=search)
         return qs
 
+@permission_required(perm='administrador', login_url='/webapp/login')
+def foto_aprobar(request, pk):
+    foto = get_object_or_404(Fotografia, pk=pk)
+    foto.aprobada = True
+    foto.save()
+    return JsonResponse({'result': 0})\
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def foto_rechazar(request, pk):
+    foto = get_object_or_404(Fotografia, pk=pk)
+    foto.estatus = False
+    foto.save()
+    return JsonResponse({'result': 0})
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def contactanos_listar(request):
