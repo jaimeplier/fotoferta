@@ -118,6 +118,13 @@ class DeleteCarrito(APIView):
         return ProductoPKSerializer()
 
 class ListMarco(ListAPIView):
+    """
+        **Parámetros**
+
+        1. producto: número entero del ID del producto
+        2. tamanio: número entero del ID del tamaño del marco deseado
+
+        """
     permission_classes = (IsAuthenticated, FotopartnerPermission)
     authentication_classes = (SessionAuthentication,)
 
@@ -146,11 +153,16 @@ class ListMarco(ListAPIView):
         return queryset
 
 class ListTamanio(ListAPIView):
+    """
+        **Parámetros**
+
+        1. producto: número entero del ID del producto
+
+        """
     permission_classes = (IsAuthenticated, FotopartnerPermission)
     authentication_classes = (SessionAuthentication,)
 
     serializer_class = TamanioSerializer
-
     def get_queryset(self):
         producto_pk = self.request.query_params.get('producto', None)
         queryset = Marco.objects.none()
@@ -166,6 +178,12 @@ class ListTamanio(ListAPIView):
         return queryset
 
 class ListTipoPapel(ListAPIView):
+    """
+        **Parámetros**
+
+        1. tamanio: número entero del ID del tamaño de papel
+
+        """
     permission_classes = (IsAuthenticated, FotopartnerPermission)
     authentication_classes = (SessionAuthentication,)
 
