@@ -1994,7 +1994,7 @@ class AprobarFotoAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             return '<div  class="buttons-copy buttons-html5" tabindex="0" aria-controls="tabla" onclick=cambiar_estatus('+ str(
                 row.pk) +')><a class="btn generalBtn"><i class="fa fa-check" aria-hidden="true"></i> Aprobar</a></div>' \
                          '<div  class="buttons-copy buttons-html5" tabindex="0" aria-controls="tabla" onclick=rechazar('+ str(
-                row.pk) +')><a class="btn generalBtn" style="background: #dc3545 !important"><i class="fa fa-check" aria-hidden="true"></i> Rechazar</a></div>'
+                row.pk) +')><a class="btn generalBtn" style="background: #dc3545 !important"><i class="fa fa-times-circle" aria-hidden="true"></i> Rechazar</a></div>'
         return super(AprobarFotoAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
