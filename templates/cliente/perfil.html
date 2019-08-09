@@ -492,25 +492,31 @@
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-12" style="padding-bottom: 15px;">
-                                            <select id="categorias" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                            <label style="float:left" for="categorias">Categorías</label>
+                                            <select id="categorias" class="js-example-basic-multiple"
+                                             name="categorias[]" multiple="multiple" style="width: 100%">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <input type="email" class="form-control" id="nombre_foto" placeholder="Nombre de la fotografia">
+                                                    <label style="float:left" for="nombre_foto">Título</label>
+                                                <input type="email" class="form-control" id="nombre_foto" >
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12" style="padding-bottom: 15px;">
-                                            <select id="etiquetas_foto" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
+                                            <label style="float:left" for="etiquetas_foto">Elige etiquetas para tu foto</label>
+                                            <select id="etiquetas_foto" class="js-example-basic-multiple select2" name="etiquetas[]" multiple="multiple" 
+                                            style="width: 100%">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                                <label style="float:left" for="descripcion_foto">Descripción</label>
                                             <textarea class="form-control" id="descripcion_foto" rows="3" placeholder="Historia o descripción de la fotografía"></textarea>
                                         </div>
                                     </div>
@@ -584,6 +590,21 @@
             readURL(this);
         });
 
+        // $('#etiquetas_foto').select2({
+        //     tags: true,
+        // });
+
+        $('#etiquetas_foto').select2({
+            tags: true,
+            data: [],
+            tokenSeparators: [','], 
+            placeholder: "Add your tags here",
+            /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
+            selectOnClose: true, 
+            closeOnSelect: false
+        });
+
+
         $.ajax({
             url: "/ws/list_categorias/",
             type: "GET",
@@ -626,6 +647,18 @@
                         .text(json[i].nombre)
                     );
                 }
+
+                $('#etiquetas_foto').select2({
+                    tags: true,
+                    tokenSeparators: [','], 
+                    placeholder: "Add your tags here",
+                    /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
+                    selectOnClose: true, 
+                    closeOnSelect: false
+                });
+
+
+
             }
         })
 
