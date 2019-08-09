@@ -1,15 +1,16 @@
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra, Marco, \
-    PapelImpresion
+    PapelImpresion, FotoPrecio
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
-    EditProductoSerializer
+    EditProductoSerializer, MarcoSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -115,6 +116,26 @@ class DeleteCarrito(APIView):
 
     def get_serializer(self):
         return ProductoPKSerializer()
+
+class ListMarco(ListAPIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    serializer_class = MarcoSerializer
+
+    def get_queryset(self):
+        producto_pk = self.request.query_params.get('producto', None)
+        queryset = Marco.objects.none()
+        if producto_pk is not None:
+            try:
+                producto = Producto.objects.get(pk=producto_pk)
+            except:
+                raise ValidationError({"error": ["No existe el producto"]})
+            tamanio_foto_precio = FotoPrecio.objects.get(tamanio=producto.foto.tamanio, tipo_foto=producto.foto.tipo_foto)
+            area = tamanio_foto_precio.min_area
+            tamanios = FotoPrecio.objects.filter(min_area__gte=area).values_list('tamanio__pk', flat=True)
+            queryset = Marco.objects.filter(tamanio__pk__in=tamanios)
+        return queryset
 
 def actualizar_costo_envio(orden):
     productos = Producto.objects.filter(orden=orden, tipo_compra__pk=2)

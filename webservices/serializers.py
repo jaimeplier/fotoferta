@@ -130,6 +130,12 @@ class ProductoSerializer(serializers.ModelSerializer):
         fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
                   'promocion_aplicada', 'subtotal']
 
+class MarcoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Marco
+        fields = '__all__'
+
 class ProductoPKSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
 
