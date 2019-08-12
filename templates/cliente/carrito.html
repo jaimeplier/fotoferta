@@ -1,4 +1,3 @@
-
 {% extends 'config/base.html' %}
 {% load widget_tweaks %}
 {% load static %}
@@ -253,7 +252,7 @@
                                         <!--De acuerdo con la seleccion de usuario, se muestra la opción de pago-->
                                         <div class="row">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <a href="#" class="btn generalBtn">Realizar Pago</a>
+                                                <a href="#" class="btn generalBtn specialBtn">Realizar Pago</a>
                                             </div>
                                         </div>
                                     </div>
@@ -271,21 +270,21 @@
 {% block scripts %}
 <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
-        $('document').ready(function(){
-            $.ajax({
-                url: "/ws/listar_carrito/",
-                type: "GET",
-                cache: false,
-                success: function (json) {
-                    console.log(json);
-                    for(let i of json) {
-                        var text = `
-                    <div id="orden`+ i.pk +`">
+    $('document').ready(function() {
+        $.ajax({
+            url: "/ws/listar_carrito/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                console.log(json);
+                for (let i of json) {
+                    var text = `
+                    <div id="orden` + i.pk + `">
                         <div class="row itemCartContainer">
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 imageBuyCart">
                                 <div class="row">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <img src="`+ i.foto.foto_muestra +`">
+                                        <img src="` + i.foto.foto_muestra + `">
                                     </div>
                                 </div>
                             </div>
@@ -294,11 +293,11 @@
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3 offset-9">
                                         <p>`
 
-                            if(i.tipo_compra != 1) {
-                                text += `<button onclick="editarOrden(`+ i.pk +`)"><i class="fas fa-pencil-alt"></i></button>`
-                            }
+                    if (i.tipo_compra != 1) {
+                        text += `<button onclick="editarOrden(` + i.pk + `)"><i class="fas fa-pencil-alt"></i></button>`
+                    }
 
-                                text += `<button onclick="eliminarOrden(`+ i.pk +`)"><i class="far fa-trash-alt"></i></button></p>
+                    text += `<button onclick="eliminarOrden(` + i.pk + `)"><i class="far fa-trash-alt"></i></button></p>
                                     </div>
                                 </div>
                                 <div class="row imagePriceDetails">
@@ -306,13 +305,13 @@
                                         <h4 class="imageName">Nombre de la Imagen:</h4>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                        <h5 class="imagePrice">`+ i.foto.nombre +`</h5>
+                                        <h5 class="imagePrice">` + i.foto.nombre + `</h5>
                                     </div>
                                 </div>
                                 `
 
-                        if(i.marco) {
-                            text += `
+                    if (i.marco) {
+                        text += `
                                 <div class="row framePriceDetails">
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
                                         <h4><i class="fas fa-plus"></i> Tipo de marco:</h4>
@@ -346,54 +345,54 @@
                                     </div>
                                 </div>
                              `
-                                } else {
-                                text += `
+                    } else {
+                        text += `
                                 <div class="row framePriceDetails">
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
                                         <h4><i class="fas fa-plus"></i> Digital:</h4>
                                     </div>
                                 </div>`
-                            }
-                                text += `
+                    }
+                    text += `
                                     <div class="row totalPriceDetails">
                                         <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 offset-xl-6 offset-lg-4 offset-md-2">
-                                            <h4>Subtotal: <span class="totalPrice">$`+ i.subtotal +`</span></h4>`
+                                            <h4>Subtotal: <span class="totalPrice">$` + i.subtotal + `</span></h4>`
 
-                            if(i.tipo_compra == 1) {
+                    if (i.tipo_compra == 1) {
 
-                                text += `<button type="button" class="btn btn-warning" onclick="agregarMarco(`+ i.pk +`)">+ Agrega un marco a tu foto</button>`
-                            }
-                                 text += `</div>
+                        text += `<button type="button" class="btn btn-warning" onclick="agregarMarco(` + i.pk + `)">+ Agrega un marco a tu foto</button>`
+                    }
+                    text += `</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `
                     $('#cont_ordenes').append(text)
-                    }
-
                 }
-            })
+
+            }
+        })
 
 
-        });
+    });
 
     function editarOrden(id) {
-       console.log(id)
-       /* $.ajax({
-            url: "/ws/agregar_carrito/",
-            type: "POST",
-            cache: false,
-            data: data,
-            success: function (res) {
-                console.log(res)
-                window.location.href = "{% url 'webapp:vista_carrito' %}"
-            },
-            error: (err) => {console.log(err)}
-        }) */
+        console.log(id)
+        /* $.ajax({
+             url: "/ws/agregar_carrito/",
+             type: "POST",
+             cache: false,
+             data: data,
+             success: function (res) {
+                 console.log(res)
+                 window.location.href = "{% url 'webapp:vista_carrito' %}"
+             },
+             error: (err) => {console.log(err)}
+         }) */
     }
 
-     function eliminarOrden(id) {
+    function eliminarOrden(id) {
         $.ajax({
             url: "/ws/eliminar_producto_carrito/",
             type: "POST",
@@ -401,32 +400,37 @@
             data: {
                 pk: id
             },
-            success: function (res) {
+            success: function(res) {
                 console.log(res)
                 window.location.href = "{% url 'webapp:vista_carrito' %}"
             },
-            error: (err) => {console.log(err)}
+            error: (err) => {
+                console.log(err)
+            }
         })
     }
-     function agregarMarco(id) {
-                window.location.href = "{% url 'webapp:vista_marco' %}"
-     }
 
-     function showOxxo() {
+    function agregarMarco(id) {
+        window.location.href = "{% url 'webapp:vista_marco' %}"
+    }
+
+    function showOxxo() {
         $('#oxxoForm').show();
         $('#tarjetaForm').hide();
         $('#speiForm').hide();
-     }
-     function showTarjeta() {
+    }
+
+    function showTarjeta() {
         $('#tarjetaForm').show()
-         $('#oxxoForm').hide();
+        $('#oxxoForm').hide();
         $('#speiForm').hide();
-     }
-     function showSpei() {
+    }
+
+    function showSpei() {
         $('#speiForm').show();
         $('#tarjetaForm').hide();
         $('#oxxoForm').hide();
-     }
+    }
 
 </script>
 {% endblock %}
