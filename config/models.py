@@ -205,7 +205,7 @@ class Tarjeta(models.Model):
     ultimos_digitos = models.CharField(max_length=5)
     token = models.CharField(max_length=64)
     alias = models.CharField(max_length=128)
-    nombre_propietario = models.CharField(max_length=256)
+    nombre_propietario = models.CharField(max_length=32)
     estatus = models.BooleanField(default=True)
 
     class Meta:
@@ -283,6 +283,7 @@ class Fotografia(models.Model):
     usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
     foto_original = models.ImageField(upload_to='foto_original/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     foto_muestra = models.ImageField(upload_to='foto_muestra/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
+    foto_home = models.ImageField(upload_to='foto_home/', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg'])])
     descripcion = models.TextField(max_length=256, null=True, blank=True)
     alto = models.IntegerField()  # pixeles
     ancho = models.IntegerField()  # pixeles

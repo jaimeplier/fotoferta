@@ -51,6 +51,7 @@ class FotografiaSerializer(serializers.ModelSerializer):
                   'nombre',
                   'usuario',
                   'foto_muestra',
+                  'foto_home',
                   'descripcion',
                   'tipo_foto',
                   'etiquetas',
