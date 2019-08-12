@@ -344,7 +344,6 @@ class Categoria(Catalogo):
         db_table = 'categoria'
 
 class Tamanio(Catalogo):
-
     class Meta:
         managed = True
         db_table = 'tamanio'
@@ -433,6 +432,13 @@ class FotoPrecio(models.Model):
     tipo_foto = models.ForeignKey("TipoFoto", models.DO_NOTHING)  # Default tipo normal
     precio = models.FloatField()
     estatus = models.BooleanField(default=True)
+    min_altura = models.PositiveIntegerField()
+    min_ancho = models.PositiveIntegerField()
+    min_area = models.PositiveIntegerField()
+
+    max_altura = models.PositiveIntegerField()
+    max_ancho = models.PositiveIntegerField()
+    max_area = models.PositiveIntegerField()
 
     class Meta:
         managed = True
@@ -440,7 +446,7 @@ class FotoPrecio(models.Model):
 
 
     def __str__(self):
-        return self.tipo_papel.nombre + ' ' + self.tamanio.nombre
+        return self.tipo_foto.nombre + ' ' + self.tamanio.nombre
 
 class Textura(Catalogo):
     imagen = models.ImageField(upload_to='img_texturas/',
@@ -516,14 +522,14 @@ class Orden(models.Model):
     oxxo_order = models.CharField(max_length=12, null=True, blank=True)
     num_guia = models.CharField(max_length=12, null=True, blank=True)
     peso = models.FloatField(default=0)
-    costo_envio = models.FloatField(default=96)
+    costo_envio = models.FloatField(default=0)
     forma_pago = models.ForeignKey('FormaPago', models.DO_NOTHING, null=True, blank=True)
     comision = models.ForeignKey('Comision', models.DO_NOTHING, null=True, blank=True)
     promocion = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus = models.ForeignKey('EstatusPago', models.DO_NOTHING, default=1)
     estatus_compra = models.ForeignKey('EstatusCompra', models.DO_NOTHING)
     order_id = models.CharField(max_length=512, blank=True, null=True)
-    total = models.FloatField(blank=True, null=True)
+    total = models.FloatField(default=0)
 
 
     class Meta:
@@ -536,16 +542,21 @@ class Producto(models.Model):
     orden = models.ForeignKey('Orden', models.CASCADE, related_name='productos')
     foto = models.ForeignKey(Fotografia, models.DO_NOTHING)
     marco = models.ForeignKey(Marco, models.DO_NOTHING, null=True, blank=True)
+    tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING, null=True, blank=True)
     maria_luisa = models.ForeignKey(MariaLuisa, models.DO_NOTHING, null=True, blank=True)
     tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
     papel_impresion = models.ForeignKey('PapelImpresion', models.DO_NOTHING, null=True, blank=True)
     promocion_aplicada = models.ForeignKey('Promocion', models.DO_NOTHING, null=True, blank=True)
     estatus_pago_fotografo = models.ForeignKey(EstatusPago, models.DO_NOTHING, default=1)
-    subtotal = models.FloatField(blank=True, null=True)
+    subtotal = models.FloatField(default=0)
 
     class Meta:
         managed = True
         db_table = 'producto'
+
+    @property
+    def total_orden(self):
+        return self.orden.total
 
 class Descarga(models.Model):
     producto = models.ForeignKey('Producto', models.DO_NOTHING)

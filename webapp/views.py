@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.http import HttpResponseRedirect, JsonResponse
 
-from config.models import Fotografo, Rol, Fotografia, Direccion
+from config.models import Fotografo, Rol, Fotografia, Direccion, Producto
 from webapp.forms import RegistroForm, DireccionForm
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
@@ -240,9 +240,16 @@ def vista_perfil(request):
     template_name = 'cliente/perfil.html'
     return render(request, template_name)
 
+@permission_required(perm='fotopartner', login_url='/webapp/login')
 def vista_carrito(request):
     template_name = 'cliente/carrito.html'
-    return render(request, template_name)
+    context = {}
+    productos = Producto.objects.filter(usuario=request.user, orden__estatus_compra__pk=1)
+    if productos.first():
+        context['total'] = productos.first().total_orden
+    else:
+        context['total'] = 0.0
+    return render(request, template_name, context)
 
 def vista_foto(request, pk):
     foto = Fotografia.objects.get(pk=pk)
@@ -257,9 +264,11 @@ def vista_editar_perfil(request):
     template_name = 'cliente/editar_perfil.html'
     return render(request, template_name)
 
-def vista_marco(request):
+def vista_marco(request, producto):
     template_name = 'cliente/marco.html'
-    return render(request, template_name)
+    prod = Producto.objects.get(pk=producto)
+    context = {'producto': prod}
+    return render(request, template_name, context)
 
 def vista_exclusivas(request):
     template_name = 'cliente/exclusivas.html'

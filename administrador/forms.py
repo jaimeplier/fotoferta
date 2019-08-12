@@ -197,10 +197,18 @@ class FotoPrecioForm(ModelForm):
             'tipo_foto',
             'tamanio',
             'precio',
+            'min_ancho',
+            'min_altura',
+            'max_ancho',
+            'max_altura',
             'estatus',
         ]
 
         labels = {
             'tamanio': 'Tamaño',
             'tipo_foto': 'Tipo de foto',
+            'min_altura': 'Altura minima',
+             'min_ancho': 'Ancho minimo',
+             'max_altura': 'Altura maxima',
+             'max_ancho': 'Ancho maximo',
               }

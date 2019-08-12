@@ -122,6 +122,8 @@ urlpatterns = [
 
     path('aprobar_foto/listar/', views.aprobar_foto_listar, name='list_aprobar_foto'),
     path('aprobar_foto/ajax/', AprobarFotoAjaxListView.as_view(), name='tab_list_aprobar_foto'),
+    path('foto/cambiar_estatus/<int:pk>', views.foto_aprobar, name='cambiar_estatus_foto'),
+    path('foto/rechazar/<int:pk>', views.foto_rechazar, name='rechazar_foto'),
 
     path('tipo_papel/nuevo/', TipoPapelCrear.as_view(), name='nuevo_tipo_papel'),
     path('tipo_papel/listar/', views.tipo_papel_listar, name='list_tipo_papel'),
@@ -133,7 +135,7 @@ urlpatterns = [
     path('tabla_contactanos/', ContactanosListarAjaxListView.as_view(), name='tab_list_contactanos'),
     path('contactanos/editar/<int:pk>', ContactanosActualizar.as_view(), name='edit_contactanos'),
 
-    path('detalle_usuario/<int:pk>', DetalleUsuario.as_view(), name='detalle_usuario'),
+    path('detalle_usuario/<slug:pk>', DetalleUsuario.as_view(), name='detalle_usuario'),
 
     path('menu/', views.menu, name='admin_menu'),
 
