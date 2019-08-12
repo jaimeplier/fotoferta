@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
-    FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel
+    FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -153,6 +153,11 @@ class PapelImpresionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PapelImpresion
         fields = ['pk', 'tipo_papel', 'precio']
+
+class TexturaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Textura
+        fields = ['pk', 'nombre', 'imagen']
 
 class ProductoPKSerializer(serializers.Serializer):
     pk = serializers.IntegerField()

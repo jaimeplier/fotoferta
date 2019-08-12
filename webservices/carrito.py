@@ -7,10 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra, Marco, \
-    PapelImpresion, FotoPrecio, Tamanio
+    PapelImpresion, FotoPrecio, Tamanio, Textura
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
-    EditProductoSerializer, MarcoSerializer, TamanioSerializer, PapelImpresionSerializer
+    EditProductoSerializer, MarcoSerializer, TamanioSerializer, PapelImpresionSerializer, TexturaSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -199,6 +199,24 @@ class ListTipoPapel(ListAPIView):
                 raise ValidationError({"error": ["No existe el tamaño seleccionado"]})
             queryset = PapelImpresion.objects.filter(tamanio=tamanio, estatus=True)
         return queryset
+
+
+class ListTexturas(ListAPIView):
+    """
+        **Descripción**
+
+        Lista todos los lienzos o texturas para el simulador de marcos
+
+        """
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    serializer_class = TexturaSerializer
+
+    def get_queryset(self):
+        queryset = Textura.objects.filter(estatus=True)
+        return queryset
+
 
 def actualizar_costo_envio(orden):
     productos = Producto.objects.filter(orden=orden, tipo_compra__pk=2)
