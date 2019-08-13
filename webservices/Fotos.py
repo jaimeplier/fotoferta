@@ -114,7 +114,7 @@ class SubirFotografia(APIView):
 
         import os
         module_dir = os.path.dirname(__file__)
-        archivo_wm = os.path.join(module_dir, 'marca_agua.png')
+        archivo_wm = os.path.join(module_dir, 'marca_agua_f.png')
         marca_agua = Image.open(archivo_wm) # Abrir archivo de marca de agua
 
         imagen_temporal = Image.open(foto_muestra)
