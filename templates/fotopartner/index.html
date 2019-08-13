@@ -182,7 +182,7 @@
                 for (let [idx, i] of json.results.entries()) {
                     $('#sec1_fotos').append(`
                         <div class="card">
-                            <a href= "/webapp/foto/` + i.pk + `"><img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top"
+                            <a href= "/webapp/foto/` + i.pk + `"><img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
                             ></a>
                         </div>
                     `)
@@ -198,7 +198,7 @@
                             for (let [idx, j] of json2.results.entries()) {
                                 $('#sec2_fotos').append(`
                                 <div class="card">
-                                    <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_muestra + `" alt="Card image top"
+                                    <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_home + `" alt="Card image top"
                                     ></a>
                                 </div>
                                 `)
@@ -227,7 +227,7 @@ function cargarFotos() {
                 for (let [idx, j] of json.results.entries()) {
                     $('#sec3_fotos').append(`
                         <div class="card">
-                            <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_muestra + `" alt="Card image top"
+                            <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_home + `" alt="Card image top"
                             ></a>
                         </div>
                     `)

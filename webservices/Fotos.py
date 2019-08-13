@@ -105,7 +105,7 @@ class SubirFotografia(APIView):
             aprobada = True
 
         # Valores de redimensionamiento de imagen muestra
-        reduccion_tamanio = 0.5
+        reduccion_tamanio = 0.3
         tamanio_horizontal_muestra = foto_original.image.width * reduccion_tamanio
         tamanio_vertical_muestra = foto_original.image.height * reduccion_tamanio
 
@@ -119,10 +119,18 @@ class SubirFotografia(APIView):
 
         imagen_temporal = Image.open(foto_muestra)
         outputIoStream = BytesIO()
+        outputIoStream_home = BytesIO()
 
         # Redimensionamiento de imagen
         imagen_temporal_redimensionada = imagen_temporal.resize((int(tamanio_horizontal_muestra), int(tamanio_vertical_muestra)))
 
+        # Guarda flujo de datos para foto home sin marca de agua
+        foto_home = imagen_temporal_redimensionada
+        imagen_temporal_redimensionada.save(outputIoStream_home, format='JPEG')
+        outputIoStream_home.seek(0)
+        foto_home = InMemoryUploadedFile(outputIoStream_home, 'ImageField',
+                                            "%s.jpg" % foto_muestra.name.split('.')[0], 'image/jpeg',
+                                            sys.getsizeof(outputIoStream_home), None)
         # Marca de agua en mosaico
         for left in range(0, imagen_temporal_redimensionada.width, marca_agua.width):
             for top in range(0, imagen_temporal_redimensionada.height, marca_agua.height):
@@ -137,7 +145,7 @@ class SubirFotografia(APIView):
 
         # ---> REGISTRO DE FOTOGRAFIA<---
         foto = Fotografia.objects.create(nombre = nombre, usuario= usuario, foto_original=foto_original,
-                                         foto_muestra=foto_muestra, descripcion=descripcion, alto=altura_foto,
+                                         foto_muestra=foto_muestra, foto_home=foto_home, descripcion=descripcion, alto=altura_foto,
                                          ancho=ancho_foto, tipo_foto=tipo_foto, orientacion=orientacion, tamanio=tamanio,
                                          precio = precio, aprobada=aprobada)
         foto.categorias.add(*categorias_objts)
