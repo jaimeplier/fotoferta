@@ -173,7 +173,7 @@ class ListTamanio(ListAPIView):
                 raise ValidationError({"error": ["No existe el producto seleccionado"]})
             tamanio_foto_precio = FotoPrecio.objects.get(tamanio=producto.foto.tamanio, tipo_foto=producto.foto.tipo_foto)
             area = tamanio_foto_precio.min_area
-            tamanios = FotoPrecio.objects.filter(min_area__gte=area).values_list('tamanio__pk', flat=True)
+            tamanios = FotoPrecio.objects.filter(min_area__lte=area).values_list('tamanio__pk', flat=True)
             queryset = Tamanio.objects.filter(pk__in=tamanios)
         return queryset
 
