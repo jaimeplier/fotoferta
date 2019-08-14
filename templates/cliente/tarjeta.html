@@ -1,0 +1,125 @@
+{% extends "config/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 centerDiv">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h1>{{ titulo }}</h1>
+                            <p>{{ instrucciones }}</p>
+                        </div>
+                    </div>
+                    <form id="card-form" class="row" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    {% for field in form %}
+                                        <div class="row formsContainer">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
+                                                {% if field.field.required %}
+                                                    {% if field.auto_id == 'id_token' %}
+                                                        {% comment %} Ignora campo para agregarse token por js {% endcomment %}
+                                                    {% elif field|field_type == 'booleanfield' %}
+                                                        <label for="{{ field.auto_id }}">* {{ field.label }}</label>
+                                                        {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% else %}
+                                                        <label for="{{ field.auto_id }}">* {{ field.label }}</label>
+                                                        {% render_field field class+="validate form-control" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if field|field_type == 'booleanfield' %}
+                                                        <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                        {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% else %}
+                                                        {% render_field field class+="validate form-control" placeholder=field.label %}
+                                                        <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                    {% if messages %}
+                                        <ul class="messages">
+                                            {% for message in messages %}
+                                                <p id="mensaje-conekta" class="{{ message.tags }}">{{ message }}</p>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 offset-xl-4 offset-lg-4 offset-md-4">
+                                    <button class="btn generalBtn" type="submit" name="action"><i
+                                            class="far fa-save"></i> Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
+    <script type="text/javascript">
+
+        Conekta.setPublicKey('key_LamPoYtXxogg5ACRTSqgjRg');
+
+        var conektaSuccessResponseHandler = function (token) {
+            var $form = $("#card-form");
+            //Inserta el token_id en la forma para que se envíe al servidor
+            $form.append($('<input type="hidden" name="token" id="id_token">').val(token.id));
+            $form.get(0).submit(); //Hace submit
+        };
+        var conektaErrorResponseHandler = function (response) {
+            var $form = $("#card-form");
+            console.log(response.message_to_purchaser)
+            $form.find("#mensaje-conekta").text(response.message_to_purchaser);
+            $form.find("button").prop("disabled", false);
+        };
+
+        //jQuery para que genere el token después de dar click en submit
+        $(function () {
+            $("#card-form").submit(function (event) {
+                var $form = $(this);
+                console.log($(this))
+                // Previene hacer submit más de una vez
+                $form.find("button").prop("disabled", true);
+                Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
+                return false;
+            });
+        });
+        $("document").ready(function () {
+            $('.invalid-feedback').show();
+        });
+    </script>
+{% endblock %}
