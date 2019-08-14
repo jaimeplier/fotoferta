@@ -1543,7 +1543,63 @@ form {
 .exclusiveRow h1 {
     margin-bottom: 2rem;
     margin-top: 2rem;
-    color: rgba(255, 255, 255, 1) !important;
+    color: #FFB600 !important;
+}
+
+.exclusiveGallery .masonryContainer .card-columns .card {
+    border-image: linear-gradient(135deg, #FFB600 0%, #ed9017 100%);
+    border-image-slice: 5;
+    border-width: 5px;
+    overflow: hidden;
+}
+
+.exclusiveGallery .masonryContainer .card-columns .card::after {
+    content: 'EXCLUSIVA';
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f6e6b4+0,ed9017+100;Yellow+3D+%231 */
+    background: #FFB600;
+    background: -moz-linear-gradient(-45deg, #FFB600 0%, #ed9017 100%);
+    background: -webkit-linear-gradient(-45deg, #FFB600 0%, #ed9017 100%);
+    background: linear-gradient(135deg, #FFB600 0%, #ed9017 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6e6b4', endColorstr='#ed9017', GradientType=1);
+    width: 120px;
+    height: 30px;
+    font-size: 12px;
+    padding: 6px 26px;
+    color: #ffffff;
+    position: absolute;
+    top: 13px;
+    right: -25px;
+    transform: rotate(40deg);
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
 }
 
 /*Exclusive Gallery*/
+/*Loader*/
+#loader {
+    display: none;
+}
+
+.loaderContainer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 10001;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding: 15% 0;
+}
+
+.loaderContent {
+    padding: 7% 0;
+}
+
+.loaderContent i {
+    color: #12284c;
+    font-size: 7rem;
+}
+
+/*Loader*/

@@ -32,7 +32,8 @@
                                     <h5>Paso 1. Selecciona un tamaño para tu imagen</h5>
                                 </div>
                             </div>
-                            <div class="row cc-selector frameSizesSelection">
+                            <div class="row cc-selector frameSizesSelection" id="container_tamanios">
+                                <!--
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                     <input id="frameXs" type="radio" name="frameSelection" value="frameXs" onclick="setStage1(1)" />
                                     <label class="drinkcard-cc sizeSelection xs" for="frameXs"></label>
@@ -49,6 +50,7 @@
                                     <input id="frameLg" type="radio" name="frameSelection" value="frameLg" onclick="setStage1(4)" />
                                     <label class="drinkcard-cc sizeSelection lg" for="frameLg"></label>
                                 </div>
+                                -->
                             </div>
                             <!-- <div class="row">
                                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 centerDiv">
@@ -80,7 +82,7 @@
                     </div>
                 </div>
 -->
-
+                                                        <!--
                                                         <div class="item">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <div class="row">
@@ -118,7 +120,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+                                                        -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,8 +145,9 @@
                                     <div class="row woodenFrameSelection">
                                         <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
                                             <div class="row">
-                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" >
                                                     <div id="woodenFrameCarousel" class="owl-carousel owl-theme">
+
                                                         <div class="item">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <div class="row frameImageSelector">
@@ -173,6 +176,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
                                                         <div class="item">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <div class="row frameImageSelector">
@@ -328,6 +332,67 @@
 
 {% block scripts %}
 <script>
+let sizeClasses = ['lg', 'md', 'sm', 'xs']
+let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
+
+    $('document').ready(function() {
+        $.ajax({
+            url: "/ws/listar_tamanios?producto=" + {{ producto.pk }},
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('tamanios', json)
+                for (const [i, obj] of json.entries()) {
+                    console.log(i, obj)
+                    $('#container_tamanios').append(`
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+                            <input id="` + sizeIds[i] + `" type="radio" name="frameSelection" value="` + sizeIds[i] + `" onclick="setStage1(`+ obj.pk +`)" />
+                            <label class="drinkcard-cc sizeSelection ` + sizeClasses[i] + `" for="` + sizeIds[i] +`"></label>
+                        </div>
+                    `)
+                }
+            }
+        })
+
+         $.ajax({
+            url: "/ws/listar_texturas/",
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('texturas', json)
+                for (i in json) {
+
+                }
+            }
+        })
+
+         $.ajax({
+            url: "/ws/listar_tipos_papel/",
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('tipos papel', json)
+                for (i in json) {
+
+                }
+            }
+        })
+
+        $.ajax({
+            url: "/ws/listar_marcos/",
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('marcos',json)
+                for (i in json) {
+
+                }
+            }
+        })
+
+    })
+
+
     var res_stage1;
     var res_stage2;
     var res_stage3;
@@ -335,11 +400,14 @@
 
     function setStage1(res) {
         res_stage1 = res;
+        listar_tipos_papel();
         hideStages(2)
     }
 
     function setStage2(res) {
         res_stage2 = res;
+        console.log('res 2', res_stage2)
+        listar_marcos()
         hideStages(3)
     }
 
@@ -363,6 +431,70 @@
         }
         $('#stage' + exception).show();
     }
+
+    function listar_tipos_papel() {
+        $.ajax({
+            url: "/ws/listar_tipos_papel?tamanio=" + res_stage1,
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('tipos papel', json)
+                for (const [i, obj] of json.entries()) {
+                    console.log(i, obj)
+                    $('#paperCarousel').append(`
+                        <div class="item">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 paperFrame" onclick="setStage2(`+ obj.pk +`)">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paperdetails">
+                                        <p>`+ obj.tipo_papel.nombre +`<br>$`+ obj.precio +`</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                }
+            }
+        })
+
+    }
+    function listar_marcos() {
+        $.ajax({
+            url: "/ws/listar_marcos?tamanio=" + res_stage1 + '&producto=' + {{ producto.pk }},
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('tipos papel', json)
+                for (const [i, obj] of json.entries()) {
+                    console.log(i, obj)
+                    $('#woodenFrameCarousel').append(`
+                        <div class="item">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row frameImageSelector">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <img onclick="setStage3(1)" style="cursor:pointer" src="{% static 'images/Marcos/Dali/ME2DI.png' %}">
+
+                                        <!-- En vez de statis usar esto +  obj.imagen_vertical -->
+
+                                    </div>
+                                </div>
+                                <div class="row frameImageDetails">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <h5>$`+ obj.precio +`</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `)
+                }
+            }
+        })
+
+    }
+
 
 </script>
 

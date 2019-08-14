@@ -10,7 +10,7 @@
                         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 col-8 photoUserProfileImage">
                             <a href="profile.html">
                                 {% if foto.usuario.foto_perfil %}
-                                    <img src="{{ foto.usuario.foto_perfil.url }}">
+                                    <img src="{{ foto.usuario.foto_perfil.url }}" >
                                 {% else %}
                                     <img src="{% static "/images/user.png" %}">
                                 {%  endif %}
@@ -55,7 +55,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 btnSaleDigital">
-                                    <a href="#" class="btn generalBtn specialBtn"><i class="fas fa-print"></i> Imprime y enmarca</a>
+                                    <button onclick="agregarMarco({{ foto.pk }})" class="btn generalBtn specialBtn"><i class="fas fa-print"></i> Imprime y enmarca</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -157,6 +157,26 @@
             error: (err) => {console.log(err)}
         })
     }
+
+    function agregarMarco(id) {
+        var data = {
+            pk: id,
+            tipo_compra: 1
+        }
+        $.ajax({
+            url: "/ws/agregar_carrito/",
+            type: "POST",
+            cache: false,
+            data: data,
+            success: function (res) {
+                console.log(res)
+                window.location.href = "/webapp/marco/" + res.producto_pk;
+            },
+            error: (err) => {console.log(err)}
+        })
+    }
+
+
 
     function cargarSeguidores() {
 

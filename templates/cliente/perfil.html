@@ -668,9 +668,10 @@
             type: "GET",
             cache: false,
             success: function(json) {
+                console.log('imagenes', json);
                 for (i of json) {
                     $('#fotos_usuario').append(`
-                    <div class="card">
+                    <div class="card" onclick="vistaFoto()">
                         <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top">
                     </div>
                         `)
@@ -685,6 +686,10 @@
         }
 
     });
+
+    function vistaFoto() {
+
+    }
 
     function readURL(input) {
         if (input.files && input.files[0]) {
