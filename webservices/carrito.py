@@ -10,7 +10,8 @@ from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPa
     PapelImpresion, FotoPrecio, Tamanio, Textura
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
-    EditProductoSerializer, MarcoSerializer, TamanioSerializer, PapelImpresionSerializer, TexturaSerializer
+    EditProductoSerializer, MarcoSerializer, TamanioSerializer, PapelImpresionSerializer, TexturaSerializer, \
+    FotoPrecioSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -162,10 +163,10 @@ class ListTamanio(ListAPIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
     authentication_classes = (SessionAuthentication,)
 
-    serializer_class = TamanioSerializer
+    serializer_class = FotoPrecioSerializer
     def get_queryset(self):
         producto_pk = self.request.query_params.get('producto', None)
-        queryset = Marco.objects.none()
+        queryset = FotoPrecio.objects.none()
         if producto_pk is not None:
             try:
                 producto = Producto.objects.get(pk=producto_pk)
@@ -173,8 +174,8 @@ class ListTamanio(ListAPIView):
                 raise ValidationError({"error": ["No existe el producto seleccionado"]})
             tamanio_foto_precio = FotoPrecio.objects.get(tamanio=producto.foto.tamanio, tipo_foto=producto.foto.tipo_foto)
             area = tamanio_foto_precio.min_area
-            tamanios = FotoPrecio.objects.filter(min_area__lte=area).values_list('tamanio__pk', flat=True)
-            queryset = Tamanio.objects.filter(pk__in=tamanios)
+            queryset = FotoPrecio.objects.filter(min_area__lte=area)
+            #queryset = Tamanio.objects.filter(pk__in=tamanios)
         return queryset
 
 class ListTipoPapel(ListAPIView):
