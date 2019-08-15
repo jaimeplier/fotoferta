@@ -206,6 +206,7 @@ class Tarjeta(models.Model):
     token = models.CharField(max_length=64)
     alias = models.CharField(max_length=128)
     nombre_propietario = models.CharField(max_length=32)
+    eliminado = models.BooleanField(default=False)
     estatus = models.BooleanField(default=True)
 
     class Meta:
