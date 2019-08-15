@@ -147,7 +147,7 @@
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" >
                                                     <div id="woodenFrameCarousel" class="owl-carousel owl-theme">
-
+                                                        <!--
                                                         <div class="item">
                                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                                 <div class="row frameImageSelector">
@@ -190,7 +190,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -442,6 +442,7 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                 for (const [i, obj] of json.entries()) {
                     console.log(i, obj)
                     $('#paperCarousel').append(`
+                        <div class="col-xl-4">
                         <div class="item">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row">
@@ -455,6 +456,7 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                                 </div>
                             </div>
                         </div>
+                    </div>
                     `)
                 }
             }
@@ -470,14 +472,15 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                 console.log('tipos papel', json)
                 for (const [i, obj] of json.entries()) {
                     console.log(i, obj)
-                    $('#woodenFrameCarousel').append(`
-                        <div class="item">
+                    let html = `
+                        <div class="item ">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <img onclick="setStage3(1)" style="cursor:pointer" src="{% static 'images/Marcos/Dali/ME2DI.png' %}">
+                                        <img onclick="setStage3(1)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} ">
+                                        <!--<img onclick="setStage3(1)" style="cursor:pointer" src="`+ obj.imagen_vertical +`"> -->
 
-                                        <!-- En vez de statis usar esto +  obj.imagen_vertical -->
+
 
                                     </div>
                                 </div>
@@ -488,8 +491,12 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                                 </div>
                             </div>
                         </div>
-                    `)
+                    `
+                $('#woodenFrameCarousel').owlCarousel().trigger('add.owl.carousel', [jQuery( html )]).trigger('refresh.owl.carousel')
+
                 }
+
+
             }
         })
 
