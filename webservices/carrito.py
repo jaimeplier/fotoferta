@@ -7,11 +7,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, Fotografo, Orden, EstatusCompra, EstatusPago, Producto, TipoCompra, Marco, \
-    PapelImpresion, FotoPrecio, Tamanio, Textura
+    PapelImpresion, FotoPrecio, Tamanio, Textura, MariaLuisa
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer, ProductoPKSerializer, \
     EditProductoSerializer, MarcoSerializer, TamanioSerializer, PapelImpresionSerializer, TexturaSerializer, \
-    FotoPrecioSerializer
+    FotoPrecioSerializer, MariaLuisaSerializer
 
 
 class AgregarCarrrito(APIView):
@@ -124,8 +124,7 @@ class ListMarco(ListAPIView):
     """
         **Parámetros**
 
-        1. producto: número entero del ID del producto
-        2. tamanio: número entero del ID del tamaño del marco deseado
+        1. tamanio: número entero del ID del tamaño del marco deseado
 
         """
     permission_classes = (IsAuthenticated, FotopartnerPermission)
@@ -142,6 +141,32 @@ class ListMarco(ListAPIView):
             raise ValidationError({"error": ["No existe el marco del tamaño seleccionado"]})
 
         queryset = Marco.objects.filter(tamanio__pk=tamanio.pk, estatus=True)
+        return queryset
+
+class ListMariaLuisa(ListAPIView):
+    """
+        **Parámetros**
+
+        1. tamanio: número entero del ID del tamaño de la marialuisa deseada
+
+        """
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    serializer_class = MariaLuisaSerializer
+
+    def get_queryset(self):
+        tamanio_pk = self.request.query_params.get('tamanio', None)
+        queryset = MariaLuisa.objects.none()
+        if tamanio_pk is not None:
+            try:
+                tamanio = Tamanio.objects.get(pk=tamanio_pk)
+            except:
+                raise ValidationError({"error": ["No existe la maria luisa del tamaño seleccionado"]})
+        else:
+            raise ValidationError({"error": ["No se indicó el tamaño requerido"]})
+
+        queryset = MariaLuisa.objects.filter(tamanio__pk=tamanio.pk, estatus=True)
         return queryset
 
 class ListTamanio(ListAPIView):

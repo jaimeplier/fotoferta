@@ -3,7 +3,7 @@ from django.urls import path
 from webservices.Catalogos import ListCategorias, ListEtiquetas
 from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, ListFotosRecomendadas
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
-    ListTamanio, ListTipoPapel, ListTexturas
+    ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
 from webservices.pago import ListDirecciones, ListTarjetas
 from webservices.views import ListContactanos
 
@@ -27,6 +27,7 @@ urlpatterns = [
     path('listar_carrito/', ListCarrito.as_view(), name='listar_carrito'),
     path('eliminar_producto_carrito/', DeleteCarrito.as_view(), name='eliminar_producto_carrito'),
     path('listar_marcos/', ListMarco.as_view(), name='listar_marcos'),
+    path('listar_marialuisa/', ListMariaLuisa.as_view(), name='listar_marialuisa'),
     path('listar_tamanios/', ListTamanio.as_view(), name='listar_tamanios'),
     path('listar_tipos_papel/', ListTipoPapel.as_view(), name='listar_tipos_papel'),
     path('listar_texturas/', ListTexturas.as_view(), name='listar_listar_texturas'),
