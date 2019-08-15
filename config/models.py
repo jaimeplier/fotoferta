@@ -544,7 +544,7 @@ class Producto(models.Model):
     orden = models.ForeignKey('Orden', models.CASCADE, related_name='productos')
     foto = models.ForeignKey(Fotografia, models.DO_NOTHING)
     marco = models.ForeignKey(Marco, models.DO_NOTHING, null=True, blank=True)
-    tamanio = models.ForeignKey(Tamanio, models.DO_NOTHING, null=True, blank=True)
+    foto_tamanio_precio = models.ForeignKey(FotoPrecio, models.DO_NOTHING, null=True, blank=True)
     maria_luisa = models.ForeignKey(MariaLuisa, models.DO_NOTHING, null=True, blank=True)
     tipo_compra = models.ForeignKey(TipoCompra, models.DO_NOTHING)
     papel_impresion = models.ForeignKey('PapelImpresion', models.DO_NOTHING, null=True, blank=True)
