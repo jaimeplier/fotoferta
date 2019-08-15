@@ -6,7 +6,9 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DetailView
 from django.http import HttpResponseRedirect, JsonResponse
 
-from config.models import Fotografo, Rol, Fotografia, Direccion, Producto
+from config.conekta import agregar_tarjeta, actualizar_tarjeta, eliminar_tarjeta
+from webapp.forms import TarjetaForm, TarjetaEditForm
+from config.models import Fotografo, Rol, Fotografia, Direccion, Producto, Tarjeta
 from webapp.forms import RegistroForm, DireccionForm
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
@@ -273,3 +275,147 @@ def vista_marco(request, producto):
 def vista_exclusivas(request):
     template_name = 'cliente/exclusivas.html'
     return render(request, template_name)
+
+class TarjetaCrear(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'fotopartner'
+    model = Tarjeta
+    form_class = TarjetaForm
+    template_name = 'cliente/tarjeta.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TarjetaCrear, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Registro de tarjeta'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una tarjeta'
+        return context
+
+    def form_valid(self, form):
+        tarjeta_form = form.save(commit=False)
+        source = agregar_tarjeta(self.request, form)
+        if type(source) == str:
+            return render(self.request, template_name=self.template_name,
+                          context={'form': form, 'messages': [source]})
+        tarjeta = Tarjeta.objects.create(usuario=self.request.user, ultimos_digitos=source.last4, token=source.id,
+                          alias=tarjeta_form.alias, nombre_propietario=tarjeta_form.nombre_propietario)
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('webapp:list_tarjeta')
+
+@permission_required(perm='fotopartner', login_url='/webapp/login')
+def tarjeta_listar(request):
+    template_name = 'cliente/tab_tarjetas.html'
+    context = {}
+    context['titulo'] = 'Tarjetas'
+    context['btn_nuevo'] = 'Agregar una tarjeta'
+    context['url_nuevo'] = reverse('webapp:nuevo_tarjeta')
+    context['encabezados'] = [['Propietario', True],
+                              ['Alias', True],
+                              ['Últimos digitos', True],
+                              ['Editar', False],
+                              ['Activar/Desactivar', True],
+                              ['Eliminar', False]]
+    context['url_ajax'] = reverse('webapp:tab_list_tarjeta')
+    context['url_update_estatus'] = '/webapp/tarjeta/cambiar_estatus/'
+    context['url_eliminar'] = '/webapp/tarjeta/eliminar/'
+    return render(request, template_name, context)
+
+class TarjetaAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'fotopartner'
+    model = Tarjeta
+    columns = [
+        'nombre_propietario', 'alias', 'ultimos_digitos', 'editar', 'estatus', 'eliminar'
+    ]
+
+    order_columns = [
+    'nombre_propietario', 'alias', 'ultimos_digitos', '', 'estatus', ''
+    ]
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('webapp:edit_tarjeta',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="far fa-edit"></i></a>'
+        elif column == 'eliminar':
+            return '<a class="" href ="" onclick=eliminar(' + str(
+                    row.pk) + ')><i class="fa fa-trash"></i></a>'
+        elif column == 'estatus':
+            if row.estatus:
+                return '<div class="custom-control custom-switch"><input type="checkbox" checked class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">On</label></div>'
+            else:
+                return '<div class="custom-control custom-switch"><input type="checkbox" class="custom-control-input" onchange=cambiar_estatus(' + str(
+                    row.pk) + ') id="customSwitch' + str(
+                    row.pk) + '"><label class="custom-control-label" for="customSwitch' + str(
+                    row.pk) + '">Off</label></div>'
+
+        return super(TarjetaAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Tarjeta.objects.filter(usuario=self.request.user, eliminado=False)
+
+
+class TarjetaActualizar(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'fotopartner'
+    model = Tarjeta
+    template_name = 'config/form_1col.html'
+    form_class = TarjetaEditForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TarjetaActualizar, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación de tipo de papel'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        id_tarjeta_conekta = form.instance.token
+        resultado = actualizar_tarjeta(self.request, id_tarjeta_conekta)
+        if type(resultado) == str:
+            return render(self.request, template_name=self.template_name,
+                          context={'form': form, 'messages': [resultado]})
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('webapp:list_tarjeta')
+
+@permission_required(perm='fotopartner', login_url='/webapp/login')
+def tarjeta_cambiar_estatus(request, pk):
+    tarjeta = get_object_or_404(Tarjeta, pk=pk)
+    if tarjeta.estatus:
+        tarjeta.estatus = False
+    else:
+        tarjeta.estatus = True
+    tarjeta.save()
+    return JsonResponse({'result': 0})
+
+@permission_required(perm='fotopartner', login_url='/webapp/login')
+def tarjeta_eliminar(request, pk):
+    tarjeta = get_object_or_404(Tarjeta, pk=pk)
+    try:
+        resultado = eliminar_tarjeta(request, tarjeta.token)
+        if type(resultado) == str:
+            return JsonResponse({'result': 1, 'error': resultado})
+        tarjeta.delete()
+    except:
+        tarjeta.eliminado = True
+        tarjeta.save()
+    return JsonResponse({'result': 0})
