@@ -79,6 +79,7 @@ class AddFotoCarritoSerializer(serializers.Serializer):
 
 class EditProductoSerializer(serializers.Serializer):
     producto = serializers.IntegerField()
+    precio_tamanio = serializers.IntegerField()
     marco = serializers.IntegerField()
     papel_impresion = serializers.IntegerField()
     maria_luisa = serializers.IntegerField(allow_null=True, required=False)
@@ -104,6 +105,13 @@ class EditProductoSerializer(serializers.Serializer):
             PapelImpresion.objects.get(pk=value, estatus=True)
         except:
             raise serializers.ValidationError('No existe el papel seleccionado')
+        return value
+
+    def validate_precio_tamanio(self, value):
+        try:
+            FotoPrecio.objects.get(pk=value, estatus=True)
+        except:
+            raise serializers.ValidationError('No existe el tamaño seleccionado')
         return value
 
 

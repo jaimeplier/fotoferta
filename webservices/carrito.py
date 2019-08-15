@@ -63,12 +63,14 @@ class ModificarProductoCarrito(APIView):
         # ---> OBTENER Producto <---
         producto = Producto.objects.select_for_update().get(pk=serializer.validated_data['producto'])
         marco = Marco.objects.get(pk=serializer.validated_data['marco'])
+        precio_tamanio = FotoPrecio.objects.get(pk=serializer.validated_data['precio_tamanio'])
         papel = PapelImpresion.objects.get(pk=serializer.validated_data['papel_impresion'])
         maria_luisa = PapelImpresion.objects.filter(pk=serializer.data['maria_luisa']).first()
         tipo_compra = TipoCompra.objects.get(pk=2)
 
         producto.marco = marco
         producto.papel_impresion = papel
+        producto.foto_tamanio_precio = precio_tamanio
         producto.maria_luisa = maria_luisa
         producto.tipo_compra = tipo_compra
         producto.save()
@@ -242,7 +244,7 @@ def actualizar_costo_producto_orden(producto, orden, accion):
         if producto.tipo_compra.pk == 1:  # Compra digital
             producto.subtotal = producto.foto.precio
         else:  # Compra Fisica
-            producto.subtotal += producto.foto.precio
+            producto.subtotal += producto.foto_tamanio_precio.precio
             if producto.marco:
                 producto.subtotal += producto.marco.precio
             if producto.maria_luisa:
