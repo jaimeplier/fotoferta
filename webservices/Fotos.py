@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta, Categoria, FotoPrecio
-from webservices.Pagination import SmallPagesPagination
+from webservices.Pagination import SmallPagesPagination, SmallestPagesPagination
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import RegistroFotografiaSerializer, FotografiaSerializer
 
@@ -165,6 +165,25 @@ class ListFotosHome(ListAPIView):
 
     def get_queryset(self):
         queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True).order_by('?')
+        return queryset
+
+class ListFotosRecomendadas(ListAPIView):
+    """
+            **Parámetros**
+
+            1. foto: ID de la foto seleccionada para listar categorias iguales a la seleccionada
+
+            """
+    serializer_class = FotografiaSerializer
+    pagination_class = SmallestPagesPagination
+
+    def get_queryset(self):
+        foto_pk = self.request.query_params.get('foto', None)
+        if foto_pk is not None:
+            foto = Fotografia.objects.get(pk=foto_pk)
+            categorias =  foto.categorias.all()
+        queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, categorias__in=categorias)
+        print(queryset.query)
         return queryset
 
 class ListMisFotos(ListAPIView):
