@@ -272,5 +272,8 @@ def actualizar_costo_producto_orden(producto, orden, accion):
         orden.save()
     elif accion == 'delete':
         orden.total -= producto.subtotal
+        if(producto.tipo_compra.pk == 2): # compra fisica
+            producto.subtotal=0
+            producto.save()
         orden.save()
     return
