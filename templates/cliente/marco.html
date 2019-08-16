@@ -2,7 +2,6 @@
 {% load widget_tweaks %}
 {% load static %}
 {% block content %}
-
 <section class="row frameSelectionContainer">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="row">
@@ -10,6 +9,7 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h1>Compra para impresión y envío</h1>
+                        {{ producto.pk  }}
                     </div>
                 </div>
                 <div class="row frameSizeSelectionContent">
@@ -280,6 +280,11 @@
                     </div>
                     <!-- El de arriba cierra seccion marco -->
                 </div>
+                <div id="cont_precio" style="float: right">
+                    <p>Subtotal $<span id="precio_total">0.00</span> MXN</p>
+                    <a id="guardarM" href="#" class="btn generalBtn" onclick="guardarMarco()">Guardar</a>
+                </div>
+
             </div>
         </div>
     </div>
@@ -331,7 +336,9 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
+let precioTamanio;
 let sizeClasses = ['lg', 'md', 'sm', 'xs']
 let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
 
@@ -343,49 +350,16 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
             success: function (json) {
                 console.log('tamanios', json)
                 for (const [i, obj] of json.entries()) {
-                    console.log(i, obj)
+
                     $('#container_tamanios').append(`
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                            <input id="` + sizeIds[i] + `" type="radio" name="frameSelection" value="` + sizeIds[i] + `" onclick="setStage1(`+ obj.pk +`)" />
+                            <input id="` + sizeIds[i] + `" type="radio" name="frameSelection" value="` + sizeIds[i] + `" onclick="setStage1(`+ obj.tamanio.pk + `,` + obj.precio + `,` + obj.pk + `)" />
                             <label class="drinkcard-cc sizeSelection ` + sizeClasses[i] + `" for="` + sizeIds[i] +`"></label>
+                                <h5>`+ obj.tamanio.nombre +`</h5>
+                                <h5>$`+ obj.precio +`</h5>
                         </div>
+
                     `)
-                }
-            }
-        })
-
-         $.ajax({
-            url: "/ws/listar_texturas/",
-            type: "GET",
-            cache: false,
-            success: function (json) {
-                console.log('texturas', json)
-                for (i in json) {
-
-                }
-            }
-        })
-
-         $.ajax({
-            url: "/ws/listar_tipos_papel/",
-            type: "GET",
-            cache: false,
-            success: function (json) {
-                console.log('tipos papel', json)
-                for (i in json) {
-
-                }
-            }
-        })
-
-        $.ajax({
-            url: "/ws/listar_marcos/",
-            type: "GET",
-            cache: false,
-            success: function (json) {
-                console.log('marcos',json)
-                for (i in json) {
-
                 }
             }
         })
@@ -393,60 +367,89 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
     })
 
 
-    var res_stage1;
-    var res_stage2;
-    var res_stage3;
-    var res_stage4;
+    var estadosSimulador = {
+    res_stage1: null,
+    res_stage2: null,
+    res_stage3: null,
+    res_stage4: null,
+    precio1: 0,
+    precio2: 0,
+    precio3: 0,
+    precio4: 0
+    }
 
-    function setStage1(res) {
-        res_stage1 = res;
+    function setStage1(res, precio, idPrecio) {
+        precioTamanio = idPrecio;
+        estadosSimulador.res_stage1 = res;
+        estadosSimulador.precio1 = precio;
         listar_tipos_papel();
         hideStages(2)
+        updatePrice();
     }
 
-    function setStage2(res) {
-        res_stage2 = res;
-        console.log('res 2', res_stage2)
+    function setStage2(res, precio) {
+        estadosSimulador.res_stage2 = res;
+        estadosSimulador.precio2 = precio;
         listar_marcos()
-        hideStages(3)
+        hideStages(3);
+        updatePrice();
     }
 
-    function setStage3(res) {
-        res_stage3 = res;
-        hideStages(4)
+    function setStage3(res, precio) {
+        estadosSimulador.res_stage3 = res;
+        estadosSimulador.precio3 = precio;
+        hideStages(4);
+        listar_tipos_mariaLuisa();
+        updatePrice();
     }
 
-    function setStage4(res) {
-        res_stage4 = res;
+    function setStage4(res, precio) {
+        estadosSimulador.res_stage4 = res;
+        estadosSimulador.precio4 = precio;
+        $('#guardarM').show();
+        updatePrice();
     }
 
     function returnStage(actualStage) {
-        window['res_stage' + actualStage] = null;
+        window['estadosSimulador']["res_stage" + (actualStage - 1 )] = 0;
+        window['estadosSimulador']["precio" + (actualStage - 1 )]  = 0;
         hideStages(actualStage - 1)
+        updatePrice();
     }
 
     function hideStages(exception) {
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 5; i++) { // stages length
             $('#stage' + i).hide();
         }
         $('#stage' + exception).show();
     }
 
+    function updatePrice() {
+        let total = 0 + estadosSimulador.precio1 + estadosSimulador.precio2 + estadosSimulador.precio3 + estadosSimulador.precio4 - 0;
+        $('#precio_total').text(total);
+    }
+
     function listar_tipos_papel() {
         $.ajax({
-            url: "/ws/listar_tipos_papel?tamanio=" + res_stage1,
+            url: "/ws/listar_tipos_papel?tamanio=" + estadosSimulador.res_stage1,
             type: "GET",
             cache: false,
             success: function (json) {
-                console.log('tipos papel', json)
-                for (const [i, obj] of json.entries()) {
-                    console.log(i, obj)
-                    $('#paperCarousel').append(`
-                        <div class="col-xl-4">
-                        <div class="item">
+            // $('#paperCarousel').empty();
+
+            var length = $('#paperCarousel, .item').length;
+            for (var i=0; i<length; i++) {
+                $("#paperCarousel").trigger('remove.owl.carousel', [i])
+                .trigger('refresh.owl.carousel');
+            }
+
+            console.log('paperCarousel', json)
+            for (const [i, obj] of json.entries()) {
+                    let html = `
+                       <div class="item">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row">
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 paperFrame" onclick="setStage2(`+ obj.pk +`)">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 paperFrame" onclick="setStage2(`+ obj.pk + ','+ obj.precio + `)">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -456,32 +459,36 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    `)
+                    `
+
+
+                $('#paperCarousel').owlCarousel().trigger('add.owl.carousel', [jQuery( html )]).trigger('refresh.owl.carousel')
+
                 }
             }
         })
-
     }
+
     function listar_marcos() {
         $.ajax({
-            url: "/ws/listar_marcos?tamanio=" + res_stage1 + '&producto=' + {{ producto.pk }},
+            url: "/ws/listar_marcos?tamanio=" + estadosSimulador.res_stage1 ,
             type: "GET",
             cache: false,
             success: function (json) {
-                console.log('tipos papel', json)
+                var length = $('#woodenFrameCarousel, .item').length;
+                for (var i=0; i<length; i++) {
+                    $(".woodenFrameCarousel").trigger('remove.owl.carousel', [i])
+                    .trigger('refresh.owl.carousel');
+                }
                 for (const [i, obj] of json.entries()) {
-                    console.log(i, obj)
+                    console.log('stage3',obj)
                     let html = `
                         <div class="item ">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <img onclick="setStage3(1)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} ">
+                                        <img onclick="setStage3(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} ">
                                         <!--<img onclick="setStage3(1)" style="cursor:pointer" src="`+ obj.imagen_vertical +`"> -->
-
-
-
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -495,12 +502,73 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                 $('#woodenFrameCarousel').owlCarousel().trigger('add.owl.carousel', [jQuery( html )]).trigger('refresh.owl.carousel')
 
                 }
-
-
             }
         })
-
     }
+
+
+function listar_tipos_mariaLuisa() {
+    $.ajax({
+        url: "/ws/listar_marialuisa?tamanio=" + estadosSimulador.res_stage1,
+        type: "GET",
+        cache: false,
+        success: function (json) {
+            var length = $('#marginCarousel, .item').length;
+            for (var i=0; i<length; i++) {
+                $("#marginCarousel").trigger('remove.owl.carousel', [i])
+                .trigger('refresh.owl.carousel');
+            }
+
+            console.log('tipos ma luisa', json)
+//            $('#marginCarousel').empty();
+            for (const [i, obj] of json.entries()) {
+                    let html = `
+                        <div class="item ">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row frameImageSelector">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <img onclick="setStage4(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} ">
+                                        <!--<img onclick="setStage4(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src="`+ obj.imagen +`"> -->
+
+
+
+                                    </div>
+                                </div>
+                                <div class="row frameImageDetails">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <h5>$`+ obj.precio +`</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                $('#marginCarousel').owlCarousel().trigger('add.owl.carousel', [jQuery( html )]).trigger('refresh.owl.carousel')
+
+                }
+        }
+    })
+}
+
+
+function guardarMarco() {
+    let datos = {
+        producto: {{ producto.pk }},
+        papel_impresion: estadosSimulador.res_stage2,
+        marco: estadosSimulador.res_stage3,
+        precio_tamanio: precioTamanio,
+        maria_luisa: estadosSimulador.res_stage4
+    }
+    console.log(datos)
+    $.ajax({
+        url: "/ws/modificar_producto_carrito/",
+        type: "POST",
+        cache: false,
+        data: datos,
+        success: function(json) {
+            console.log('exito!', json)
+        }
+    });
+}
 
 
 </script>
