@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.exceptions import ValidationError
@@ -61,26 +62,27 @@ class ModificarProductoCarrito(APIView):
         serializer.is_valid(raise_exception=True)
 
         # ---> OBTENER Producto <---
-        producto = Producto.objects.select_for_update().get(pk=serializer.validated_data['producto'])
-        marco = Marco.objects.get(pk=serializer.validated_data['marco'])
-        precio_tamanio = FotoPrecio.objects.get(pk=serializer.validated_data['precio_tamanio'])
-        papel = PapelImpresion.objects.get(pk=serializer.validated_data['papel_impresion'])
-        maria_luisa = PapelImpresion.objects.filter(pk=serializer.data['maria_luisa']).first()
-        tipo_compra = TipoCompra.objects.get(pk=2)
+        with transaction.atomic():
+            producto = Producto.objects.select_for_update().get(pk=serializer.validated_data['producto'])
+            marco = Marco.objects.get(pk=serializer.validated_data['marco'])
+            precio_tamanio = FotoPrecio.objects.get(pk=serializer.validated_data['precio_tamanio'])
+            papel = PapelImpresion.objects.get(pk=serializer.validated_data['papel_impresion'])
+            maria_luisa = PapelImpresion.objects.filter(pk=serializer.data['maria_luisa']).first()
+            tipo_compra = TipoCompra.objects.get(pk=2)
 
-        producto.marco = marco
-        producto.papel_impresion = papel
-        producto.foto_tamanio_precio = precio_tamanio
-        producto.maria_luisa = maria_luisa
-        producto.tipo_compra = tipo_compra
-        producto.save()
+            producto.marco = marco
+            producto.papel_impresion = papel
+            producto.foto_tamanio_precio = precio_tamanio
+            producto.maria_luisa = maria_luisa
+            producto.tipo_compra = tipo_compra
+            producto.save()
 
-        actualizar_costo_envio(producto)
+            actualizar_costo_envio(producto)
 
-        # Actualiza costos de la orden
-        orden=Orden.objects.get(pk=producto.orden.pk)
-        actualizar_costo_producto_orden(producto, orden, 'delete')
-        actualizar_costo_producto_orden(producto, orden, 'add')
+            # Actualiza costos de la orden
+            orden=Orden.objects.get(pk=producto.orden.pk)
+            actualizar_costo_producto_orden(producto, orden, 'delete')
+            actualizar_costo_producto_orden(producto, orden, 'add')
 
 
         return Response({'exito': 'producto modificado exitosamente'}, status=status.HTTP_200_OK)
