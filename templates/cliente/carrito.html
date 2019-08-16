@@ -302,7 +302,7 @@
                                 </div>
                                 <div class="row imagePriceDetails">
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                        <h4 class="imageName">Nombre de la Imagen:</h4>
+                                        <h4 class="imageName">Nombre de la Imagen: </h4>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
                                         <h5 class="imagePrice">` + i.foto.nombre + `</h5>
@@ -314,26 +314,26 @@
                         text += `
                                 <div class="row framePriceDetails">
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                        <h4><i class="fas fa-plus"></i> Tipo de marco:</h4>
+                                        <h4><i class="fas fa-plus"></i> Tipo de marco: ` + i.marco.nombre + `</h4>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                        <h5 class="framePrice">` + i.marco + `</h5>
+                                        <h5 class="framePrice">` + i.marco.precio + `</h5>
                                     </div>
                                 </div>
                                 <div class="row marginPriceDetails">
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                        <h4><i class="fas fa-plus"></i> Tipo de Marialuisa:</h4>
+                                        <h4><i class="fas fa-plus"></i> Tipo de Marialuisa: `+ i.maria_luisa.nombre +`</h4>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                        <h5 class="marginPrice">` + i.maria_luisa + `</h5>
+                                        <h5 class="marginPrice">` + i.maria_luisa.precio + `</h5>
                                     </div>
                                 </div>
                                 <div class="row marginPriceDetails">
                                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
-                                        <h4><i class="fas fa-plus"></i> Tipo de papel:</h4>
+                                        <h4><i class="fas fa-plus"></i> Tipo de papel: `+ i.papel_impresion.tipo_papel.nombre +`</h4>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
-                                        <h5 class="marginPrice">` + i.papel_impresion + `</h5>
+                                        <h5 class="marginPrice">` + i.papel_impresion.precio + `</h5>
                                     </div>
                                 </div>
                                 <div class="row shippingPriceDetails">
