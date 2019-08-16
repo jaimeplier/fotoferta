@@ -67,7 +67,7 @@ class ModificarProductoCarrito(APIView):
             marco = Marco.objects.get(pk=serializer.validated_data['marco'])
             precio_tamanio = FotoPrecio.objects.get(pk=serializer.validated_data['precio_tamanio'])
             papel = PapelImpresion.objects.get(pk=serializer.validated_data['papel_impresion'])
-            maria_luisa = PapelImpresion.objects.filter(pk=serializer.data['maria_luisa']).first()
+            maria_luisa = MariaLuisa.objects.filter(pk=serializer.data['maria_luisa']).first()
             tipo_compra = TipoCompra.objects.get(pk=2)
 
             producto.marco = marco
@@ -77,12 +77,12 @@ class ModificarProductoCarrito(APIView):
             producto.tipo_compra = tipo_compra
             producto.save()
 
-            actualizar_costo_envio(producto)
+        actualizar_costo_envio(producto.orden)
 
-            # Actualiza costos de la orden
-            orden=Orden.objects.get(pk=producto.orden.pk)
-            actualizar_costo_producto_orden(producto, orden, 'delete')
-            actualizar_costo_producto_orden(producto, orden, 'add')
+        # Actualiza costos de la orden
+        orden=Orden.objects.get(pk=producto.orden.pk)
+        actualizar_costo_producto_orden(producto, orden, 'delete')
+        actualizar_costo_producto_orden(producto, orden, 'add')
 
 
         return Response({'exito': 'producto modificado exitosamente'}, status=status.HTTP_200_OK)

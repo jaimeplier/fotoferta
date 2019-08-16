@@ -205,7 +205,7 @@ class TarjetaSerializer(serializers.ModelSerializer):
 class PagarOrdenSerializer(serializers.Serializer):
     orden = serializers.IntegerField()
     metodo_pago = serializers.IntegerField()
-    direccion = serializers.IntegerField()
+    direccion = serializers.IntegerField(allow_null=True, required=False)
     tarjeta = serializers.IntegerField(allow_null=True, required=False)
 
     def validate_orden(self, value):
