@@ -131,14 +131,6 @@ class TipoCompraSerializer(serializers.ModelSerializer):
         model = TipoCompra
         fields = ['nombre']
 
-class ProductoSerializer(serializers.ModelSerializer):
-    foto = FotoSerializer()
-    tipo_compra = TipoCompra()
-    class Meta:
-        model = Producto
-        fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
-                  'promocion_aplicada', 'subtotal']
-
 class MarcoSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -250,3 +242,16 @@ class PagarOrdenSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe el método de pago seleccionado')
         return value
+
+
+class ProductoSerializer(serializers.ModelSerializer):
+    foto = FotoSerializer()
+    tipo_compra = TipoCompra()
+    marco = MarcoSerializer()
+    maria_luisa = MariaLuisaSerializer()
+    papel_impresion = PapelImpresionSerializer()
+
+    class Meta:
+        model = Producto
+        fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
+                  'promocion_aplicada', 'subtotal']
