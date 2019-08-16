@@ -9,7 +9,6 @@
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h1>Compra para impresión y envío</h1>
-                        {{ producto.pk  }}
                     </div>
                 </div>
                 <div class="row frameSizeSelectionContent">
@@ -228,7 +227,7 @@
                                             <div class="row">
                                                 <div class="col-lx-12 col-lg-12 col-md-12 col-sm-12 col-12 centerDiv">
                                                     <div id="marginCarousel" class="owl-carousel owl-theme">
-                                                        <div class="item">
+                                                        <!-- <div class="item">
                                                             <div class="row">
                                                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 noMargin">
                                                                     <a href="#"><img src="/static/images/dont.svg"></a>
@@ -263,7 +262,7 @@
                                                                     <h5>$12.00</h5>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12 centerDiv">
@@ -282,7 +281,7 @@
                 </div>
                 <div id="cont_precio" style="float: right">
                     <p>Subtotal $<span id="precio_total">0.00</span> MXN</p>
-                    <a id="guardarM" href="#" class="btn generalBtn" onclick="guardarMarco()">Guardar</a>
+                    <button id="guardarM" class="btn generalBtn" style="cursor:pointer" onclick="guardarMarco()">Guardar</button>
                 </div>
 
             </div>
@@ -487,8 +486,8 @@ let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <img onclick="setStage3(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} ">
-                                        <!--<img onclick="setStage3(1)" style="cursor:pointer" src="`+ obj.imagen_vertical +`"> -->
+                                        <!--<img onclick="setStage3(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
+                                        <img onclick="setStage3(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src="`+ obj.imagen_vertical +`"> 
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -527,10 +526,8 @@ function listar_tipos_mariaLuisa() {
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <img onclick="setStage4(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} ">
-                                        <!--<img onclick="setStage4(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src="`+ obj.imagen +`"> -->
-
-
+                                        <!-- <img onclick="setStage4(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
+                                        <img onclick="setStage4(`+ obj.id + ','+ obj.precio + `)" style="cursor:pointer" src="`+ obj.imagen +`"> 
 
                                     </div>
                                 </div>
@@ -566,6 +563,7 @@ function guardarMarco() {
         data: datos,
         success: function(json) {
             console.log('exito!', json)
+            alert("Foto añadida exitosamente al carrito")
         }
     });
 }
