@@ -671,8 +671,10 @@
                 console.log('imagenes', json);
                 for (i of json) {
                     $('#fotos_usuario').append(`
-                    <div class="card" onclick="vistaFoto()">
+                    <div class="card">
+                        <a href="http://localhost:8000/webapp/foto/` +i.pk + `">
                         <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top">
+                        </a>
                     </div>
                         `)
                 }
