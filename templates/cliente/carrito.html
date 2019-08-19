@@ -148,9 +148,8 @@
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <select class="form-control">
+                                                        <select class="form-control" id="direccion_oxxo">
                                                             <option selected disabled>Elige una Direccion:</option>
-                                                            <option>Agustín Melgar #27 Colonia Condesa CDMX</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -180,29 +179,28 @@
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <select class="form-control">
+                                                        <select class="form-control" id="tarjeta">
                                                             <option selected disabled>Elige una tarjeta:</option>
-                                                            <option>**** **** **** 5353</option>
-                                                            <option>**** **** **** 4242</option>
+                                                        
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <a href="#" class="btn generalBtn"><i class="fas fa-plus"></i> Agregar tarjeta</a>
+                                                        <a href="{% url 'webapp:nuevo_tarjeta' %}" class="btn generalBtn"><i class="fas fa-plus"></i> Agregar tarjeta</a>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <select class="form-control">
+                                                        <select class="form-control" id="direccion_tarjeta">
                                                             <option selected disabled>Elige una Direccion:</option>
-                                                            <option>Agustín Melgar #27 Colonia Condesa CDMX</option>
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <a href="#" class="btn generalBtn"><i class="fas fa-plus"></i> Agregar dirección</a>
+                                                        <a href="{% url 'webapp:nuevo_direccion' %}" class="btn generalBtn"><i class="fas fa-plus"></i> Agregar dirección</a>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
@@ -226,15 +224,14 @@
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <select class="form-control">
+                                                        <select class="form-control" id="direccion_spei">
                                                             <option selected disabled>Elige una Direccion:</option>
-                                                            <option>Agustín Melgar #27 Colonia Condesa CDMX</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                        <a href="#" class="btn generalBtn"><i class="fas fa-plus"></i> Agregar dirección</a>
+                                                        <a href="{% url 'webapp:nuevo_direccion' %}" class="btn generalBtn"><i class="fas fa-plus"></i> Agregar dirección</a>
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
@@ -374,6 +371,37 @@
             }
         })
 
+        $.ajax({
+            url: "/ws/list_tarjetas/",
+            type: "GET",
+            cache: false,
+            success: function(json) {               
+                for (i in json) {
+                    $('#tarjeta').append(
+                        $("<option></option>")
+                        .attr("value", json[i].pk)
+                        .text(json[i].nombre)
+                    );
+                }
+            }
+        })
+        
+
+        $.ajax({
+            url: "/ws/list_direcciones/",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                console.log('direcciones',json)
+                for (i in json) {
+                    $('#direccion_oxxo', '#direccion_spei', '#direccion_tarjeta').append(
+                        $("<option></option>")
+                        .attr("value", json[i].pk)
+                        .text(json[i].nombre)
+                    );
+                }
+            }
+        })
 
     });
 
