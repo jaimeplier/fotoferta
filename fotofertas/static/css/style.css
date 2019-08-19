@@ -1603,3 +1603,71 @@ form {
 }
 
 /*Loader*/
+/*Frames Classes*/
+.frameHorizontal {
+    position: absolute;
+    width: 176px;
+    height: 124px;
+    top: 70px;
+    left: 310px;
+    z-index: 10000;
+    background: rgba(255, 120, 120, 1);
+}
+
+.frameHorizontal .horFrame {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 300;
+}
+
+.frameHorizontal .horframeBack {
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 15px;
+    left: 0px;
+}
+
+/*Frames Classes*/
+/*Carousel Indicators*/
+#gallerySimulator .carousel-indicators {
+    margin: 10px 0 0;
+    overflow: auto;
+    position: static;
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#gallerySimulator .carousel-indicators li {
+    background-color: transparent;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    display: inline-block;
+    height: auto;
+    margin: 0 !important;
+    width: auto;
+}
+
+#gallerySimulator .carousel-indicators li img {
+    display: block;
+    opacity: 0.5;
+    max-width: 50px;
+}
+
+#gallerySimulator .carousel-indicators li.active img {
+    opacity: 1;
+}
+
+#gallerySimulator .carousel-indicators li:hover img {
+    opacity: 0.75;
+}
+
+#gallerySimulator .carousel-outer {
+    position: relative;
+}
+
+/*Carousel Indicators*/
