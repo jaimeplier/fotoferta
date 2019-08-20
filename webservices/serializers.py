@@ -192,7 +192,7 @@ class DireccionSerializer(serializers.ModelSerializer):
 class TarjetaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tarjeta
-        fields = ['pk', 'usuario', 'alias', 'terminacion', 'nombre_propietario']
+        fields = ['pk', 'usuario', 'alias', 'ultimos_digitos', 'nombre_propietario']
 
 class PagarOrdenSerializer(serializers.Serializer):
     #orden = serializers.IntegerField()
