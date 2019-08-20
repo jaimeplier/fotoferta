@@ -1,4 +1,4 @@
-from django.forms import ModelForm, CharField, TextInput
+from django.forms import ModelForm, CharField, TextInput, IntegerField
 
 from config.models import Fotografo, Direccion, Tarjeta
 
@@ -14,20 +14,22 @@ class RegistroForm(ModelForm):
                   ]
 
 class DireccionForm(ModelForm):
+
     class Meta:
         model = Direccion
-        fields = [
+        fields = ['nombre',
                   'calle',
                   'num_exterior',
                   'num_interior',
                   'referencias',
+                  'entre_calles'
                   ]
 
 
         labels = {
             'calle': 'Calle',
-            'num_exterior': 'Num. Exterior',
-            'num_interior': 'Num. Interior',
+            'num_exterior': 'Núm. Exterior',
+            'num_interior': 'Núm. Interior',
             'referencias': 'Referencias'
                   }
 
