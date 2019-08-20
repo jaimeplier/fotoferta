@@ -307,8 +307,7 @@
                     <div id="simuladorCarrusel" class="carousel-inner">
                         <div id="item1" class="carousel-item active" data-interval="1000000">
                             <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
-                            <div class="frameHorizontal">
-
+                            <div id="escenarios" >
                                 <!-- <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame"> -->
                                 <!-- marialuisa -->
                                 <!-- <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack"> -->
@@ -413,26 +412,26 @@
         updatePrice();
     }
 
-    function setStage3(res, precio) {
+    function setStage3(res, precio, imgH, imgV) {
         estadosSimulador.res_stage3 = res;
         estadosSimulador.precio3 = precio;
 
-        /*
-        var orientacion_img = {{ producto.foto.orientacion }};
+        var orientacion_img = "{{ producto.foto.orientacion.nombre }}";
         if(orientacion_img == 'Horizontal') {
             marco_select = imgH
         } else {
             marco_select = imgV
         }
-*/
+        console.log(marco_select);
         hideStages(4);
         listar_tipos_mariaLuisa();
         updatePrice();
     }
 
-    function setStage4(res, precio, imgH, imgv) {
+    function setStage4(res, precio, img ) {
         estadosSimulador.res_stage4 = res;
         estadosSimulador.precio4 = precio;
+        maLuisa = img;
         $('#guardarM').show();
         updatePrice();
     }
@@ -507,15 +506,15 @@
                     $(".woodenFrameCarousel").trigger('remove.owl.carousel', [i])
                         .trigger('refresh.owl.carousel');
                 }
-                for (const [i, obj] of json.entries()) {
+                for (let obj of json) {
                     console.log('stage3', obj)
                     let html = `
                         <div class="item ">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <!--<img onclick="setStage3(` + obj.id + ',' + obj.precio + ',' + obj.imagen_horizontal + ',' + obj.imagen_vertical + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
-                                        <img onclick="setStage3(` + obj.id + ',' + obj.precio +`)" style="cursor:pointer" src="` + obj.imagen_vertical + `">
+                                        <!-- <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical + `')" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI_1.png'  %} "> -->
+                                         <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical +`')" style="cursor:pointer" src="` + obj.imagen_vertical + `">
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -533,6 +532,8 @@
             }
         })
     }
+
+{% comment %}<img onclick="setStage3(` + obj.id + ',' + obj.precio + ',' + obj.imagen_horizontal + ',' + typeof obj.imagen_vertical + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> {% endcomment %}
 
 
     function listar_tipos_mariaLuisa() {
@@ -556,7 +557,7 @@
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <!-- <img onclick="setStage4(` + obj.id + ',' + obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
-                                        <img onclick="setStage4(` + obj.id + ',' + obj.precio + `)" style="cursor:pointer" src="` + obj.imagen + `"> 
+                                        <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `">
 
                                     </div>
                                 </div>
@@ -575,12 +576,43 @@
         })
     }
 
-    function marcoSimulador() {
-        // let orientacion = {{ producto.foto.orientacion }};
+
+function marcoSimulador() {
+        let orientacion = "{{ producto.foto.orientacion.nombre }}"
         // $("#simuladorCarrusel").carousel("pause").removeData();
 
-
+    if(orientacion == "Horizontal") {
+        $('#escenarios').addClass( "frameHorizontal" );
         $('#item1').append(`
+            <div class="frameHorizontal">`
+                + '<img src="' + marco_select + '" class="horFrame">'+
+                `
+                <!-- marialuisa -->
+                <img src="`+ maLuisa +`" class="horframeBack">
+                <!-- foto de usuario -->
+                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            </div>
+        `)
+
+        $('#item2').append(`
+        <div class="frameHorizontal">
+            <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+            <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
+            <img src="{% static 'images/previews/prevHor.jpg' %}" class="smallImageFramedHor">
+        </div>
+        `)
+
+        $('#item3').append(`
+        <div class="frameHorizontal">
+            <img src="{% static 'images/marcos/Caravaggio/ME2CO_1.png' %}" class="horFrame">
+            <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
+            <img src="{% static 'images/previews/prevHor.jpg' %}" class="smallImageFramedHor">
+        </div>
+        `)
+
+        $('#simuladorCarrusel').append(`
+        <div class="carousel-item" data-interval="1000000">
+            <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
             <div class="frameHorizontal">
 
                 <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
@@ -589,7 +621,21 @@
                 <!-- foto de usuario -->
                 <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
             </div>
+        </div>
         `)
+    } else {
+        $('#escenarios').addClass( "frameVertical" );
+        $('#item1').append(`
+            <div class="frameVertical">`
+                + '<img src="' + marco_select + '" class="verFrame">'+
+                `
+                <!-- marialuisa -->
+            <img src="`+ maLuisa +`" class="verframeBack">
+            <!-- foto de usuario -->
+            <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedVer">
+            </div>
+            `
+    )
 
         $('#item2').append(`
         <div class="frameVertical">
@@ -611,22 +657,20 @@
         <div class="carousel-item" data-interval="1000000">
             <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
             <div class="frameHorizontal">
-
-                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+            <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="verFrame">
                 <!-- marialuisa -->
-                <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
-                <!-- foto de usuario -->
-                <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
-            </div>
-        </div>
+            < img src = "{% static 'images/Marialuisas/B7-150_1.png' %}" class= "verframeBack" >
+            <!-- foto de usuario -->
+            < img src = "{% static 'images/previews/prevHor.jpg' %}" class = "fullImageFramedVer" >
+        < /div>
+    < /div>
         `)
-
-//         $('indicators').append(`
-// <li data-target='#gallerySimulator' data-slide-to='3'><img src="{% static 'images/previews/preview3.jpg' %}" alt="" /></li>
-//         `)
-
-        // $('#gallerySimulator').carousel();
     }
+
+
+
+
+   }
 
     function guardarMarco() {
         let datos = {
