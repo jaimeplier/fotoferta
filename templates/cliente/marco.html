@@ -276,7 +276,7 @@
                             </div>
                             <div class="row btnPreviewModal">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <a href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
+                                    <a onclick="marcoSimulador()" href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
                                 </div>
                             </div>
                         </div>
@@ -304,24 +304,27 @@
             </div>
             <div class="modal-body">
                 <div id="gallerySimulator" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active" data-interval="1000000">
+                    <div id="simuladorCarrusel" class="carousel-inner">
+                        <div id="item1" class="carousel-item active" data-interval="1000000">
                             <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
                             <div class="frameHorizontal">
-                                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
-                                <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
-                                <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
+
+                                <!-- <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame"> -->
+                                <!-- marialuisa -->
+                                <!-- <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack"> -->
+                                <!-- foto de usuario -->
+                                <!-- <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor"> -->
                             </div>
                         </div>
-                        <div class="carousel-item" data-interval="1000000">
+                        <div id="item2" class="carousel-item" data-interval="1000000">
                             <img src="{% static 'images/previews/preview2.jpg' %}" class="d-block w-100" alt="...">
-                            <div class="frameVertical">
+                            <!-- <div class="frameVertical">
                                 <img src="{% static 'images/marcos/Caravaggio/ME2CO_1.png' %}" class="verFrame">
                                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="verframeBack">
                                 <img src="{% static 'images/previews/prevVer.jpg' %}" class="smallImageFramedVer">
-                            </div>
+                            </div> -->
                         </div>
-                        <div class="carousel-item" data-interval="10000">
+                        <div id="item3" class="carousel-item" data-interval="10000">
                             <img src="{% static 'images/previews/preview3.jpg' %}" class="d-block w-100" alt="...">
                         </div>
                     </div>
@@ -333,7 +336,7 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>-->
-                    <ol class='carousel-indicators mCustomScrollbar'>
+                    <ol id="indicators" class='carousel-indicators mCustomScrollbar'>
                         <li data-target="#gallerySimulator" data-slide-to="0" class='active'><img src="{% static 'images/previews/preview1.jpg' %}" alt='' /></li>
                         <li data-target='#gallerySimulator' data-slide-to='1'><img src="{% static 'images/previews/preview2.jpg' %}" alt="" /></li>
                         <li data-target='#gallerySimulator' data-slide-to='2'><img src="{% static 'images/previews/preview3.jpg' %}" alt="" /></li>
@@ -354,14 +357,12 @@
     let precioTamanio;
     let sizeClasses = ['lg', 'md', 'sm', 'xs']
     let sizeIds = ['frameLg', 'frameMd', 'frameSm', 'frameXs'];
+    let marco_select = null;
+    let maLuisa = null;
 
     $('document').ready(function() {
         $.ajax({
-            url: "/ws/listar_tamanios?producto=" + {
-                {
-                    producto.pk
-                }
-            },
+            url: "/ws/listar_tamanios?producto=" + {{ producto.pk }},
             type: "GET",
             cache: false,
             success: function(json) {
@@ -412,15 +413,22 @@
         updatePrice();
     }
 
-    function setStage3(res, precio) {
+    function setStage3(res, precio, imgH, imgv) {
         estadosSimulador.res_stage3 = res;
         estadosSimulador.precio3 = precio;
+        var orientacion_img = {{ producto.foto.orientacion }};
+        if(orientacion_img == 'Horizontal') {
+            marco_select = imgH
+        } else {
+            marco_select = imgv
+        }
+
         hideStages(4);
         listar_tipos_mariaLuisa();
         updatePrice();
     }
 
-    function setStage4(res, precio) {
+    function setStage4(res, precio, imgH, imgv) {
         estadosSimulador.res_stage4 = res;
         estadosSimulador.precio4 = precio;
         $('#guardarM').show();
@@ -504,8 +512,8 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <!--<img onclick="setStage3(` + obj.id + ',' + obj.precio + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
-                                        <img onclick="setStage3(` + obj.id + ',' + obj.precio + `)" style="cursor:pointer" src="` + obj.imagen_vertical + `"> 
+                                        <!--<img onclick="setStage3(` + obj.id + ',' + obj.precio + ',' + obj.imagen_horizontal + ',' + obj.imagen_vertical + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
+                                        <img onclick="setStage3(` + obj.id + ',' + obj.precio + ', ' + obj.imagen_horizontal + ' , ' + obj.imagen_vertical +  `)" style="cursor:pointer" src="` + obj.imagen_vertical + `"> 
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -564,14 +572,62 @@
         })
     }
 
+    function marcoSimulador() {
+        // let orientacion = {{ producto.foto.orientacion }};
+        // $("#simuladorCarrusel").carousel("pause").removeData();
+
+
+        $('#item1').append(`
+            <div class="frameHorizontal">
+
+                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+                <!-- marialuisa -->
+                <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
+                <!-- foto de usuario -->
+                <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
+            </div>
+        `)
+
+        $('#item2').append(`
+        <div class="frameVertical">
+            <img src="{% static 'images/marcos/Caravaggio/ME2CO_1.png' %}" class="verFrame">
+            <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="verframeBack">
+            <img src="{% static 'images/previews/prevVer.jpg' %}" class="smallImageFramedVer">
+        </div>
+        `)
+
+        $('#item3').append(`
+        <div class="frameVertical">
+            <img src="{% static 'images/marcos/Caravaggio/ME2CO_1.png' %}" class="verFrame">
+            <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="verframeBack">
+            <img src="{% static 'images/previews/prevVer.jpg' %}" class="smallImageFramedVer">
+        </div>
+        `)
+
+        $('#simuladorCarrusel').append(`
+        <div class="carousel-item" data-interval="1000000">
+            <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
+            <div class="frameHorizontal">
+
+                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+                <!-- marialuisa -->
+                <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
+                <!-- foto de usuario -->
+                <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
+            </div>
+        </div>
+        `)
+
+//         $('indicators').append(`
+// <li data-target='#gallerySimulator' data-slide-to='3'><img src="{% static 'images/previews/preview3.jpg' %}" alt="" /></li>
+//         `)
+
+        // $('#gallerySimulator').carousel();
+    }
 
     function guardarMarco() {
         let datos = {
-            producto: {
-                {
-                    producto.pk
-                }
-            },
+            producto: {{ producto.pk }},
             papel_impresion: estadosSimulador.res_stage2,
             marco: estadosSimulador.res_stage3,
             precio_tamanio: precioTamanio,
