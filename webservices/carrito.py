@@ -1,6 +1,6 @@
 from django.db import transaction
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -17,7 +17,7 @@ from webservices.serializers import AddFotoCarritoSerializer, ProductoSerializer
 
 class AgregarCarrrito(APIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (SessionAuthentication,TokenAuthentication)
 
     def post(self, request):
         serializer = AddFotoCarritoSerializer(data=request.data)
