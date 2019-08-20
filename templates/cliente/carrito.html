@@ -122,7 +122,7 @@
                                         <p>Elige un metodo de pago:</p>
                                     </div>
                                 </div>
-                                <form class="row">
+                                <div class="row">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paymentMethods">
                                         <div class="row cc-selector">
                                             <div class="col-xl-12 col-lg-12 col-md-4 col-sm-4 col-4 paymentMethod">
@@ -249,11 +249,11 @@
                                         <!--De acuerdo con la seleccion de usuario, se muestra la opción de pago-->
                                         <div class="row">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                <a href="#" class="btn generalBtn specialBtn">Realizar Pago</a>
+                                                <button style="cursor: pointer" onclick="pagarOrden(2)" class="btn generalBtn specialBtn">Realizar Pago</button>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -375,12 +375,13 @@
             url: "/ws/list_tarjetas/",
             type: "GET",
             cache: false,
-            success: function(json) {               
+            success: function(json) {
+                console.log('tarj', json);
                 for (i in json) {
                     $('#tarjeta').append(
                         $("<option></option>")
                         .attr("value", json[i].pk)
-                        .text(json[i].nombre)
+                        .text("**** **** **** " + json[i].ultimos_digitos)
                     );
                 }
             }
@@ -394,16 +395,61 @@
             success: function(json) {
                 console.log('direcciones',json)
                 for (i in json) {
-                    $('#direccion_oxxo', '#direccion_spei', '#direccion_tarjeta').append(
+                    $('#direccion_tarjeta').append(
                         $("<option></option>")
                         .attr("value", json[i].pk)
-                        .text(json[i].nombre)
+                        .text(json[i].nombre + ', ' + json[i].calle, ', ' + json[i].num_exterior)
                     );
                 }
             }
         })
 
     });
+
+
+{#    switch (expr) {#}
+{#  case 'Naranja':#}
+{#    console.log('El kilogramo de Naranjas cuesta $0.59.');#}
+{#    break;#}
+{#  case 'Manzana':#}
+{#    console.log('El kilogramo de Manzanas cuesta $0.32.');#}
+{#    break;#}
+{#  case 'Banana':#}
+{#    console.log('El kilogramo de Bananas cuesta $0.48.');#}
+{#    break;#}
+{#  case 'Cereza':#}
+{#    console.log('El kilogramo de Cerezas cuesta $3.00.');#}
+{#    break;#}
+{#  case 'Mango':#}
+{#  case 'Papaya':#}
+{#    console.log('El kilogramo de Mangos y Papayas cuesta $2.79.');#}
+{#    break;#}
+{#  default:#}
+{#    console.log('Lo lamentamos, por el momento no disponemos de ' + expr + '.');#}
+
+    // tarjeta es 2
+    // oxxo 3
+    // spei 4
+    function pagarOrden(tipo) {
+        let datosPago = {
+            metodo_pago : tipo,
+            direccion: $('#direccion_tarjeta').val(),
+            tarjeta: $('#tarjeta').val(),
+        }
+        $.ajax({
+             url: "/ws/pagar_orden/",
+             type: "POST",
+             cache: false,
+             data: datosPago,
+             success: function (res) {
+                 console.log(res)
+                 alert('Pago realizado con exito')
+                 window.location.href = "{% url 'webapp:vista_carrito' %}"
+             },
+             error: (err) => {console.log(err)}
+         })
+    }
+
 
     function editarOrden(id) {
         console.log(id)
