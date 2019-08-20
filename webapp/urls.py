@@ -1,6 +1,6 @@
 from django.urls import path
 
-from webapp.views import ClienteRegistro, TarjetaCrear, TarjetaAjaxListView, TarjetaActualizar
+from webapp.views import ClienteRegistro, TarjetaCrear, TarjetaAjaxListView, TarjetaActualizar, ComprasAjaxListView
 from . import views
 from webapp.views import DireccionCrear, DireccionAjaxListView, DireccionActualizar
 
@@ -15,6 +15,7 @@ urlpatterns = [
 
     path('editar_perfil/', views.vista_editar_perfil, name='vista_editar_perfil'),
     path('perfil/', views.vista_perfil, name='vista_perfil'),
+    path('compras/', ComprasAjaxListView.as_view(), name='tab_list_compras'),
     path('exclusivas/', views.vista_exclusivas, name='vista_exclusivas'),
     path('marco/<int:producto>', views.vista_marco, name='vista_marco'),
     path('carrito/', views.vista_carrito, name='vista_carrito'),

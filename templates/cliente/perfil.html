@@ -268,42 +268,17 @@
                         </div>
                         <div class="row tableContainer">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 table-responsive">
-                                <table class="table table-striped table-hover">
+                                <table class="table table-striped table-hover" id="compras">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
-                                            <th scope="col">Edit</th>
-                                            <th scope="col">Delete</th>
+                                            <th scope="col">Foto</th>
+                                            <th scope="col">Tamaño</th>
+                                            <th scope="col">Tipo de compra</th>
+                                            <th scope="col">Subtotal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
-                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
-                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-                                            <td>@twitter</td>
-                                            <td><a href="#"><i class="far fa-edit"></i></a></td>
-                                            <td><a href="#"><i class="far fa-trash-alt"></i></a></td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -616,7 +591,12 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="{% static 'vendor/DataTables/datatables.min.js' %}"></script>
 <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
     var foto_form = {
@@ -626,6 +606,100 @@
     var foto = null;
 
     $('document').ready(function() {
+
+        tabla = $('#compras').DataTable({
+                dom: 'lBfrtip',
+                language: {
+                    url: "{% static "datatables/spanish.json" %}"
+                },
+                //buttons: ['copy', 'excel', 'pdf', 'csv', 'print'],
+                buttons: {
+                    dom: {
+                        button: {
+                            tag: 'div',
+                            className: 'col-xl-3 col-lg-3 co-md-3 col-sm-6 col-6'
+                        },
+                        container: {
+                            tag: 'div',
+                            className: 'row'
+                        },
+                        buttonLiner: {
+                            tag: null
+                        }
+                    },
+                    buttons: [
+
+
+                        {
+                            extend: 'copyHtml5',
+                            text: '<a href="#" class="btn generalBtn"><i class="far fa-copy"></i> Copiar</a>',
+                            title: 'Compras',
+                            titleAttr: 'Copiar',
+                            exportOptions: {
+                                columns: [0, 1]
+                            }
+                        },
+
+                        {
+                            extend: 'pdfHtml5',
+                            text: '<a href="#" class="btn generalBtn"><i class="far fa-file-pdf"></i> PDF</a>',
+                            title: 'Titulo de tabla en pdf',
+                            titleAttr: 'PDF',
+                            exportOptions: {
+                                columns: [0, 1]
+                            },
+                            customize: function (doc) {
+
+                                doc.styles.title = {
+                                    color: '#4c8aa0',
+                                    fontSize: '30',
+                                    alignment: 'center'
+                                },
+                                doc.styles['td:nth-child(2)'] = {
+                                    width: '100px',
+                                    'max-width': '100px'
+                                },
+                                    doc.styles.tableHeader = {
+                                        fillColor: '#4c8aa0',
+                                        color: 'white',
+                                        alignment: 'center'
+                                    },
+                                    doc.content[1].margin = [100, 0, 100, 0]
+
+                            }
+
+                        },
+
+                        {
+                            extend: 'excelHtml5',
+                            text: '<a href="#" class="btn generalBtn"><i class="far fa-file-excel"></i> Excel</a>',
+                            title: 'Compras',
+                            titleAttr: 'Excel',
+                            exportOptions: {
+                                columns: [0, 1]
+                            },
+                        },
+                        {
+                            extend: 'print',
+                            text: '<a href="#" class="btn generalBtn"><i class="fas fa-print"></i> Print</a>',
+                            title: 'Compras',
+                            titleAttr: 'Imprimir',
+                            exportOptions: {
+                                columns: [0, 1]
+                            }
+                        },
+                    ]
+                },
+                processing: true,
+                serverSide: true,
+                ajax: "{% url 'webapp:tab_list_compras' %}"
+            });
+
+            $("#buscar").on('keyup', function () {
+                $('#usuarios').dataTable().fnFilter(this.value);
+            });
+
+
         $('.js-example-basic-multiple').select2();
 
         $("#input_foto").change(function() {
@@ -1047,3 +1121,4 @@
 
 </script>
 {% endblock %}
+

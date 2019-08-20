@@ -242,6 +242,31 @@ def vista_perfil(request):
     template_name = 'cliente/perfil.html'
     return render(request, template_name)
 
+class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'fotopartner'
+    model = Producto
+    columns = [
+        'foto', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', 'subtotal'
+    ]
+
+    order_columns = [
+    'foto.nombre', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', 'subtotal'
+    ]
+
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'foto':
+            return '<img style="width:35%" src="' + row.foto.foto_home.url + '" />'
+
+        return super(ComprasAjaxListView, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Producto.objects.filter(usuario=self.request.user, estatus_pago__pk=2)
+
 @permission_required(perm='fotopartner', login_url='/webapp/login')
 def vista_carrito(request):
     template_name = 'cliente/carrito.html'
