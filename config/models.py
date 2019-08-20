@@ -246,6 +246,11 @@ class Direccion(models.Model):
         return self.calle + ' ' + num_ext + num_int + ' CP. ' + self.colonia.cp + ' ' + self.colonia.municipio.nombre + ' ' +\
                self.colonia.municipio.estado.nombre
 
+    def direccion_corta(self):
+        num_ext = ('Num ext: ' + self.num_exterior) if self.num_exterior else 'S/N'
+        num_int = (' Num int: ' + self.num_interior) if self.num_interior else ''
+        return self.calle + ' ' + num_ext + num_int + ', ' + self.colonia.municipio.nombre + ', Col. ' + self.colonia.nombre
+
 class Pais(Catalogo):
     class Meta:
         managed = True
