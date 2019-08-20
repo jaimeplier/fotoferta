@@ -76,6 +76,8 @@ class PagarOrden(APIView):
             orden.estatus_compra = estatus_compra
             orden.estatus_pago = estatus_pago
             orden.save()
+            productos = Producto.objects.filter(orden=orden)
+            productos.update(estatus_pago=estatus_pago)
 
 
         elif metodo_pago.nombre == 'Oxxo':
