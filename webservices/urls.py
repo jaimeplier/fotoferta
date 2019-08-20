@@ -4,7 +4,7 @@ from webservices.Catalogos import ListCategorias, ListEtiquetas
 from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, ListFotosRecomendadas
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
-from webservices.pago import ListDirecciones, ListTarjetas
+from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
 from webservices.views import ListContactanos
 
 app_name = 'webservices'
@@ -36,6 +36,6 @@ urlpatterns = [
     # Pagos
     path('list_direcciones/', ListDirecciones.as_view(), name='list_direcciones'),
     path('list_tarjetas/', ListTarjetas.as_view(), name='list_tarjetas'),
-    # path('pagar_orden/', PagarOrden.as_view(), name='pagar_orden'),
+    path('pagar_orden/', PagarOrden.as_view(), name='pagar_orden'),
 
 ]
