@@ -413,16 +413,18 @@
         updatePrice();
     }
 
-    function setStage3(res, precio, imgH, imgv) {
+    function setStage3(res, precio) {
         estadosSimulador.res_stage3 = res;
         estadosSimulador.precio3 = precio;
+
+        /*
         var orientacion_img = {{ producto.foto.orientacion }};
         if(orientacion_img == 'Horizontal') {
             marco_select = imgH
         } else {
-            marco_select = imgv
+            marco_select = imgV
         }
-
+*/
         hideStages(4);
         listar_tipos_mariaLuisa();
         updatePrice();
@@ -513,7 +515,7 @@
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <!--<img onclick="setStage3(` + obj.id + ',' + obj.precio + ',' + obj.imagen_horizontal + ',' + obj.imagen_vertical + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
-                                        <img onclick="setStage3(` + obj.id + ',' + obj.precio + ', ' + obj.imagen_horizontal + ' , ' + obj.imagen_vertical +  `)" style="cursor:pointer" src="` + obj.imagen_vertical + `"> 
+                                        <img onclick="setStage3(` + obj.id + ',' + obj.precio +`)" style="cursor:pointer" src="` + obj.imagen_vertical + `">
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -526,6 +528,7 @@
                     `
                     $('#woodenFrameCarousel').owlCarousel().trigger('add.owl.carousel', [jQuery(html)]).trigger('refresh.owl.carousel')
 
+                    // ', ' + obj.imagen_horizontal + ' , ' + obj.imagen_vertical +
                 }
             }
         })
