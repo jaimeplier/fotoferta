@@ -1264,14 +1264,15 @@ class MenuFotopartnerActualizar(PermissionRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('administrador:list_MenuFotopartner')
 
+
 @permission_required(perm='administrador', login_url='/webapp/login')
 def MenuFotopartner_cambiar_estatus(request, pk):
-    MenuFotopartner = get_object_or_404(MenuFotopartner, pk=pk)
-    if MenuFotopartner.estatus:
-        MenuFotopartner.estatus = False
+    menu_fotopartner = get_object_or_404(MenuFotopartner, pk=pk)
+    if menu_fotopartner.estatus:
+        menu_fotopartner.estatus = False
     else:
-        MenuFotopartner.estatus = True
-    MenuFotopartner.save()
+        menu_fotopartner.estatus = True
+    menu_fotopartner.save()
     return JsonResponse({'result': 0})
 
 # Clase Promocion
