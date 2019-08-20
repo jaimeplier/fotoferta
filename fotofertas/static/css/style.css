@@ -1604,6 +1604,7 @@ form {
 
 /*Loader*/
 /*Frames Classes*/
+/*Horizontal Frame*/
 .frameHorizontal {
     position: absolute;
     width: 176px;
@@ -1611,7 +1612,6 @@ form {
     top: 70px;
     left: 310px;
     z-index: 10000;
-    background: rgba(255, 120, 120, 1);
 }
 
 .frameHorizontal .horFrame {
@@ -1630,6 +1630,92 @@ form {
     top: 15px;
     left: 0px;
 }
+
+.fullImageFramedHor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.bigImageFramedHor {
+    position: absolute;
+    top: 21%;
+    left: 20%;
+    width: 60%;
+}
+
+.medImageFramedHor {
+    position: absolute;
+    top: 26%;
+    left: 25%;
+    width: 50%;
+}
+
+.smallImageFramedHor {
+    position: absolute;
+    top: 38%;
+    left: 38%;
+    width: 25%;
+}
+
+/*Horizontal Frame*/
+/*Vertical Frame*/
+.frameVertical {
+    position: absolute;
+    width: 124px;
+    height: 176px;
+    top: 70px;
+    left: 310px;
+    z-index: 10000;
+}
+
+.frameVertical .verFrame {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 300;
+}
+
+.frameVertical .verframeBack {
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 15px;
+    left: 0px;
+}
+
+.fullImageFramedVer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+}
+
+.bigImageFramedVer {
+    position: absolute;
+    top: 17%;
+    left: 20%;
+    width: 60%;
+}
+
+.medImageFramedVer {
+    position: absolute;
+    top: 22%;
+    left: 25%;
+    width: 50%;
+}
+
+.smallImageFramedVer {
+    position: absolute;
+    top: 36%;
+    left: 38%;
+    width: 25%;
+}
+
+/*Vertical Frame*/
 
 /*Frames Classes*/
 /*Carousel Indicators*/
