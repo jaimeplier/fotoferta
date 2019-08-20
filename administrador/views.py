@@ -1691,13 +1691,17 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'estatus':
             return '<a class="" href ="#"><i class="material-icons">receipt</i></a>'
         elif column == 'fecha_compra':
-            return row.fecha_compra.astimezone(self.settingstime_zone).strftime("%d-%b-%Y %H:%M")
+            if row.fecha_compra:
+                return row.fecha_compra.astimezone(self.settingstime_zone).strftime("%d-%b-%Y %H:%M")
+            return 'Sin Fecha'
         elif column == 'direccion':
-            return row.direccion.direccion_completa()
+            if row.direccion:
+                return row.direccion.direccion_completa()
+            return 'Sin definir'
         elif column == 'total':
             return "$" + "{0:,.2f}".format(row.total)
         elif column == 'detalle_pago':
-            return '*******423'
+            return '*******4242'
         return super(VentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
@@ -1752,13 +1756,17 @@ class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'estatus':
             return '<a class="" href ="#"><i class="material-icons">receipt</i></a>'
         elif column == 'fecha_compra':
-            return row.fecha_compra.astimezone(self.settingstime_zone).strftime("%d-%b-%Y %H:%M")
+            if row.fecha_compra:
+                return row.fecha_compra.astimezone(self.settingstime_zone).strftime("%d-%b-%Y %H:%M")
+            return 'Sin fecha'
         elif column == 'direccion':
-            return row.direccion.direccion_completa()
+            if row.direccion:
+                return row.direccion.direccion_completa()
+            return 'Sin definir'
         elif column == 'total':
             return "$" + "{0:,.2f}".format(row.total)
         elif column == 'detalle_pago':
-            return '*******423'
+            return '*******4242'
         return super(HistorialVentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
