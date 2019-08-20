@@ -1,4 +1,7 @@
 /*To up breakpoints*/
+/* Smallest devices (landscape phones, 576px and up)*/
+@media (min-width: 350px) {}
+
 /* Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) {
     .card-columns {
@@ -74,7 +77,6 @@
     .profileToggle {
         border-right: solid 4px #FFB600;
     }
-
 }
 
 /* Small devices (landscape phones, less than 768px)*/
@@ -143,6 +145,33 @@
     .footer .footerMenu {
         border-right: none;
     }
+
+    .frameHorizontal {
+        position: absolute;
+        width: 76px;
+        height: 54px;
+        top: 40px;
+        left: 200px;
+        z-index: 10000;
+    }
+
+    .frameHorizontal .horframeBack {
+        top: 5px;
+    }
+
+
+    .frameVertical {
+        position: absolute;
+        width: 54px;
+        height: 74px;
+        top: 40px;
+        left: 210px;
+        z-index: 10000;
+    }
+
+    .frameVertical .verframeBack {
+        top: 5px;
+    }
 }
 
 /* Small devices (landscape phones, 576px and up)*/
@@ -152,10 +181,62 @@
     .profileFollowers {
         text-align: center;
     }
+
+    .frameHorizontal {
+        position: absolute;
+        width: 76px;
+        height: 54px;
+        top: 40px;
+        left: 200px;
+        z-index: 10000;
+    }
+
+    .frameHorizontal .horframeBack {
+        top: 5px;
+    }
+
+    .frameVertical {
+        position: absolute;
+        width: 54px;
+        height: 74px;
+        top: 40px;
+        left: 210px;
+        z-index: 10000;
+    }
+
+    .frameVertical .verframeBack {
+        top: 5px;
+    }
 }
 
 /* Medium devices (tablets, 768px and up)*/
-@media (min-width: 768px) and (max-width: 991.98px) {}
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .frameHorizontal {
+        position: absolute;
+        width: 76px;
+        height: 54px;
+        top: 40px;
+        left: 200px;
+        z-index: 10000;
+    }
+
+    .frameHorizontal .horframeBack {
+        top: 5px;
+    }
+
+    .frameVertical {
+        position: absolute;
+        width: 54px;
+        height: 74px;
+        top: 40px;
+        left: 210px;
+        z-index: 10000;
+    }
+
+    .frameVertical .verframeBack {
+        top: 5px;
+    }
+}
 
 /* Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) and (max-width: 1199.98px) {}

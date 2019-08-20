@@ -1603,3 +1603,157 @@ form {
 }
 
 /*Loader*/
+/*Frames Classes*/
+/*Horizontal Frame*/
+.frameHorizontal {
+    position: absolute;
+    width: 176px;
+    height: 124px;
+    top: 70px;
+    left: 310px;
+    z-index: 10000;
+}
+
+.frameHorizontal .horFrame {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 300;
+}
+
+.frameHorizontal .horframeBack {
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 15px;
+    left: 0px;
+}
+
+.fullImageFramedHor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.bigImageFramedHor {
+    position: absolute;
+    top: 21%;
+    left: 20%;
+    width: 60%;
+}
+
+.medImageFramedHor {
+    position: absolute;
+    top: 26%;
+    left: 25%;
+    width: 50%;
+}
+
+.smallImageFramedHor {
+    position: absolute;
+    top: 38%;
+    left: 38%;
+    width: 25%;
+}
+
+/*Horizontal Frame*/
+/*Vertical Frame*/
+.frameVertical {
+    position: absolute;
+    width: 124px;
+    height: 176px;
+    top: 70px;
+    left: 310px;
+    z-index: 10000;
+}
+
+.frameVertical .verFrame {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 300;
+}
+
+.frameVertical .verframeBack {
+    width: 100%;
+    height: 80%;
+    position: absolute;
+    top: 15px;
+    left: 0px;
+}
+
+.fullImageFramedVer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90%;
+}
+
+.bigImageFramedVer {
+    position: absolute;
+    top: 17%;
+    left: 20%;
+    width: 60%;
+}
+
+.medImageFramedVer {
+    position: absolute;
+    top: 22%;
+    left: 25%;
+    width: 50%;
+}
+
+.smallImageFramedVer {
+    position: absolute;
+    top: 36%;
+    left: 38%;
+    width: 25%;
+}
+
+/*Vertical Frame*/
+
+/*Frames Classes*/
+/*Carousel Indicators*/
+#gallerySimulator .carousel-indicators {
+    margin: 10px 0 0;
+    overflow: auto;
+    position: static;
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#gallerySimulator .carousel-indicators li {
+    background-color: transparent;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    display: inline-block;
+    height: auto;
+    margin: 0 !important;
+    width: auto;
+}
+
+#gallerySimulator .carousel-indicators li img {
+    display: block;
+    opacity: 0.5;
+    max-width: 50px;
+}
+
+#gallerySimulator .carousel-indicators li.active img {
+    opacity: 1;
+}
+
+#gallerySimulator .carousel-indicators li:hover img {
+    opacity: 0.75;
+}
+
+#gallerySimulator .carousel-outer {
+    position: relative;
+}
+
+/*Carousel Indicators*/

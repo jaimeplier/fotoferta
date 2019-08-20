@@ -375,7 +375,6 @@
         </div>
     </div>
 </section>
-
 <div id="modalPhotoUpload" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -421,7 +420,7 @@
                                 <div class="col-12">
                                     <input type="file" id="input_foto" placeholder="Foto">
                                     <!-- onchange="cargarfoto(event)" -->
-                                    <h6>¿Como quieres subir tu fotografia? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
+                                    <h6>¿Como quieres subir tu fotografia? <a href="#" data-toggle="modal" data-target="#modalPhotoUploadType"><i class="fas fa-question-circle"></i></a></h6>
                                 </div>
                             </div>
                             <form id="formTipoFoto">
@@ -451,7 +450,7 @@
                                 <form id="formTipoVenta">
                                     <div class="row">
                                         <div class="col-12">
-                                            <h6>¿Como quieres vender tu fotografía? <a href="#"><i class="fas fa-question-circle"></i></a></h6>
+                                            <h6>¿Como quieres vender tu fotografía? <a href="#" data-toggle="modal" data-target="#modalPhotoUploadSellType"><i class="fas fa-question-circle"></i></a></h6>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -493,30 +492,28 @@
                                     <div class="row">
                                         <div class="col-12" style="padding-bottom: 15px;">
                                             <label style="float:left" for="categorias">Categorías</label>
-                                            <select id="categorias" class="js-example-basic-multiple"
-                                             name="categorias[]" multiple="multiple" style="width: 100%">
+                                            <select id="categorias" class="js-example-basic-multiple" name="categorias[]" multiple="multiple" style="width: 100%">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                    <label style="float:left" for="nombre_foto">Título</label>
-                                                <input type="email" class="form-control" id="nombre_foto" >
+                                                <label style="float:left" for="nombre_foto">Título</label>
+                                                <input type="email" class="form-control" id="nombre_foto">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12" style="padding-bottom: 15px;">
                                             <label style="float:left" for="etiquetas_foto">Elige etiquetas para tu foto</label>
-                                            <select id="etiquetas_foto" class="js-example-basic-multiple select2" name="etiquetas[]" multiple="multiple" 
-                                            style="width: 100%">
+                                            <select id="etiquetas_foto" class="js-example-basic-multiple select2" name="etiquetas[]" multiple="multiple" style="width: 100%">
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                                <label style="float:left" for="descripcion_foto">Descripción</label>
+                                            <label style="float:left" for="descripcion_foto">Descripción</label>
                                             <textarea class="form-control" id="descripcion_foto" rows="3" placeholder="Historia o descripción de la fotografía"></textarea>
                                         </div>
                                     </div>
@@ -574,6 +571,51 @@
         </div>
     </div>
 </div>
+<div id="modalPhotoUploadType" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Como quieres subir tu fotografía?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><b>Privada para impresión:</b> Sube fotografías, imprimelas y agregales un marco que llegará a la puerta de tu casa, sólo tu podrás verlas.</p>
+                <p><b>Pública para venta:</b> Vende tus fotografías en nuestra plataforma</p>
+            </div>
+            <div class="modal-footer">
+                <div onclick="cancelarFoto()">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalPhotoUploadSellType" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Como quieres vender tu fotografía?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><b>Gratuita:</b> Sin Venta, pero mejora tu portafolio.</p>
+
+                <p><b>Venta Exposición General:</b> Múltiples ventas, múltiples ganancias.</p>
+
+                <p><b>Venta Exclusiva:</b> Solo una Venta a mayor precio y mayor ganancia.</p>
+            </div>
+            <div class="modal-footer">
+                <div onclick="cancelarFoto()">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
@@ -597,10 +639,10 @@
         $('#etiquetas_foto').select2({
             tags: true,
             data: [],
-            tokenSeparators: [','], 
+            tokenSeparators: [','],
             placeholder: "Add your tags here",
             /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
-            selectOnClose: true, 
+            selectOnClose: true,
             closeOnSelect: false
         });
 
@@ -650,10 +692,10 @@
 
                 $('#etiquetas_foto').select2({
                     tags: true,
-                    tokenSeparators: [','], 
+                    tokenSeparators: [','],
                     placeholder: "Add your tags here",
                     /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
-                    selectOnClose: true, 
+                    selectOnClose: true,
                     closeOnSelect: false
                 });
 
@@ -671,8 +713,10 @@
                 console.log('imagenes', json);
                 for (i of json) {
                     $('#fotos_usuario').append(`
-                    <div class="card" onclick="vistaFoto()">
+                    <div class="card">
+                        <a href="http://localhost:8000/webapp/foto/` +i.pk + `">
                         <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top">
+                        </a>
                     </div>
                         `)
                 }
