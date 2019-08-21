@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Fotografia, FotoReaccion, Reaccion, Fotografo
+from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerializer
 
@@ -14,6 +15,7 @@ from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerialize
 class ListFavoritos(ListAPIView):
     permission_classes = (IsAuthenticated, FotopartnerPermission)
     authentication_classes = (SessionAuthentication,)
+    pagination_class = SmallPagesPagination
 
     serializer_class = FotoReaccionSerializer
 
