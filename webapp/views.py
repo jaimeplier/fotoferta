@@ -143,7 +143,7 @@ class DireccionCrear(PermissionRequiredMixin, CreateView):
 def direccion_listar(request):
     template_name = 'config/tab_base.html'
     context = {}
-    context['titulo'] = 'Direccion'
+    context['titulo'] = 'Dirección'
     context['btn_nuevo'] = 'Agregar direccion'
     context['url_nuevo'] = reverse('webapp:nuevo_direccion')
     context['encabezados'] = [['Id', True],
