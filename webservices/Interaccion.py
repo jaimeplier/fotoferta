@@ -20,7 +20,7 @@ class ListFavoritos(ListAPIView):
     serializer_class = FotoReaccionSerializer
 
     def get_queryset(self):
-        queryset = FotoReaccion.objects.filter(usuario=self.request.user, reaccion__nombre='Favorito', foto__estatus=True)
+        queryset = FotoReaccion.objects.filter(usuario=self.request.user, reaccion__nombre='Favorito', foto__estatus=True).order_by('-fecha_alta')
         return queryset
 
 class AgregarFavoritos(APIView):
