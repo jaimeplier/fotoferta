@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
     FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
-    Colonia
+    Colonia, FotoReaccion
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -126,6 +126,12 @@ class FotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fotografia
         fields = ['nombre', 'descripcion', 'tamanio', 'foto_muestra']
+
+class FotoReaccionSerializer(serializers.ModelSerializer):
+    foto = FotografiaSerializer()
+    class Meta:
+        model = FotoReaccion
+        fields = ['foto', 'usuario', 'reaccion']
 
 class TipoCompraSerializer(serializers.ModelSerializer):
     class Meta:
