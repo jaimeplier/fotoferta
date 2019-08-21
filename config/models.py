@@ -162,6 +162,7 @@ class Fotografo(Usuario):
                                      blank=True)
     fotopartner = models.BooleanField(default=False)
     terminos_condiciones = models.BooleanField()
+    seguidores = models.BigIntegerField(default=0)
     class Meta:
         managed = True
         db_table = 'fotografo'
