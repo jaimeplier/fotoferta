@@ -268,7 +268,12 @@
                         <li><a href="{% url 'webapp:vista_exclusivas' %}">Fotos exclusivas</a></li>
                         <li><a href="{% url 'webapp:home' %}">Fotos Gratuitas</a></li>
                         <li><a href="{% url 'webapp:sitio_en_construccion' %}">Enmarcar foto</a></li>
-                        <li><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a></li>
+                        <li><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a>
+                            <ul>
+                                <li><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a></li>
+                                <li><a href="{% url 'webapp:sitio_en_construccion' %}">Blog</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#contactFooter">Contáctanos</a></li>
                     </ul>
                 </nav>
