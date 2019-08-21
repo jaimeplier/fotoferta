@@ -6,10 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Fotografia, FotoReaccion, Reaccion, Fotografo
+from config.models import Fotografia, FotoReaccion, Reaccion, Fotografo, SiguiendoFotografo
 from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerializer
+from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerializer, FotoparterSiguiendoSerializer
 
 
 class ListFavoritos(ListAPIView):
@@ -58,3 +58,15 @@ class AgregarFavoritos(APIView):
 
     def get_serializer(self):
         return AddFavoritoSerializer()
+
+class ListSiguiendo(ListAPIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+    pagination_class = SmallPagesPagination
+
+    serializer_class = FotoparterSiguiendoSerializer
+
+    def get_queryset(self):
+        fotografo = Fotografo.objects.get(pk=self.request.user.pk)
+        queryset = SiguiendoFotografo.objects.filter(fotografo=fotografo, siguiendo_a__estatus=True).order_by('siguiendo_a__nombre')
+        return queryset
