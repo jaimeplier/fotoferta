@@ -304,6 +304,7 @@ class Fotografia(models.Model):
     aprobada = models.BooleanField(default=False) # Si fue aprobada por un administrador
     estatus = models.BooleanField(default=True) # Si la imagen debe mostrarse o no
     fecha_alta = models.DateTimeField(auto_now_add=True)
+    likes = models.BigIntegerField(default=0)
 
 
     class Meta:
