@@ -289,3 +289,14 @@ class ColoniaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Colonia
         fields = ['pk', 'nombre', 'municipio']
+
+class AddFavoritoSerializer(serializers.Serializer):
+    foto= serializers.IntegerField()
+    like = serializers.BooleanField()
+
+    def validate_foto(self, value):
+        try:
+            Fotografia.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe la fotografía seleccionada')
+        return value
