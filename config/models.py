@@ -313,6 +313,7 @@ class Fotografia(models.Model):
 
 
 class FotoReaccion(models.Model):
+    fecha_alta = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey(Fotografo, models.DO_NOTHING)
     foto = models.ForeignKey(Fotografia, models.DO_NOTHING)
     reaccion = models.ForeignKey("Reaccion", models.DO_NOTHING)
