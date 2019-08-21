@@ -5,7 +5,7 @@ from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, List
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
-from webservices.views import ListContactanos
+from webservices.views import ListContactanos, ListDatosCP
 
 app_name = 'webservices'
 
@@ -15,6 +15,7 @@ urlpatterns = [
     path('list_contactanos/', ListContactanos.as_view(), name='list_contactanos'),
     path('list_categorias/', ListCategorias.as_view(), name='list_categorias'),
     path('list_etiquetas/', ListEtiquetas.as_view(), name='list_etiquetas'),
+    path('list_colonias/', ListDatosCP.as_view(), name='list_colonias'),
 
     path('list_fotos_home/', ListFotosHome.as_view(), name='list_fotos_home'),
     path('list_fotos_recomendadas/', ListFotosRecomendadas.as_view(), name='list_fotos_recomendadas'),

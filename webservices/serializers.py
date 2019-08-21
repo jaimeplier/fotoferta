@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
-    FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa
+    FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
+    Colonia
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -259,3 +260,26 @@ class ProductoSerializer(serializers.ModelSerializer):
         model = Producto
         fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
                   'promocion_aplicada', 'subtotal']
+
+class PaisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pais
+        fields = ['pk', 'nombre']
+
+class EstadoSerializer(serializers.ModelSerializer):
+    pais = PaisSerializer()
+    class Meta:
+        model = Estado
+        fields = ['pk', 'nombre', 'pais']
+
+class MunicipioSerializer(serializers.ModelSerializer):
+    estado = EstadoSerializer()
+    class Meta:
+        model = Municipio
+        fields = ['pk', 'nombre', 'estado']
+
+class ColoniaSerializer(serializers.ModelSerializer):
+    municipio = MunicipioSerializer()
+    class Meta:
+        model = Colonia
+        fields = ['pk', 'nombre', 'municipio']
