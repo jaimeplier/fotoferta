@@ -195,7 +195,7 @@ class DireccionAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         return super(DireccionAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Direccion.objects.all()
+        return Direccion.objects.filter(usuario=self.request.user)
 
 
 class DireccionActualizar(PermissionRequiredMixin, UpdateView):
