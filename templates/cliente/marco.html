@@ -211,6 +211,7 @@
                                             <h5>Paso 4. Selecciona una marialuisa</h5>
                                         </div>
                                     </div>
+                                    <!--
                                     <div class="row">
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
                                             <label for="tamanio_maria_luisa">Tamaño de maria luisa</label>
@@ -221,6 +222,7 @@
                                             </select>
                                         </div>
                                     </div>
+                                    -->
                                     <div class="row">
                                         <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
                                             <div class="row">
@@ -307,21 +309,22 @@
                     <div id="simuladorCarrusel" class="carousel-inner">
                         <div id="item1" class="carousel-item active" data-interval="1000000">
                             <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
-                            <!-- <div id="escenarios"> -->
-                                <!-- <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame"> -->
-                                <!-- marialuisa -->
-                                <!-- <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack"> -->
-                                <!-- foto de usuario -->
-                                <!-- <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor"> -->
-                            <!-- </div> -->
+                            <!--<div class="frameHorizontal" >
+                                 <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+                                 marialuisa
+                                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
+                                 foto de usuario
+                                 <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
+                            </div> -->
                         </div>
                         <div id="item2" class="carousel-item" data-interval="1000000">
                             <img src="{% static 'images/previews/preview2.jpg' %}" class="d-block w-100" alt="...">
-                            <!-- <div class="frameVertical">
+                             <!--<div class="frameVertical">
                                 <img src="{% static 'images/marcos/Caravaggio/ME2CO_1.png' %}" class="verFrame">
                                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="verframeBack">
                                 <img src="{% static 'images/previews/prevVer.jpg' %}" class="smallImageFramedVer">
-                            </div> -->
+                            </div>
+                            -->
                         </div>
                         <div id="item3" class="carousel-item" data-interval="10000">
                             <img src="{% static 'images/previews/preview3.jpg' %}" class="d-block w-100" alt="...">
@@ -432,6 +435,7 @@
         estadosSimulador.res_stage4 = res;
         estadosSimulador.precio4 = precio;
         maLuisa = img;
+
         $('#guardarM').show();
         updatePrice();
     }
@@ -644,9 +648,7 @@ function marcoSimulador() {
             <div class="frameVertical">`
                 + '<img src="' + marco_select + '" class="verFrame">'+
                 `
-                <!-- marialuisa -->
             <img src="`+ maLuisa +`" class="verframeBack">
-            <!-- foto de usuario -->
             <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
             </div>
             `)
