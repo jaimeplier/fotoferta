@@ -570,9 +570,11 @@ class Producto(models.Model):
         return self.orden.total
 
 class Descarga(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     producto = models.ForeignKey('Producto', models.DO_NOTHING)
+    usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
     token = models.CharField(max_length=64)
-    no_descargas_disponibles = models.PositiveIntegerField(default=3)
+    no_descargas_disponibles = models.PositiveIntegerField(default=5)
 
     class Meta:
         managed = True
