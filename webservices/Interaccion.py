@@ -9,7 +9,8 @@ from rest_framework.views import APIView
 from config.models import Fotografia, FotoReaccion, Reaccion, Fotografo, SiguiendoFotografo
 from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerializer, FotoparterSiguiendoSerializer
+from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerializer, FotoparterSiguiendoSerializer, \
+    AddSeguidorSerializer
 
 
 class ListFavoritos(ListAPIView):
@@ -70,3 +71,38 @@ class ListSiguiendo(ListAPIView):
         fotografo = Fotografo.objects.get(pk=self.request.user.pk)
         queryset = SiguiendoFotografo.objects.filter(fotografo=fotografo, siguiendo_a__estatus=True).order_by('siguiendo_a__nombre')
         return queryset
+
+class SeguirFotopartner(APIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+        serializer = AddSeguidorSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        seguidor = Fotografo.objects.get(pk=request.user.pk)
+
+        # ---> OBTENER FOTOGRAFIA <---
+
+        fotografo = Fotografo.objects.get(pk=serializer.validated_data['fotopartner'])
+        seguir = serializer.validated_data['seguir']
+
+        # ---> Buscar si ya existe en los seguidores <---
+        fotografo_siguiendo = SiguiendoFotografo.objects.filter(fotografo=seguidor, siguiendo_a=fotografo)
+        num_seguidor_fotopart = len(fotografo_siguiendo)
+        if num_seguidor_fotopart >0 and seguir==False:
+            fotografo_siguiendo.delete()
+            fotografo.seguidores -=1
+            fotografo.save()
+            return Response({'exito': 'Has dejado de seguir al Fotopartner'}, status=status.HTTP_200_OK)
+        elif num_seguidor_fotopart ==0 and seguir==True:
+            with transaction.atomic():
+                fotografo.seguidores += 1
+                fotografo.save()
+                SiguiendoFotografo.objects.create(fotografo=seguidor, siguiendo_a=fotografo)
+            return Response({'exito': 'Siguiendo a Fotopartner'}, status=status.HTTP_200_OK)
+        return Response({'error': 'Ocurrio un error'}, status=status.HTTP_200_OK)
+
+
+    def get_serializer(self):
+        return AddSeguidorSerializer()

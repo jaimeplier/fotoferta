@@ -312,3 +312,14 @@ class AddFavoritoSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe la fotografía seleccionada')
         return value
+
+class AddSeguidorSerializer(serializers.Serializer):
+    fotopartner= serializers.IntegerField()
+    seguir = serializers.BooleanField()
+
+    def validate_fotopartner(self, value):
+        try:
+            Fotografo.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe el fotoparter seleccionado')
+        return value
