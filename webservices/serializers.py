@@ -137,7 +137,7 @@ class FotografoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Fotografo
-        fields = ['foto_perfil', 'nombre', 'correo']
+        fields = ['id', 'foto_perfil', 'nombre', 'correo', 'seguidores']
 
 class FotoparterSiguiendoSerializer(serializers.ModelSerializer):
     siguiendo_a = FotografoSerializer()
