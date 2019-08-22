@@ -122,6 +122,11 @@
 {% block scripts %}
     <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
+    $('document').ready(function() {
+        listar_fotos_recom();
+    });
+
+
     function agregarCarrito(id) {
         var data = {
             pk: id,
@@ -176,6 +181,45 @@
         })
     }
 
+    function listar_fotos_recom() {
+        $.ajax({
+            url: "/ws/list_fotos_recomendadas",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                console.log('recomm', json)
+                var length = $('#sugestions, .item').length;
+                for (var i = 0; i < length; i++) {
+                    $("#sugestions").trigger('remove.owl.carousel', [i])
+                        .trigger('refresh.owl.carousel');
+                }
+
+                //            $('#marginCarousel').empty();
+                for (const [i, obj] of json.entries()) {
+                    let html = `
+                        <div class="item ">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row frameImageSelector">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <!-- <img onclick="setStage4(` + obj.id + ',' + '' + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
+                                        <!-- <img onclick="setStage4(` + obj.id + ',' + 'obj.precio' + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `"> -->
+
+                                    </div>
+                                </div>
+                                <div class="row frameImageDetails">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <h5>$` + "obj.precio" + `</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                    $('#sugestions').owlCarousel().trigger('add.owl.carousel', [jQuery(html)]).trigger('refresh.owl.carousel')
+
+                }
+            }
+        })
+    }
 
 
     function cargarSeguidores() {
