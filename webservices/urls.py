@@ -2,7 +2,7 @@ from django.urls import path
 
 from webservices.Catalogos import ListCategorias, ListEtiquetas
 from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, ListFotosRecomendadas
-from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguiendo, SeguirFotopartner
+from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguiendo, SeguirFotopartner, ListFotopartners
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
@@ -45,5 +45,6 @@ urlpatterns = [
     path('favorito/', AgregarFavoritos.as_view(), name='favorito'),
     path('list_siguiendo/', ListSiguiendo.as_view(), name='list_siguiendo'),
     path('seguir/', SeguirFotopartner.as_view(), name='seguir'),
+    path('list_fotopartners/', ListFotopartners.as_view(), name='list_fotopartners'),
 
 ]

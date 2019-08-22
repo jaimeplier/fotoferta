@@ -10,7 +10,7 @@ from config.models import Fotografia, FotoReaccion, Reaccion, Fotografo, Siguien
 from webservices.Pagination import SmallPagesPagination
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import FotoReaccionSerializer, AddFavoritoSerializer, FotoparterSiguiendoSerializer, \
-    AddSeguidorSerializer
+    AddSeguidorSerializer, FotografoSerializer
 
 
 class ListFavoritos(ListAPIView):
@@ -106,3 +106,14 @@ class SeguirFotopartner(APIView):
 
     def get_serializer(self):
         return AddSeguidorSerializer()
+
+class ListFotopartners(ListAPIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+    pagination_class = SmallPagesPagination
+
+    serializer_class = FotografoSerializer
+
+    def get_queryset(self):
+        queryset = Fotografo.objects.filter(estatus=True).order_by('nombre')
+        return queryset
