@@ -360,6 +360,10 @@ def vista_exclusivas(request):
     template_name = 'cliente/exclusivas.html'
     return render(request, template_name)
 
+def vista_fotopartners(request):
+    template_name = 'cliente/fotopartners.html'
+    return render(request, template_name)
+
 class TarjetaCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/webapp/login'

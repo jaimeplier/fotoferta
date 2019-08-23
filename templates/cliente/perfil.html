@@ -94,8 +94,8 @@
                         </div>
                         <div class="row">
                             <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv favoritesGalleryContainer">
-                                <div class="card-columns">
-                                    <div class="card">
+                                <div class="card-columns" id="list-favoritos">
+                                    {% comment %}<div class="card">
                                         <div class="userProfileGalleryIcons">
                                             <a href="" class="favourite"><i class="far fa-heart"></i></a>
                                             <a href=""><i class="fas fa-cart-plus"></i></a>
@@ -206,7 +206,7 @@
                                             <a href=""><i class="fas fa-cart-plus"></i></a>
                                         </div>
                                         <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                                    </div>
+                                    </div>{% endcomment %}
                                 </div>
                             </div>
                         </div>
@@ -296,7 +296,7 @@
                             </div>
                         </div>
                         <div class="row" id="contenedorSeguidores">
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <!--<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="row">
                                     <div class="col-11 profileWidgetContainer centerDiv">
                                         <div class="row">
@@ -333,19 +333,19 @@
                                             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <h4>Nombre Apellido Apellido</h4>
+                                                        <h4>Nombre2 Apellido2 Apellido</h4>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <a href="#" class="btn generalBtn specialBtn"><i class="fas fa-plus"></i> Seguir</a>
+                                                        <a href="#" class="btn generalBtn noSeguirBtn"><i class="fas fa-plus"></i> Dejar de seguir</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -610,6 +610,9 @@
 
     $('document').ready(function() {
 
+        cargarFavoritas();
+        cargarSeguidores();
+
         tabla = $('#compras').DataTable({
                 dom: 'lBfrtip',
                 language: {
@@ -791,7 +794,7 @@
                 for (i of json) {
                     $('#fotos_usuario').append(`
                     <div class="card">
-                        <a href="http://localhost:8000/webapp/foto/` +i.pk + `">
+                        <a href="/webapp/foto/` +i.pk + `">
                         <img class="card-img-top" src="` + i.foto_muestra + `" alt="Card image top">
                         </a>
                     </div>
@@ -983,19 +986,20 @@
 
     function cargarFavoritas() {
         $.ajax({
-            url: "/ws/PENDING/",
+            url: "/ws/list_favoritos/",
             type: "GET",
             cache: false,
             success: function(json) {
-                for (i of json) {
-                    $('#fotos_usuario').append(`
-                        <div class="card">
+                console.log('get favs', json)
+                for (i of json.results) {
+                    $('#list-favoritos').append(`
+                        <div class="card" id="card` + i.foto.pk + `">
                             <div class="userProfileGalleryIcons">
-                                <button id="h + i.pk" class="favourite" onclick="marcarFavorita( i.pk ) ">
+                                <button id="h + i.pk" class="favourite" onclick="marcarFavorita(`+ i.foto.pk + `) ">
                                 <i class="far fa-heart"></i></button>
-                                <button id="cart + i.pk"  onclick="agregarCarrito( i.pk )"><i class="fas fa-cart-plus"></i></button>
+                                <button id="cart + i.pk"  onclick="agregarCarrito(`+ i.foto.pk + `)"><i class="fas fa-cart-plus"></i></button>
                             </div>
-                            <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
+                            <a href="/webapp/foto/` +i.foto.pk + `"><img class="card-img-top" src="`+  i.foto.foto_home +`" alt="fotoH" /></a>
                         </div>
                         `)
                 }
@@ -1003,30 +1007,23 @@
         })
     }
 
+
     function marcarFavorita(id) {
-        var val = $(id).hasClass("favourite");
-        if (val) {
+            var data = {
+                foto: id,
+                like: false
+            };
             $.ajax({
-                url: "/ws/WEBSERVICE/",
+                url: "/ws/favorito/",
                 type: "POST",
                 cache: false,
-                data: foto_form,
+                data: data,
                 success: function(json) {
                     // poner de color el corazon
-                    $("#" + id).addClass("favourite");
+                    console.log('favs', json)
+                    $("#card"+ id ).remove();
                 }
             })
-        } else {
-            $.ajax({
-                url: "/ws/WEBSERVICE/",
-                type: "POST",
-                cache: false,
-                data: foto_form,
-                success: function(json) {
-                    $("#" + id).removeClass("favourite");
-                }
-            })
-        }
     }
 
     function agregarCarrito(id) {
@@ -1050,55 +1047,74 @@
 
     function cargarSeguidores() {
         $.ajax({
-            url: "/ws/PENDING/",
+            url: "/ws/list_siguiendo/",
             type: "GET",
             cache: false,
             success: function(json) {
-                for (i of json) {
-                    $('#contenedorSeguidores').append(`
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" id="seguidor + i.pk " >
+                console.log('siguiendo',json)
+                for (i of json.results) {
+                    var first = '';
+                    first = `<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" id="seguidor` + i.siguiendo_a.id +`" >
                                 <div class="row">
                                     <div class="col-11 profileWidgetContainer centerDiv">
                                         <div class="row">
                                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-6 col-12">
-                                                <div class="profileWidgetImage">
-                                                    <img src="+ i.imagen + ">
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <h4> + i.nombre </h4>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <button onclick="dejarDeSeguir(+ i.pk +)" class="btn generalBtn specialBtn">
-                                                        <i class="fas fa-plus"></i> Seguir</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <div class="profileWidgetImage">`
+
+
+                    if (!i.siguiendo_a.foto_perfil) {
+                        // añadir default de imagen de perf
+                        first += `
+                        <img src="{% static 'images/user.png' %}">
+                        `
+                    } else {
+                        first += `
+                        <img src="`+ i.siguiendo_a.foto_perfil + `">
+                        `
+                    }
+
+                    first += `
+                    </div>
+                        </div>
+                            <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h4>`+ i.siguiendo_a.nombre +`</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button onclick="seguir(`+ i.siguiendo_a.id +`)" class="btn generalBtn noSeguirBtn" id="seguir`+ i.siguiendo_a.id +`">
+                                            <i class="fas fa-minus"></i> Dejar de seguir</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        `)
+                        </div>
+                    </div>
+                </div>
+                    `
+
+                    $('#contenedorSeguidores').append(first)
                 }
             }
         })
     }
 
-    function dejarDeSeguir(id) {
+    function seguir(id) {
         var seguidor = {
-            pk: id
+            fotopartner: id,
+            seguir: false
         }
+        console.log('data',seguidor)
         $.ajax({
-            url: "/ws/WEBSERVICE/",
+            url: "/ws/seguir/",
             type: "POST",
             cache: false,
             data: seguidor,
             success: function(json) {
-                $("#seguidor" + id).clear();
+                console.log('seguir', json)
+                $('#seguidor'+ id).remove();
             }
         })
     }
@@ -1121,6 +1137,8 @@
             }
         })
     }
+
+
 
 </script>
 {% endblock %}
