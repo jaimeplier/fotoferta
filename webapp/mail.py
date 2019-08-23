@@ -7,4 +7,5 @@ def sendMail(to, subject, message):
     try:
         msg.send()
     except Exception as e:
+        print(e)
         pass
