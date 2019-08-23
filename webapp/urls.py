@@ -19,6 +19,7 @@ urlpatterns = [
     path('exclusivas/', views.vista_exclusivas, name='vista_exclusivas'),
     path('marco/<int:producto>', views.vista_marco, name='vista_marco'),
     path('carrito/', views.vista_carrito, name='vista_carrito'),
+    path('fotopartners/', views.vista_fotopartners, name='vista_fotopartners'),
     path('foto/<int:pk>', views.vista_foto, name='vista_foto'),
 
     #Direccion

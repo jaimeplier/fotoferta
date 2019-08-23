@@ -14,7 +14,9 @@
                                 <h1>Fotopartners</h1>
                             </div>
                         </div>
-                        <div class="row">
+                        <div ></div>
+                        <div class="row" id="listado">
+                            <!--
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                 <div class="row">
                                     <div class="col-11 profileWidgetContainer centerDiv">
@@ -64,7 +66,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -76,5 +78,85 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'js/crsfajax.js' %}"></script>
+<script>
+    $('document').ready(function() {
+            $.ajax({
+                url: "/ws/list_fotopartners",
+                type: "GET",
+                cache: false,
+                success: function (json) {
+                    console.log('fotop', json)
+                    for (const [i, obj] of json.results.entries()) {
+                        var first = '';
+                        first = `<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-11 profileWidgetContainer centerDiv">
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-6 col-12">
+                                        <div class="profileWidgetImage">`
 
+
+                        if (!obj.foto_perfil) {
+                            // añadir default de imagen de perf
+                            first += `
+                            <img src="{% static 'images/user.png' %}">
+                            `
+                        } else {
+                            first += `
+                            <img src="`+ obj.foto_perfil + `">
+                            `
+                        }
+
+                        first +=`
+                            </div>
+                                </div>
+                                    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-6 col-12 profileWidgetData">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4>`+ obj.nombre +`</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button id="btn`+ obj.id +`"  onclick="seguir(`+ obj.id +`)" class="btn generalBtn specialBtn"><i class="fas fa-plus"></i> Seguir </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        `
+                $('#listado').append(first);
+                }
+
+            }
+        });
+    });
+
+    function seguir(id) {
+        var data = {
+            fotopartner: id,
+            seguir: true
+        };
+
+        $.ajax({
+            url: "/ws/seguir/",
+            type: "POST",
+            cache: false,
+            data: data,
+            success: function (res) {
+                $('#btn'+ id).text(' Siguiendo a fotopartner');
+                $('#btn'+ id).removeClass('specialBtn').addClass('noSeguirBtn');
+
+                console.log(res);
+                // $('#like-btn').addClass('far');
+                // $('#like-btn').removeClass('fas');
+            },
+            error: (err) => {console.log(err)}
+        });
+    }
+
+</script>
 {% endblock %}

@@ -1187,7 +1187,14 @@ footer .footerMenu {
     color: #ffffff;
 }
 
+.noSeguirBtn {
+    background: #126b92;
+    color: #ffffff;
+}
 
+.noSeguirBtn:hover {
+    color: #ffffff;
+}
 
 /*Buttons*/
 
