@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ay(=pvyl!8l30t3!17uzqx+k38wpnxwp#!m)g-_35ngxq2$#dh'
-
+KEY_FOTO = '_f034t0$F3rt(4zPthRoi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -167,3 +167,12 @@ CONEKTA_PUBLIC_KEY = 'key_LamPoYtXxogg5ACRTSqgjRg'
 ## CONEKTA_PUBLIC_KEY = 'key_UNz8msMryHP5ANSDNyS9gSA'
 CONEKTA_LOCALE = 'es'
 CONEKTA_VERSION = '2.0.0'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'fotofertasimagenesymarcos@gmail.com'
+EMAIL_HOST_PASSWORD = 'gm123$nvo'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER

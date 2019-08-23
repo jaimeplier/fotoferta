@@ -1,14 +1,16 @@
+import jwt
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DetailView
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, HttpResponseForbidden
 
 from config.conekta import agregar_tarjeta, actualizar_tarjeta, eliminar_tarjeta
+from fotofertas.settings import KEY_FOTO, BASE_DIR
 from webapp.forms import TarjetaForm, TarjetaEditForm
-from config.models import Fotografo, Rol, Fotografia, Direccion, Producto, Tarjeta
+from config.models import Fotografo, Rol, Fotografia, Direccion, Producto, Tarjeta, Descarga, Orden
 from webapp.forms import RegistroForm, DireccionForm
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
@@ -248,11 +250,11 @@ class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'fotopartner'
     model = Producto
     columns = [
-        'foto', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', 'subtotal'
+        'foto', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', 'disponibles', 'descargar', 'subtotal', 'detalle'
     ]
 
     order_columns = [
-    'foto.nombre', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', 'subtotal'
+    'foto.nombre', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', '', '', 'subtotal', ''
     ]
 
     max_display_length = 100
@@ -260,12 +262,43 @@ class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     def render_column(self, row, column):
 
         if column == 'foto':
-            return '<img style="width:35%" src="' + row.foto.foto_home.url + '" />'
+            return '<img style="width:35%; height:35%" src="' + row.foto.foto_home.url + '" />'
+        elif column == 'disponibles':
+            try:
+                descarga = Descarga.objects.get(producto__pk=row.pk)
+                return str(descarga.no_descargas_disponibles)
+            except:
+                return 'N/A'
+        elif column == 'descargar':
+            try:
+                descarga = Descarga.objects.get(producto__pk=row.pk)
+                if descarga.no_descargas_disponibles <=0:
+                    return '<div class="button-a button-a-primary" style="background: #4c4c4c; border: none; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 15px 50px; color: #ffffff; display: block; border-radius: 4px;">Sin descargas</a>'
+                return '<a download="fotofertas_prod_' + str(row.pk) + '.jpg" class="button-a button-a-primary" style="background: #12284C; border: none; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 15px 50px; color: #ffffff; display: block; border-radius: 4px;" href ="' + reverse(
+                    'webapp:producto_descarga',
+                    kwargs={
+                        'token': descarga.token, 'image_name': 'fotofertas_prod_' + str(row.pk)}) + '">Descargar</a>'
+            except:
+                return 'N/A'
+        elif column == 'detalle':
+            return '<a class="" href ="' + reverse('webapp:detalle_orden',
+                                                   kwargs={
+                                                       'orden': row.orden.pk}) + '"><i class="fa fa-file-invoice" aria-hidden="true"></i></a>'
 
         return super(ComprasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
         return Producto.objects.filter(usuario=self.request.user, estatus_pago__pk=2)
+
+@permission_required(perm='fotopartner', login_url='/webapp/login')
+def detalle_orden(request, orden):
+    template_name = 'cliente/detalle_orden.html'
+    orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Ordenado')
+    if orden_objt.usuario.pk == request.user.pk:
+        productos = Producto.objects.filter(orden=orden_objt)
+        return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
+    else:
+        return HttpResponseForbidden()
 
 @permission_required(perm='fotopartner', login_url='/webapp/login')
 def vista_carrito(request):
@@ -286,6 +319,32 @@ def vista_foto(request, pk):
         'foto': foto
     }
     return render(request, template_name, context)
+
+@permission_required(perm='fotopartner', login_url='/webapp/login')
+def producto_descarga(request, token, image_name):
+    context = {}
+    template_error = 'cliente/error_descarga.html'
+    try:
+        decode_descarga = jwt.decode(token, KEY_FOTO, algorithm='HS256')
+        print(decode_descarga)
+        producto = Producto.objects.get(pk=decode_descarga['producto'])
+        if producto.usuario.pk == request.user.pk:
+            foto = Fotografia.objects.get(pk=producto.foto.pk)
+            descarga = Descarga.objects.get(token=token, producto=producto, usuario=request.user)
+            if descarga.no_descargas_disponibles > 0:
+                with open('/var/django'+foto.foto_original.url, "rb") as f:
+                    descarga.no_descargas_disponibles -= 1
+                    descarga.save()
+                    return HttpResponse(f.read(), content_type="image/jpeg")
+            else:
+                context['error'] = 'Sin descargas disponibles'
+                return render(request, template_error, context)
+        else:
+            context['error'] = 'No puedes ver éste contenido'
+            return render(request, template_error, context)
+    except:
+        context['error'] = 'El link no es válido'
+    return render(request, template_error, context)
 
 def vista_editar_perfil(request):
     template_name = 'cliente/editar_perfil.html'

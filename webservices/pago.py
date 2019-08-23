@@ -1,3 +1,6 @@
+import jwt
+from django.template.loader import get_template
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
@@ -6,7 +9,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.conekta import crear_orden_tarjeta, crear_cliente
-from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago
+from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga
+from fotofertas.settings import KEY_FOTO
+from webapp.mail import sendMail
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import DireccionSerializer, TarjetaSerializer, PagarOrdenSerializer
 
@@ -75,9 +80,29 @@ class PagarOrden(APIView):
             estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
             orden.estatus_compra = estatus_compra
             orden.estatus_pago = estatus_pago
+            orden.forma_pago = metodo_pago
+            orden.fecha_compra = timezone.now()
             orden.save()
             productos = Producto.objects.filter(orden=orden)
             productos.update(estatus_pago=estatus_pago)
+            productos.filter(subtotal__gt=0)
+            descargas = []
+            for producto in productos:
+                encoded = jwt.encode({'producto': producto.pk, 'foto': producto.foto.pk, 'usuario': self.request.user.pk}, KEY_FOTO, algorithm='HS256')
+                token = encoded.decode('UTF-8')
+                descargas.append(Descarga.objects.create(producto=producto, orden=orden, usuario=self.request.user, token=token))
+
+            email_template_name = 'mailing/descargas.html'
+            subject = "Productos Digitales"
+            to = [self.request.user.correo]
+            ctx = {
+                'productos': descargas,
+                'request': request,
+                'user': self.request.user,
+                'orden': orden
+            }
+            message = get_template(email_template_name).render(ctx)
+            sendMail(to, subject, message)
 
 
         elif metodo_pago.nombre == 'Oxxo':
