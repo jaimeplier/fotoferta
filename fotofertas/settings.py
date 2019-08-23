@@ -168,6 +168,7 @@ CONEKTA_PUBLIC_KEY = 'key_LamPoYtXxogg5ACRTSqgjRg'
 CONEKTA_LOCALE = 'es'
 CONEKTA_VERSION = '2.0.0'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
