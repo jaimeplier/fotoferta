@@ -90,3 +90,46 @@ class Signin(APIView):
 
     def get_serializer(self):
         return RegistroRedesSerializer()
+
+class Login(APIView):
+    """
+    post:
+        Login con redes sociales
+    """
+
+
+    def post(self, request):
+        response_data = {}
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        correo = serializer.data.get('correo')
+        red_social = serializer.data.get('red_social')
+        token = serializer.data.get('token')
+
+        red_social = RedSocial.objects.get(pk=red_social)
+        user = None
+        if Usuario.objects.filter(correo=correo).exists():
+            user = Usuario.objects.get(correo=correo)
+            if UsuarioRedSocial.objects.filter(usuario=user, red_social=red_social).exists():
+                try:
+                    usuario_red = UsuarioRedSocial.objects.get(usuario=user, red_social=red_social,token=token)
+                    auth_login(request, user)
+                except:
+                    response_data['resultado'] = 1
+                    response_data['error'] = "Usuario y/o contraseña incorrectos"
+                    return Response(response_data)
+            else:
+                response_data['resultado'] = 1
+                response_data['error'] = "Usuario y/o contraseña incorrectos"
+                return Response(response_data)
+        else:
+            response_data['resultado'] = 1
+            response_data['error'] = "Usuario y/o contraseña incorrectos"
+            return Response(response_data)
+
+        response_data['resultado'] = 0
+        response_data['exito'] = 'Login realizado correctamente'
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    def get_serializer(self):
+        return LoginSerializer()
