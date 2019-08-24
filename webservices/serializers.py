@@ -335,7 +335,7 @@ class LoginSerializer(serializers.Serializer):
     red_social = serializers.IntegerField()
 
 class RegistroRedesSerializer(serializers.Serializer):
-    nombre = serializers.EmailField()
-    correo = serializers.CharField(max_length=256)
+    nombre = serializers.CharField(max_length=64)
+    correo = serializers.EmailField()
     red_social = serializers.IntegerField()
     token = serializers.CharField(max_length=256)
