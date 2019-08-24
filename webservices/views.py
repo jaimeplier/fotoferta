@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Contactanos, Categoria, Colonia
-from webservices.serializers import ContactanosSerializer, CategoriasSerializer, ColoniaSerializer
+from config.models import Contactanos, Categoria, Colonia, RedSocial
+from webservices.serializers import ContactanosSerializer, CategoriasSerializer, ColoniaSerializer, RedSocialSerializer
 
 
 class ListContactanos(ListAPIView):
@@ -34,4 +34,12 @@ class ListDatosCP(ListAPIView):
         queryset = Colonia.objects.none()
         if cp is not None:
             queryset = Colonia.objects.filter(cp=cp)
+        return queryset
+
+class ListRedesSociales(ListAPIView):
+
+    serializer_class = RedSocialSerializer
+
+    def get_queryset(self):
+        queryset = RedSocial.objects.all()
         return queryset
