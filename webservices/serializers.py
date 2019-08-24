@@ -328,3 +328,14 @@ class AddSeguidorSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe el fotoparter seleccionado')
         return value
+
+class LoginSerializer(serializers.Serializer):
+    correo = serializers.EmailField()
+    token = serializers.CharField(max_length=256)
+    red_social = serializers.IntegerField()
+
+class RegistroRedesSerializer(serializers.Serializer):
+    nombre = serializers.EmailField()
+    correo = serializers.CharField(max_length=256)
+    red_social = serializers.IntegerField()
+    token = serializers.CharField(max_length=256)
