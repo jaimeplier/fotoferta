@@ -26,7 +26,7 @@
                     <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 profileData">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 profileName">
-                                <h2>{{ user.nombre }}<a href="userProfileEdit.html"><i class="fas fa-cog"></i></a></h2>
+                                <h2>{{ user.nombre }}<a href="{% url 'webapp:vista_editar_perfil' %}"><i class="fas fa-cog"></i></a></h2>
                             </div>
                         </div>
                         <div class="row">
@@ -598,7 +598,7 @@
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 <script src="{% static 'vendor/DataTables/datatables.min.js' %}"></script>
 <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
@@ -1038,6 +1038,7 @@
             data: data,
             success: function(res) {
                 $("#" + id).addClass("favourite");
+                alert("Foto agregada a tu carrito!")
             },
             error: (err) => {
                 console.log(err)

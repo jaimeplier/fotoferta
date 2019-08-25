@@ -364,6 +364,12 @@ def vista_fotopartners(request):
     template_name = 'cliente/fotopartners.html'
     return render(request, template_name)
 
+def vista_otro_perfil(request):
+    template_name = 'cliente/otro_usuario.html'
+    # usuario_id = Producto.objects.get(pk=perfil)
+    # context = {'id': usuario_id}
+    return render(request, template_name)
+
 class TarjetaCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/webapp/login'
