@@ -32,8 +32,7 @@ class SubirFotografia(APIView):
         descripcion = serializer.validated_data['descripcion']
         etiquetas = serializer.validated_data['etiquetas']
         foto_original = serializer.validated_data['foto']
-        #publica = serializer.validated_data['publica']
-        publica = True
+        publica = serializer.validated_data['publica']
 
         # list de etiquetas
         etiquetas = etiquetas.split(',')
