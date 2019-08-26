@@ -1,6 +1,8 @@
 import jwt
-from django.contrib.auth import authenticate, login as auth_login, logout
-from django.contrib.auth.decorators import permission_required
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -513,3 +515,21 @@ def tarjeta_eliminar(request, pk):
         tarjeta.eliminado = True
         tarjeta.save()
     return JsonResponse({'result': 0})
+
+@login_required(redirect_field_name='next', login_url='/login/')
+def cambiar_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Tu contraseña ha sido cambiada exitosamente')
+            return redirect(reverse('webapp:cambiar_password'))
+        else:
+            messages.error(request, 'Por favor corrige el error mostrado.')
+    else:
+        form = PasswordChangeForm(request.user)
+    titulo = 'Registro para cambiar tu contraseña'
+    instrucciones = 'Ingresa tu contraseña actual y tu nueva contraseña que deseas'
+    return render(request, 'config/form_1Col.html',
+                  {'form': form, 'titulo': titulo, 'instrucciones': instrucciones})
