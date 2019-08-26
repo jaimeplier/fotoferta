@@ -168,8 +168,14 @@
                                                         <a href="#" class="btn generalBtn">Aplicar código</a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <button style="cursor: pointer" onclick="pagarOrden(3, '#direccion_oxxo')" class="btn generalBtn specialBtn">Realizar Pago</button>
+                                                    </div>
+                                                </div>
+                                            </div>                                        
                                         </div>
+
                                         <div id="tarjetaForm" class="row cardPaymentSelected" style="display: none">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="row">
@@ -213,8 +219,15 @@
                                                         <a href="#" class="btn generalBtn">Aplicar código</a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <button style="cursor: pointer" onclick="pagarOrden(2, '#direccion_tarjeta')" class="btn generalBtn specialBtn">Realizar Pago</button>
+                                                    </div>
+                                                </div>
+                                            </div>                                        
                                         </div>
+
+
                                         <div id="speiForm" class="row speiPaymentSelected" style="display: none">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <div class="row">
@@ -244,14 +257,19 @@
                                                         <a href="#" class="btn generalBtn">Aplicar código</a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"  style="">
+                                                        <button style="cursor: pointer; text-align:center" onclick="pagarOrden(4, 'direccion_spei')" class="btn generalBtn specialBtn">Realizar Pago</button>
+                                                    </div>
+                                                </div>
+                                            </div>                                    
                                         </div>
                                         <!--De acuerdo con la seleccion de usuario, se muestra la opción de pago-->
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <button style="cursor: pointer" onclick="pagarOrden(2)" class="btn generalBtn specialBtn">Realizar Pago</button>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +413,7 @@
             success: function(json) {
                 console.log('direcciones',json)
                 for (i in json) {
-                    $('#direccion_tarjeta').append(
+                    $('#direccion_tarjeta,#direccion_oxxo,#direccion_spei').append(
                         $("<option></option>")
                         .attr("value", json[i].pk)
                         .text(json[i].nombre + ', ' + json[i].calle, ', ' + json[i].num_exterior)
@@ -430,10 +448,10 @@
     // tarjeta es 2
     // oxxo 3
     // spei 4
-    function pagarOrden(tipo) {
+    function pagarOrden(tipo, id_direccion) {
         let datosPago = {
             metodo_pago : tipo,
-            direccion: $('#direccion_tarjeta').val(),
+            direccion: $(id_direccion).val(),
             tarjeta: $('#tarjeta').val(),
         }
         $.ajax({
