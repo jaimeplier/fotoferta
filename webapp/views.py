@@ -516,7 +516,7 @@ def tarjeta_eliminar(request, pk):
         tarjeta.save()
     return JsonResponse({'result': 0})
 
-@login_required(redirect_field_name='next', login_url='/login/')
+@login_required(redirect_field_name='next', login_url='/webapp/login')
 def cambiar_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
