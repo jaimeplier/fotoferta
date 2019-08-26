@@ -304,6 +304,7 @@ class Fotografia(models.Model):
     publica = models.BooleanField(default=True) # Si la foto se mostrara en la red social
     aprobada = models.BooleanField(default=False) # Si fue aprobada por un administrador
     estatus = models.BooleanField(default=True) # Si la imagen debe mostrarse o no
+    gratuita = models.BooleanField(default=False) # Si la fotografia será gratuita
     fecha_alta = models.DateTimeField(auto_now_add=True)
     likes = models.BigIntegerField(default=0)
 
