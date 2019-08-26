@@ -6,42 +6,49 @@
     .card-height {
         min-height: 190px;
     }
+
 </style>
 <div class="container">
     <div class="row">
         <div class="col">
             <a href="{% url 'administrador:list_ventas' %}">
-            <div class="card card-height">
-                <div class="card-body">
-                    <br><br>
-                  <h2 class="card-title text-center align-middle">Ventas</h2>
+                <div class="card card-height">
+                    <div class="card-body">
+                        <br><br>
+                        <h2 class="card-title text-center align-middle">Ventas</h2>
+                    </div>
                 </div>
-              </div>
             </a>
         </div>
         <div class="col">
             <div class="card " style="cursor: pointer">
                 <div class="card-body card-height" onclick="toggleUsuarios()">
                     <br><br>
-                    <h2 class="card-title text-center align-middle" >Usuarios</h2>
+                    <h2 class="card-title text-center align-middle">Usuarios</h2>
                 </div>
-                <ul class="list-group list-group-flush" >
-              <div id="list_usuarios" style="display: none; position: absolute;  z-index: 1000; border: 1px solid rgba(0, 0, 0, 0.3);; width: 100%;" >
-                    <a href="{% url 'administrador:list_usuarios_generales' %}"><li class="text-center list-group-item">Usuarios Generales</li> </a>
-                    <a href="{% url 'administrador:list_fotopartners' %}"><li class="text-center list-group-item">Fotopartner</li></a>
-                    <a href="{% url 'administrador:list_usuarios_bloqueados' %}"><li class="text-center list-group-item">Bloqueados</li></a>
-              </div>
+                <ul class="list-group list-group-flush">
+                    <div id="list_usuarios" style="display: none; position: absolute;  z-index: 1000; border: 1px solid rgba(0, 0, 0, 0.3);; width: 100%;">
+                        <a href="{% url 'administrador:list_usuarios_generales' %}">
+                            <li class="text-center list-group-item">Usuarios Generales</li>
+                        </a>
+                        <a href="{% url 'administrador:list_fotopartners' %}">
+                            <li class="text-center list-group-item">Fotopartner</li>
+                        </a>
+                        <a href="{% url 'administrador:list_usuarios_bloqueados' %}">
+                            <li class="text-center list-group-item">Bloqueados</li>
+                        </a>
+                    </div>
                 </ul>
             </div>
         </div>
         <div class="col">
             <a href="{% url 'administrador:list_aprobar_foto' %}">
-            <div class="card card-height">
-                <div class="card-body">
-                    <br><br>
-                    <h2 class="card-title text-center align-middle">Aprobar fotografías</h2>
+                <div class="card card-height">
+                    <div class="card-body">
+                        <br><br>
+                        <h2 class="card-title text-center align-middle">Aprobar fotografías</h2>
+                    </div>
                 </div>
-            </div>
             </a>
         </div>
     </div>
@@ -71,38 +78,37 @@
 
     <div class="row" style="padding-top: 20px; padding-bottom: 20px">
         <div class="col-8"><a href="">
-            <div class="card card-height">
-                <div class="card-body">
-                    <br><br>
-                    <h2 class="card-title text-center align-middle">Estadísticas</h2>
+                <div class="card card-height">
+                    <div class="card-body">
+                        <br><br>
+                        <h2 class="card-title text-center align-middle">Estadísticas</h2>
+                    </div>
                 </div>
-            </div>
             </a>
         </div>
         <div class="col">
             <a href="{% url 'administrador:list_personal_administrativo' %}">
-            <div class="card card-height">
-                <div class="card-body">
-                    <br><br>
-                    <h2 class="card-title text-center align-middle">Personal</h2>
+                <div class="card card-height">
+                    <div class="card-body">
+                        <br><br>
+                        <h2 class="card-title text-center align-middle">Personal</h2>
+                    </div>
                 </div>
-            </div>
             </a>
         </div>
     </div>
 </div>
 
 <script>
-
-function toggleUsuarios() {
-    let list = document.getElementById("list_usuarios").style.display;
-    if ( list == 'none') {
-        document.getElementById("list_usuarios").style.display = 'block'
-    } else {
-        document.getElementById("list_usuarios").style.display = 'none'
+    function toggleUsuarios() {
+        let list = document.getElementById("list_usuarios").style.display;
+        if (list == 'none') {
+            document.getElementById("list_usuarios").style.display = 'block'
+        } else {
+            document.getElementById("list_usuarios").style.display = 'none'
+        }
     }
-}
 
-    </script>
+</script>
 
 {% endblock %}

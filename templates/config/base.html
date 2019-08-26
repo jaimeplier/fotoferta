@@ -84,32 +84,32 @@
                         </a>
                     </div>
                     {% if user.is_admin %}
-                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="row">
-                            <div class="col-xl-2 col-lg-2 col-md-2 d-xl-block d-lg-block d-sm-none d-none shoppingCartContainer">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 shoppingCartContainer">
                                 <a href="#" onclick="toggle_visibility('notificationDrawerMobile')">
                                     <i class="fas fa-user">
                                     </i>
                                 </a>
                             </div>
-                            <div class="col-xl-2 col-lg-2 col-md-2 d-xl-block d-lg-block d-sm-none d-none shoppingCartContainer">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4  shoppingCartContainer">
                                 <a href="#">
                                     <span>{{ user.nombre }}</span>
                                 </a>
                             </div>
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6 loginContainer">
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 loginContainer">
                                 <a href="{% url 'webapp:logout' %}" class="btn generalBtn">Logout</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <nav class="col-xl-12 col-lg-12 d-xl-block d-lg-block d-md-none d-sm-none d-none mainMenuContainer">
+                    <nav class="col-xl-12 col-lg-12 col-md-12 col-md-12 col-sm-12 col-12 mainMenuContainer">
                         <ul class="row">
-                            <li><a href="{% url 'administrador:list_ventas' %}">Ventas</a></li>
-                            <li><a href="#">Historial de ventas</a></li>
-                            <li><a href="#">Aprobar fotografías</a></li>
-                            <li><a href="#">Bitácora</a></li>
+                            <li class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6"><a href="{% url 'administrador:list_ventas' %}">Ventas</a></li>
+                            <li class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6"><a href="#">Historial de ventas</a></li>
+                            <li class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6"><a href="#">Aprobar fotografías</a></li>
+                            <li class="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-6"><a href="#">Bitácora</a></li>
                         </ul>
                     </nav>
                 </div>
