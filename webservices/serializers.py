@@ -1,12 +1,18 @@
 from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
-    FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa
+    FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
+    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contactanos
+        fields = '__all__'
+
+class RedSocialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RedSocial
         fields = '__all__'
 
 class CategoriasSerializer(serializers.ModelSerializer):
@@ -125,6 +131,24 @@ class FotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fotografia
         fields = ['nombre', 'descripcion', 'tamanio', 'foto_muestra']
+
+class FotoReaccionSerializer(serializers.ModelSerializer):
+    foto = FotografiaSerializer()
+    class Meta:
+        model = FotoReaccion
+        fields = ['foto', 'usuario', 'reaccion']
+
+class FotografoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Fotografo
+        fields = ['id', 'foto_perfil', 'nombre', 'correo', 'seguidores']
+
+class FotoparterSiguiendoSerializer(serializers.ModelSerializer):
+    siguiendo_a = FotografoSerializer()
+    class Meta:
+        model = SiguiendoFotografo
+        fields = ['siguiendo_a']
 
 class TipoCompraSerializer(serializers.ModelSerializer):
     class Meta:
@@ -259,3 +283,59 @@ class ProductoSerializer(serializers.ModelSerializer):
         model = Producto
         fields = ['pk', 'usuario', 'orden', 'foto', 'marco', 'maria_luisa', 'tipo_compra', 'papel_impresion',
                   'promocion_aplicada', 'subtotal']
+
+class PaisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pais
+        fields = ['pk', 'nombre']
+
+class EstadoSerializer(serializers.ModelSerializer):
+    pais = PaisSerializer()
+    class Meta:
+        model = Estado
+        fields = ['pk', 'nombre', 'pais']
+
+class MunicipioSerializer(serializers.ModelSerializer):
+    estado = EstadoSerializer()
+    class Meta:
+        model = Municipio
+        fields = ['pk', 'nombre', 'estado']
+
+class ColoniaSerializer(serializers.ModelSerializer):
+    municipio = MunicipioSerializer()
+    class Meta:
+        model = Colonia
+        fields = ['pk', 'nombre', 'municipio']
+
+class AddFavoritoSerializer(serializers.Serializer):
+    foto= serializers.IntegerField()
+    like = serializers.BooleanField()
+
+    def validate_foto(self, value):
+        try:
+            Fotografia.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe la fotografía seleccionada')
+        return value
+
+class AddSeguidorSerializer(serializers.Serializer):
+    fotopartner= serializers.IntegerField()
+    seguir = serializers.BooleanField()
+
+    def validate_fotopartner(self, value):
+        try:
+            Fotografo.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe el fotoparter seleccionado')
+        return value
+
+class LoginSerializer(serializers.Serializer):
+    correo = serializers.EmailField()
+    token = serializers.CharField(max_length=256)
+    red_social = serializers.IntegerField()
+
+class RegistroRedesSerializer(serializers.Serializer):
+    nombre = serializers.CharField(max_length=64)
+    correo = serializers.EmailField()
+    red_social = serializers.IntegerField()
+    token = serializers.CharField(max_length=256)

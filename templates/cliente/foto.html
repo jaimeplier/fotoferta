@@ -16,6 +16,7 @@
                                 {%  endif %}
 
                                 {{ foto.usuario.nombre }}</a>
+
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-4">
                             <a href="#" class="btn generalBtn"><i class="fas fa-plus"></i> Seguir</a>
@@ -28,11 +29,15 @@
                         <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 photoDataSale">
                             <div class="row">
                                 <div class="col-12 photoSaleTitle">
-                                    <h3 id="titulo_foto">{{ foto.nombre }}  <a href="javascript:;" onclick="toggle_visibility('reportUser')">
-                                        <i class="fas fa-ellipsis-h"></i></a></h3>
-                                    <div id="reportUser" class="reportContainer">
-                                        <div class="reportContent">
-                                            <a href="#">Reportar usuario <i class="fas fa-ban"></i></a>
+                                    <h3 id="titulo_foto">{{ foto.nombre }}
+                                        <!-- <span ><i class="fas fa-heart"></i></span>-->
+                                        <span ><i onclick="likeFoto()" id="like-btn" class="far fa-heart"></i></span>
+                                        <a href="javascript:;" onclick="toggle_visibility('reportUser')">
+                                        <i style="float: right" class="fas fa-ellipsis-h"></i></a>
+                                        </h3>
+                                    <div id="reportUser" class="reportContainer" style="float: right">
+                                        <div class="reportContent" style="float: right">
+                                            <a href="#" style="float: right">Reportar usuario <i class="fas fa-ban"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +81,7 @@
             <div class="row">
                 <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
                     <div id="sugestions" class="owl-carousel owl-theme">
-                        <div class="item">
+                        <!--<div class="item">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <img class="card-img-top" src="https://via.placeholder.com/350x250.png?" alt="Card image top">
                             </div>
@@ -105,7 +110,7 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <img class="card-img-top" src="https://via.placeholder.com/350x250.png?" alt="Card image top">
                             </div>
-                        </div>
+                        </div>-->
                         <!-- <div class="item">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <img class="card-img-top" src="https://via.placeholder.com/350x250.png?" alt="Card image top">
@@ -122,6 +127,11 @@
 {% block scripts %}
     <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
+    $('document').ready(function() {
+        listar_fotos_recom();
+    });
+
+
     function agregarCarrito(id) {
         var data = {
             pk: id,
@@ -176,7 +186,87 @@
         })
     }
 
+    function listar_fotos_recom() {
+        $.ajax({
+            url: "/ws/list_fotos_recomendadas/"+ "?foto={{ foto.pk }}",
+            type: "GET",
+            cache: false,
+            success: function(json) {
+                console.log('recomm', json)
+                var length = $('#sugestions, .item').length;
+                for (var i = 0; i < length; i++) {
+                    $("#sugestions").trigger('remove.owl.carousel', [i])
+                        .trigger('refresh.owl.carousel');
+                }
 
+                //            $('#marginCarousel').empty();
+                for (const [i, obj] of json.results.entries()) {
+                    let html = `
+                        <div class="item ">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="row frameImageSelector">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <!-- <img onclick="setStage4(` + obj.id + ',' + '' + `)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI.png'  %} "> -->
+                                         <a href="/webapp/foto/ `+ obj.pk +`"> <img style="cursor:pointer" src="` + obj.foto_home + `"></a>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="row frameImageDetails">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <h5>$` + "obj.precio" + `</h5>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    `
+                    $('#sugestions').owlCarousel().trigger('add.owl.carousel', [jQuery(html)]).trigger('refresh.owl.carousel')
+
+                }
+            }
+        })
+    }
+
+    function likeFoto() {
+        //far es vacio, fas lleno
+        if($('#like-btn').hasClass('far')) {
+            var data = {
+                foto: {{ foto.pk }},
+                like: true
+            };
+
+            console.log('datossss', data)
+            $.ajax({
+                url: "/ws/favorito/",
+                type: "POST",
+                cache: false,
+                data: data,
+                success: function (res) {
+                    console.log(res);
+                    $('#like-btn').addClass('fas');
+                    $('#like-btn').removeClass('far');
+                },
+                error: (err) => {console.log(err)}
+            });
+        } else {
+            var data = {
+                foto: {{ foto.pk }},
+                like: false
+            };
+
+            $.ajax({
+                url: "/ws/favorito/",
+                type: "POST",
+                cache: false,
+                data: data,
+                success: function (res) {
+                    console.log(res);
+                    $('#like-btn').addClass('far');
+                    $('#like-btn').removeClass('fas');
+                },
+                error: (err) => {console.log(err)}
+            });
+        }
+    }
 
     function cargarSeguidores() {
 

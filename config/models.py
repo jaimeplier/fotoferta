@@ -162,6 +162,7 @@ class Fotografo(Usuario):
                                      blank=True)
     fotopartner = models.BooleanField(default=False)
     terminos_condiciones = models.BooleanField()
+    seguidores = models.BigIntegerField(default=0)
     class Meta:
         managed = True
         db_table = 'fotografo'
@@ -304,6 +305,7 @@ class Fotografia(models.Model):
     aprobada = models.BooleanField(default=False) # Si fue aprobada por un administrador
     estatus = models.BooleanField(default=True) # Si la imagen debe mostrarse o no
     fecha_alta = models.DateTimeField(auto_now_add=True)
+    likes = models.BigIntegerField(default=0)
 
 
     class Meta:
@@ -312,6 +314,7 @@ class Fotografia(models.Model):
 
 
 class FotoReaccion(models.Model):
+    fecha_alta = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey(Fotografo, models.DO_NOTHING)
     foto = models.ForeignKey(Fotografia, models.DO_NOTHING)
     reaccion = models.ForeignKey("Reaccion", models.DO_NOTHING)
@@ -567,9 +570,12 @@ class Producto(models.Model):
         return self.orden.total
 
 class Descarga(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
     producto = models.ForeignKey('Producto', models.DO_NOTHING)
-    token = models.CharField(max_length=64)
-    no_descargas_disponibles = models.PositiveIntegerField(default=3)
+    orden = models.ForeignKey('Orden', models.DO_NOTHING)
+    usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
+    token = models.CharField(max_length=256)
+    no_descargas_disponibles = models.PositiveIntegerField(default=5)
 
     class Meta:
         managed = True

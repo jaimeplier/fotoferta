@@ -1,6 +1,6 @@
 from django.forms import ModelForm, CharField, TextInput, IntegerField
 
-from config.models import Fotografo, Direccion, Tarjeta
+from config.models import Fotografo, Direccion, Tarjeta, Colonia
 
 
 class RegistroForm(ModelForm):
@@ -15,12 +15,19 @@ class RegistroForm(ModelForm):
 
 class DireccionForm(ModelForm):
 
+    def __init__(self, *args, **kwargs):
+        super(DireccionForm, self).__init__(*args, **kwargs)
+        self.fields['colonia'].queryset = Colonia.objects.none()
+
+    cp = CharField(label='Código postal', max_length=5)
+
     class Meta:
         model = Direccion
         fields = ['nombre',
                   'calle',
                   'num_exterior',
                   'num_interior',
+                  'colonia',
                   'referencias',
                   'entre_calles'
                   ]

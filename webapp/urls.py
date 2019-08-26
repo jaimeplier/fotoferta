@@ -15,11 +15,15 @@ urlpatterns = [
 
     path('editar_perfil/', views.vista_editar_perfil, name='vista_editar_perfil'),
     path('perfil/', views.vista_perfil, name='vista_perfil'),
+    path('usuario/', views.vista_otro_perfil, name='vista_otro_perfil'),
     path('compras/', ComprasAjaxListView.as_view(), name='tab_list_compras'),
+    path('detalle_orden/<int:orden>', views.detalle_orden, name='detalle_orden'),
     path('exclusivas/', views.vista_exclusivas, name='vista_exclusivas'),
     path('marco/<int:producto>', views.vista_marco, name='vista_marco'),
     path('carrito/', views.vista_carrito, name='vista_carrito'),
+    path('fotopartners/', views.vista_fotopartners, name='vista_fotopartners'),
     path('foto/<int:pk>', views.vista_foto, name='vista_foto'),
+    path('producto_descarga/<token>/<image_name>', views.producto_descarga, name='producto_descarga'),
 
     #Direccion
     path('direccion/nuevo/', DireccionCrear.as_view(), name='nuevo_direccion'),

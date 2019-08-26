@@ -72,6 +72,13 @@ class SubirFotografia(APIView):
         # Revisar tamaño de fotografia
         area_foto = altura_foto * ancho_foto
         tam_precios = FotoPrecio.objects.filter(tipo_foto=tipo_foto, tamanio__estatus=True) # Filtro de tam foto por tipo de foto
+        mas_chico = tam_precios.order_by('min_area').first()
+        mas_grande = tam_precios.order_by('-max_area').first()
+        if area_foto < mas_chico.min_area or area_foto > mas_grande.max_area:
+            return Response({
+                'error': 'No se puede guardar la imagen porque no se pudo categorizar su tamaño. Los limites de tamaño son: min {}x{} px. y máx {}x{} px.'.format(
+                    mas_chico.min_ancho, mas_chico.min_altura, mas_grande.max_ancho, mas_grande.max_altura)},
+                status=status.HTTP_406_NOT_ACCEPTABLE)
         # (max_area__gte=5992704, min_area__lte=5992704)
         tama = tam_precios.filter(max_area__gte=area_foto)
         # tama2 = tama.filter(min_area__gte=area_foto)
