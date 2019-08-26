@@ -2,13 +2,18 @@ from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
     FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
-    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial
+    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contactanos
         fields = '__all__'
+
+class LogoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logo
+        fields = ['imagen']
 
 class RedSocialSerializer(serializers.ModelSerializer):
     class Meta:

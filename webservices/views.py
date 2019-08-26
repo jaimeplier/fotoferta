@@ -6,9 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Contactanos, Categoria, Colonia, RedSocial, Usuario, UsuarioRedSocial, Fotografo, Rol
+from config.models import Contactanos, Categoria, Colonia, RedSocial, Usuario, UsuarioRedSocial, Fotografo, Rol, Logo
 from webservices.serializers import ContactanosSerializer, CategoriasSerializer, ColoniaSerializer, RedSocialSerializer, \
-    LoginSerializer, RegistroRedesSerializer
+    LoginSerializer, RegistroRedesSerializer, LogoSerializer
 
 
 class ListContactanos(ListAPIView):
@@ -133,3 +133,11 @@ class Login(APIView):
 
     def get_serializer(self):
         return LoginSerializer()
+
+class ListLogo(ListAPIView):
+
+    serializer_class = LogoSerializer
+
+    def get_queryset(self):
+        queryset = Logo.objects.filter(estatus=True)
+        return queryset

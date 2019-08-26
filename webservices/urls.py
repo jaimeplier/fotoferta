@@ -6,7 +6,7 @@ from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguien
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
-from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login
+from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login, ListLogo
 
 app_name = 'webservices'
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('login_redes/', Login.as_view(), name='login_redes'),
     path('list_redes_sociales/', ListRedesSociales.as_view(), name='list_redes_sociales'),
 
+    # Administrador
+    path('list_logo/', ListLogo.as_view(), name='list_logo'),
     path('list_contactanos/', ListContactanos.as_view(), name='list_contactanos'),
     path('list_categorias/', ListCategorias.as_view(), name='list_categorias'),
     path('list_etiquetas/', ListEtiquetas.as_view(), name='list_etiquetas'),
