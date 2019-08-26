@@ -100,9 +100,11 @@ class SubirFotografia(APIView):
 
         # Asignar precio fotografía
         precio = 0
+        gratuita = True
         if tipo_venta_foto == 2 or tipo_venta_foto == 3:
             # Precio foto normal o exclusiva
             precio = foto_precio.precio
+            gratuita = False
 
         # Aprobacion de fotografia por ser fotopartner
         fotografo = Fotografo.objects.get(pk=self.request.user.pk)
@@ -153,7 +155,7 @@ class SubirFotografia(APIView):
         foto = Fotografia.objects.create(nombre = nombre, usuario= usuario, foto_original=foto_original,
                                          foto_muestra=foto_muestra, foto_home=foto_home, descripcion=descripcion, alto=altura_foto,
                                          ancho=ancho_foto, tipo_foto=tipo_foto, orientacion=orientacion, tamanio=tamanio,
-                                         precio = precio, aprobada=aprobada)
+                                         precio = precio, aprobada=aprobada, gratuita=gratuita)
         foto.categorias.add(*categorias_objts)
         foto.etiquetas.add(*etiquetas_objts)
 
