@@ -211,3 +211,12 @@ class ListFotosExclusivas(ListAPIView):
     def get_queryset(self):
         queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=2).order_by('?')
         return queryset
+
+class ListFotosGratuitas(ListAPIView):
+
+    serializer_class = FotografiaSerializer
+    pagination_class = SmallPagesPagination
+
+    def get_queryset(self):
+        queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=1, gratuita=True).order_by('?')
+        return queryset

@@ -1,7 +1,8 @@
 from django.urls import path
 
 from webservices.Catalogos import ListCategorias, ListEtiquetas
-from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, ListFotosRecomendadas, ListFotosExclusivas
+from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, ListFotosRecomendadas, ListFotosExclusivas, \
+    ListFotosGratuitas
 from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguiendo, SeguirFotopartner, ListFotopartners
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
@@ -29,6 +30,7 @@ urlpatterns = [
     path('list_fotos_recomendadas/', ListFotosRecomendadas.as_view(), name='list_fotos_recomendadas'),
     path('list_mis_fotos/', ListMisFotos.as_view(), name='list_mis_fotos'),
     path('list_fotos_exclusivas/', ListFotosExclusivas.as_view(), name='list_fotos_exclusivas'),
+    path('list_fotos_gratuitas/', ListFotosGratuitas.as_view(), name='list_fotos_gratuitas'),
     path('subir_foto/', SubirFotografia.as_view(), name='subir_foto'),
 
     # Carrito
