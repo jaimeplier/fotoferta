@@ -155,7 +155,7 @@ class CambiarFotoPerfil(APIView):
         response_data = {}
         serializer = FotoPerfilSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        foto = serializer.data.get('foto')
+        foto = serializer.validated_data.get('foto')
 
         user = Usuario.objects.get(pk=self.request.user.pk)
         user.foto_perfil = foto
@@ -179,7 +179,7 @@ class CambiarFotoPortada(APIView):
         response_data = {}
         serializer = FotoPortadaSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        foto = serializer.data.get('foto')
+        foto = serializer.validated_data.get('foto')
 
         user = Fotografo.objects.get(pk=self.request.user.pk)
         user.foto_portada = foto
