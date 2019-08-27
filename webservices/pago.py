@@ -81,6 +81,13 @@ class PagarOrden(APIView):
                 orden.save()
             else:
                 return Response({'error': 'Se requiere una dirección'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if orden.usuario.customer_id is None:
+            customer_id = crear_cliente(request)
+            if type(customer_id) is int:
+                return Response({'error': 'Ocurrió un error al procesar la orden'},
+                                status=status.HTTP_412_PRECONDITION_FAILED)
+
         # Verificar metodos de pago
         if metodo_pago.nombre == 'Tarjeta':
             if tarjeta is not None:
@@ -88,11 +95,6 @@ class PagarOrden(APIView):
                 token_tarjeta = tarjeta.token
             else:
                 return Response({'error': 'No se encontró la tarjeta'}, status=status.HTTP_404_NOT_FOUND)
-
-            if orden.usuario.customer_id is None:
-                customer_id = crear_cliente(request)
-                if type(customer_id) is int:
-                    return Response({'error': 'Ocurrió un error al procesar la orden'}, status=status.HTTP_412_PRECONDITION_FAILED)
 
             resultado = crear_orden_tarjeta(request, orden, token_tarjeta)
             if type(resultado) is str:
