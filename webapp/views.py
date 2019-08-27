@@ -244,7 +244,9 @@ def direccion_cambiar_estatus(request, pk):
 @permission_required(perm='fotopartner', login_url='/webapp/login')
 def vista_perfil(request):
     template_name = 'cliente/perfil.html'
-    return render(request, template_name)
+    fotografo = Fotografo.objects.get(pk=request.user.pk)
+    context = {'fotografo': fotografo}
+    return render(request, template_name, context)
 
 class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
@@ -348,6 +350,7 @@ def producto_descarga(request, token, image_name):
         context['error'] = 'El link no es válido'
     return render(request, template_error, context)
 
+@permission_required(perm='fotopartner', login_url='/webapp/login')
 def vista_editar_perfil(request):
     template_name = 'cliente/editar_perfil.html'
     return render(request, template_name)
@@ -366,11 +369,12 @@ def vista_fotopartners(request):
     template_name = 'cliente/fotopartners.html'
     return render(request, template_name)
 
-def vista_otro_perfil(request):
+def vista_otro_perfil(request, pk):
     template_name = 'cliente/otro_usuario.html'
-    # usuario_id = Producto.objects.get(pk=perfil)
-    # context = {'id': usuario_id}
-    return render(request, template_name)
+    fotografo = Fotografo.objects.get(pk=pk)
+    fotografias = Fotografia.objects.filter(usuario__pk=fotografo.pk, estatus=True, aprobada=True, publica=True).order_by('fecha_alta')
+    context = {'fotografo': fotografo, 'fotos': fotografias}
+    return render(request, template_name, context)
 
 class TarjetaCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'

@@ -8,7 +8,11 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="row">
             <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+                {% if fotografo.foto_portada %}
+                <img class="card-img-top" src="{{ fotografo.foto_portada.url }}" alt="Card image top">
+                {% else %}
                 <img class="card-img-top" src="https://via.placeholder.com/728x250.png?" alt="Card image top">
+                {% endif %}
             </div>
         </div>
     </div>
