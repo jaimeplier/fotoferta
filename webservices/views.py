@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from config.models import Contactanos, Categoria, Colonia, RedSocial, Usuario, UsuarioRedSocial, Fotografo, Rol, Logo
 from webservices.serializers import ContactanosSerializer, CategoriasSerializer, ColoniaSerializer, RedSocialSerializer, \
-    LoginSerializer, RegistroRedesSerializer, LogoSerializer
+    LoginSerializer, RegistroRedesSerializer, LogoSerializer, FotoPerfilSerializer
 
 
 class ListContactanos(ListAPIView):
@@ -141,3 +141,27 @@ class ListLogo(ListAPIView):
     def get_queryset(self):
         queryset = Logo.objects.filter(estatus=True)
         return queryset
+
+class CambiarFotoPerfil(APIView):
+    """
+    post:
+        Cambiar Foto de perfil
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+        response_data = {}
+        serializer = FotoPerfilSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        foto = serializer.data.get('foto')
+
+        user = Usuario.objects.get(pk=self.request.user.pk)
+        user.foto_perfil = foto
+        user.save()
+        response_data['resultado'] = 0
+        response_data['exito'] = 'Foto de perfil actualizada correctamente'
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    def get_serializer(self):
+        return FotoPerfilSerializer()

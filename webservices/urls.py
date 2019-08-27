@@ -7,13 +7,17 @@ from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguien
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
-from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login, ListLogo
+from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login, ListLogo, \
+    CambiarFotoPerfil
 
 app_name = 'webservices'
 
 
 
 urlpatterns = [
+    # Perfil
+    path('cambiar_foto_perfil/', CambiarFotoPerfil.as_view(), name='cambiar_foto_perfil'),
+
     # Registro redes sociales
     path('registro_redes/', Signin.as_view(), name='registro_redes'),
     path('login_redes/', Login.as_view(), name='login_redes'),
