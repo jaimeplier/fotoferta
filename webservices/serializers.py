@@ -342,6 +342,9 @@ class LoginSerializer(serializers.Serializer):
 class FotoPerfilSerializer(serializers.Serializer):
     foto = serializers.ImageField()
 
+class FotoPortadaSerializer(serializers.Serializer):
+    foto = serializers.ImageField()
+
 class RegistroRedesSerializer(serializers.Serializer):
     nombre = serializers.CharField(max_length=64)
     correo = serializers.EmailField()
