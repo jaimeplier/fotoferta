@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.conekta import crear_orden_tarjeta, crear_cliente
-from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga
+from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga, Usuario
 from fotofertas.settings import KEY_FOTO
 from webapp.mail import sendMail
 from webservices.Permissions import FotopartnerPermission
@@ -52,30 +52,52 @@ class PagarOrden(APIView):
         metodo_pago = FormaPago.objects.get(pk=serializer.validated_data['metodo_pago'])
         direccion = Direccion.objects.filter(pk=serializer.data['direccion']).first()
         tarjeta = Tarjeta.objects.filter(pk=serializer.data['tarjeta']).first()
+        try:
+            o = Orden.objects.get(usuario=self.request.user, estatus_compra__pk=1, estatus__pk=1)
+            num_productos_fisicos = Producto.objects.filter(usuario=self.request.user, orden = orden, tipo_compra__pk=2).count()
+            total_productos = Producto.objects.filter(usuario=self.request.user, orden = orden).count()
+        except Orden.DoesNotExist:
+            return Response({'error': 'El carrito esta vacío'}, status=status.HTTP_404_NOT_FOUND)
 
+        if total_productos == 0:  # Carrito vacio
+            return Response({'error': 'El carrito esta vacío'}, status=status.HTTP_403_FORBIDDEN)
+        if num_productos_fisicos == 0 and orden.total==0:  # Compra de productos digitales gratuitos
+            return Response({'error': 'No es posible comprar fotos gratuitas'}, status=status.HTTP_403_FORBIDDEN)
+        # validaciones para direccion
+        if num_productos_fisicos == 0: # Orden de productos digitales
+            # Si proporcionó una dirección
+            if direccion is not None:
+                orden.direccion = direccion
+                orden.save()
+            # Sino asignar direccion generica para generar orden en conekta
+            else:
+                u = Usuario.objects.get(correo='admin@fotofertas.com')
+                dir_gen = Direccion.objects.filter(usuario=u).first()
+                orden.direccion = dir_gen
+                orden.save()
+        else: # Si la orden tiene productos fisicos, ver si proporcionó dirección
+            if direccion is not None:
+                orden.direccion = direccion
+                orden.save()
+            else:
+                return Response({'error': 'Se requiere una dirección'}, status=status.HTTP_400_BAD_REQUEST)
+        # Verificar metodos de pago
         if metodo_pago.nombre == 'Tarjeta':
             if tarjeta is not None:
                 tarjeta = Tarjeta.objects.get(pk=serializer.validated_data['tarjeta'])
                 token_tarjeta = tarjeta.token
             else:
                 return Response({'error': 'No se encontró la tarjeta'}, status=status.HTTP_404_NOT_FOUND)
-            # Tipo de compra (solo digital o si tiene algun producto fisico)
-            num_productos_fisicos = Producto.objects.filter(usuario=self.request.user, orden = orden, tipo_compra__pk=2).count()
-            if num_productos_fisicos >0: # Compra con productos fisicos
-                if direccion is not None:
-                    orden.direccion = direccion
-                    orden.save()
-                else:
-                    return Response({'error': 'Se requiere una dirección'}, status=status.HTTP_400_BAD_REQUEST)
-                if orden.usuario.customer_id is None:
-                    customer_id = crear_cliente(request)
-                    if type(customer_id) is int:
-                        return Response({'error': 'Ocurrió un error al procesar la orden'}, status=status.HTTP_412_PRECONDITION_FAILED)
 
-                resultado = crear_orden_tarjeta(request, orden, token_tarjeta)
-                if type(resultado) is str:
-                    return Response({'error': resultado},
-                                    status=status.HTTP_412_PRECONDITION_FAILED)
+            if orden.usuario.customer_id is None:
+                customer_id = crear_cliente(request)
+                if type(customer_id) is int:
+                    return Response({'error': 'Ocurrió un error al procesar la orden'}, status=status.HTTP_412_PRECONDITION_FAILED)
+
+            resultado = crear_orden_tarjeta(request, orden, token_tarjeta)
+            if type(resultado) is str:
+                return Response({'error': resultado},
+                                status=status.HTTP_412_PRECONDITION_FAILED)
             estatus_compra = EstatusCompra.objects.get(pk=2) # Ordenado
             estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
             orden.estatus_compra = estatus_compra
