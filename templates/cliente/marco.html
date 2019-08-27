@@ -357,11 +357,7 @@
 
     $('document').ready(function() {
         $.ajax({
-            url: "/ws/listar_tamanios?producto=" + {
-                {
-                    producto.pk
-                }
-            },
+            url: "/ws/listar_tamanios?producto=" + {{ producto.pk }},
             type: "GET",
             cache: false,
             success: function(json) {
@@ -534,15 +530,9 @@
         })
     }
 
-    {
-        %
-        comment %
-    } < img onclick = "setStage3(` + obj.id + ',' + obj.precio + ',' + obj.imagen_horizontal + ',' + typeof obj.imagen_vertical + `)"
+    {% comment %} < img onclick = "setStage3(` + obj.id + ',' + obj.precio + ',' + obj.imagen_horizontal + ',' + typeof obj.imagen_vertical + `)"
     style = "cursor:pointer"
-    src = " {% static 'images/Marcos/Dali/ME2DI.png'  %} " > {
-        %
-        endcomment %
-    }
+    src = " {% static 'images/Marcos/Dali/ME2DI.png'  %} " > {% endcomment %}
 
 
     function listar_tipos_mariaLuisa() {
@@ -690,11 +680,7 @@
 
     function guardarMarco() {
         let datos = {
-            producto: {
-                {
-                    producto.pk
-                }
-            },
+            producto: {{ producto.pk }},
             papel_impresion: estadosSimulador.res_stage2,
             marco: estadosSimulador.res_stage3,
             precio_tamanio: precioTamanio,

@@ -2,6 +2,11 @@
 {% load widget_tweaks %}
 {% load static %}
 {% block content %}
+<div id="loader" class="loaderContainer">
+    <div class="loaderContent">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div>
+</div>
 <section class="row profileEdit">
         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-11 col-11 centerDiv">
             <div class="row">
@@ -13,9 +18,22 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 editProfileImage">
                     <div class="row">
                         <div class="col-12">
-                            <img src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                            <img id="foto_perfil" src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <p>Cambiar foto de perfil</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="file" name="input_foto_perfil" id="input_foto_perfil" class="inputfile" />
+                            <label for="input_foto_perfil" class="btn generalBtn"><i class="far fa-file"></i> Elegir foto</label>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-12">
                             <p>Subir foto de portada</p>
@@ -23,8 +41,8 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <input type="file" name="file" id="file" class="inputfile" />
-                            <label for="file" class="btn generalBtn"><i class="far fa-file"></i> Cambiar portada</label>
+                            <input type="file" name="foto_portada" id="foto_portada" class="inputfile" />
+                            <label for="foto_portada" class="btn generalBtn"><i class="far fa-file"></i> Cambiar portada</label>
                         </div>
                     </div>
                     <div class="row">
@@ -88,4 +106,92 @@
             </div>
         </div>
     </section>
+{% endblock %}
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/crsfajax.js' %}"></script>
+<script>
+    var foto_form = {
+        tipo_venta_foto: null,
+    }
+
+    var foto = null;
+
+    $('document').ready(function() {
+        $("#input_foto_perfil").change(function() {
+            readURL(this);
+        });
+        $("#foto_portada").change(function() {
+            cambiarPortada(this);
+        });
+    });
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        $('#loader').show()
+        reader.onload = function(e) {
+            $('#foto_perfil').attr('src', e.target.result);
+            foto = e.target.result;
+            $('#loader').hide()
+        }
+        reader.readAsDataURL(input.files[0]);
+        var data_foto = new FormData();
+        data_foto.append('foto', $('#input_foto_perfil')[0].files[0]);
+        $.ajax({
+                url: "/ws/cambiar_foto_perfil/",
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data_foto,
+                success: function(json) {
+                    $('#foto_perfil').attr('src', foto);                    
+                    $('#loader').hide()
+                },
+                error: () => {
+                    $('#loader').hide()
+                    alert('Ocurrio un error, intetelo mas tarde')
+                }
+            });    
+    }
+}
+
+
+function cambiarPortada(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        var portada;
+        $('#loader').show()
+        reader.onload = function(e) {
+            $('#foto_portada').attr('src', e.target.result);
+            portada = e.target.result;
+            $('#loader').hide()
+        }
+        reader.readAsDataURL(input.files[0]);
+        var data_foto = new FormData();
+        data_foto.append('foto', $('#foto_portada')[0].files[0]);
+        $.ajax({
+                url: "/ws/cambiar_foto_portada/",
+                type: "POST",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: data_foto,
+                success: function(json) {
+                    console.log('foto de portada cambiada')
+                    $('#loader').hide()
+                    window.location.href = "{% url 'webapp:vista_perfil' %}"
+                },
+                error: () => {
+                    $('#loader').hide()
+                    alert('Ocurrio un error, intetelo mas tarde')
+                }
+            });    
+    }
+}
+
+
+</script>
 {% endblock %}
