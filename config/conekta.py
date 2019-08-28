@@ -140,7 +140,7 @@ def crear_orden_tarjeta(request, orden, token_card):
         orden.save()
     except conekta.ConektaError as e:
         return str(e.error_json['details'][0]['message'])
-    return 0
+    return order
 
 def crear_cliente(request):
     conekta.api_key = CONEKTA_PRIVATE_KEY
