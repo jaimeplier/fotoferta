@@ -18,7 +18,12 @@
                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 editProfileImage">
                     <div class="row">
                         <div class="col-12">
-                            <img id="foto_perfil" src="images/52475675_10216002426126828_3273778910877188096_n.jpg">
+                            {% if user.foto_perfil %}
+                            <img id="foto_perfil" src="{{ user.foto_perfil.url }}">
+                            {% else %}
+                            <img src="{% static 'images/52475675_10216002426126828_3273778910877188096_n.jpg'%}">
+                            {% endif %}
+
                         </div>
                     </div>
 
@@ -47,32 +52,35 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <a href="cards.html" class="btn generalBtn"><i class="far fa-credit-card"></i> Mis datos de pago</a>
+                            <a href="{% url 'webapp:list_tarjeta' %}" class="btn generalBtn"><i class="far fa-credit-card"></i> Mis datos de pago</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <a href="addresses.html" class="btn generalBtn"><i class="far fa-address-book"></i> Mis direcciones</a>
+                            <a href="{% url 'webapp:cambiar_password' %}" class="btn generalBtn">Cambiar contraseña</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="{% url 'webapp:list_direccion' %}" class="btn generalBtn"><i class="far fa-address-book"></i> Mis direcciones</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 profileEditData">
+                    <form method="post">
+                      {% csrf_token %}
+                    {% for field in form %}
                     <div class="row editData">
                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <label>Nombre:</label>
+                            <label>{{ field.label }}</label>
                         </div>
                         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                            <input type="text" value="Alejandro Figueroa Gonzalez" class="form-control" disabled>
+                            {% render_field field class+="form-control" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+
                         </div>
                     </div>
-                    <div class="row editData">
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <label>Correo Electrónico:</label>
-                        </div>
-                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                            <input type="text" value="afigueroa@softicsolutions.mx" class="form-control" disabled>
-                        </div>
-                    </div>
+                    {% endfor %}
+                    <!--
                     <div class="row editData">
                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                             <label>Contraseña:</label>
@@ -88,20 +96,13 @@
                         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                             <input type="text" value="Sin datos" class="form-control" disabled>
                         </div>
-                    </div>
-                    <div class="row editData">
-                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                            <label>Genero:</label>
-                        </div>
-                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                            <input type="text" value="Sin datos" class="form-control" disabled>
-                        </div>
-                    </div>
+                    </div>-->
                     <div class="row editData">
                         <div class="col-xl-3 offset-xl-9 col-lg-3 offset-lg-9 col-md-3 offset-md-9 offset- col-sm-12 col-12">
-                            <a href="#" class="btn generalBtn">Editar</a>
+                            <button type="submit" class="btn generalBtn">Editar</button>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>

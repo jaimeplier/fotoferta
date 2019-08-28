@@ -29,7 +29,11 @@
                 <div class="row profileDataContainer">
                     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 profilePicture">
                         <div class="profilePictureContainer">
+                             {% if user.foto_perfil %}
+                            <img src="{{ user.foto_perfil.url }}">
+                            {% else %}
                             <img src="{% static 'images/52475675_10216002426126828_3273778910877188096_n.jpg'%}">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 profileData">
@@ -42,13 +46,13 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 profileFollowers">
                                 <div class="row">
                                     <div class="col-4">
-                                        <p id="num_fotos">325 <br>fotos</p>
+                                        <p id="num_fotos">{{ cantidad_fotos }} <br>fotos</p>
                                     </div>
                                     <div class="col-4">
-                                        <p id="num_seguidores">425<br>seguidores</p>
+                                        <p id="num_seguidores">{{ fotografo.seguidores }}<br>seguidores</p>
                                     </div>
                                     <div class="col-4">
-                                        <p id="num_siguiendo">325<br>siguiendo</p>
+                                        <p id="num_siguiendo">{{ cant_siguiendo }}<br>siguiendo</p>
                                     </div>
                                 </div>
                             </div>
@@ -861,7 +865,7 @@
         var etiquetas = arrayToString($('#etiquetas_foto').val());
         var descripcion_foto = $('#descripcion_foto').val();
         var terminos = $("#terminos_condiciones").prop('checked');
-        var publico =
+        var publico = null;
 
             console.log('cat y etiqueta', categoria, etiquetas_foto);
 
@@ -886,15 +890,15 @@
 
             if (radio2) {
                 data_foto.append('tipo_venta_foto', radio2);
+            } else {
+                data_foto.append('tipo_venta_foto', 1);
             }
 
-
-            // console.log('key', key)
-            // console.log('val' ,foto_form[key])
-            // foto_form.append('FILES', foto )
-            // nombre_foto)
-
-            data_foto.append('publica', radio1);
+            if(radio1 == 2) {
+                data_foto.append('publica', true);
+            } else {
+                data_foto.append('publica', false);
+            }
             data_foto.append('foto', $('#input_foto')[0].files[0]);
             data_foto.append('categoria', categoria);
             data_foto.append('nombre', nombre_foto);
@@ -907,6 +911,10 @@
 
             // Aca el ws que agrega la foto
             console.log(foto_form);
+
+            for (var pair of data_foto.entries()) {
+               console.log(pair[0]+ ', ' + pair[1]);
+            }
 
             $('#loader').show();
             $.ajax({
@@ -930,7 +938,11 @@
                     $('#descripcion_foto').val('');
                     // Cambiar etiquetas por arr
                     // var etiquetas_foto = $('#etiquetas_foto').val();
-                }
+                },
+                 error: function(xhr, error){
+                    $('#loader').hide();
+                    alert(xhr.responseJSON.error);
+                },
             });
 
             /*    $.ajax({

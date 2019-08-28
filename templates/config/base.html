@@ -242,7 +242,11 @@
                         <div class="col-xl-5 col-lg-5 d-xl-block d-lg-block d-md-none d-sm-none d-none userMenuContainer">
                             <div class="row">
                                 <div class="col-xl-4 col-lg-4 col-md-4">
+                                    {% if user.foto_perfil %}
+                                     <img src="{{ user.foto_perfil.url }}" style="max-width: 43.594px; max-height: 45px;">
+                                    {% else %}
                                     <i class="fas fa-user-circle"></i>
+                                    {% endif %}
                                 </div>
                                 <div class="col-xl-8 col-lg-8 col-md-8">
                                     <a href="{% url 'webapp:vista_perfil' %}">{{ user.nombre }}</a>
@@ -266,7 +270,7 @@
                         <li><a href="{% url 'webapp:vista_perfil' %}#modalPhotoUpload">Sube tu foto</a></li>
                         <li><a href="{% url 'webapp:vista_fotopartners' %}">Fotopartners</a></li>
                         <li><a href="{% url 'webapp:vista_exclusivas' %}">Fotos exclusivas</a></li>
-                        <li><a href="{% url 'webapp:home' %}">Fotos Gratuitas</a></li>
+                        <li><a href="{% url 'webapp:vista_fotos_gratis' %}">Fotos Gratuitas</a></li>
                         <li><a href="{% url 'webapp:sitio_en_construccion' %}">Enmarcar foto</a></li>
                         <li><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a>
                             <ul>

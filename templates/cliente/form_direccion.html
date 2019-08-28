@@ -1,0 +1,163 @@
+{% extends "config/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+                <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 centerDiv">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h1>{{ titulo }}</h1>
+                            <p>{{ instrucciones }}</p>
+                        </div>
+                    </div>
+                    <form class="row" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    {% for field in form %}
+                                        <div class="row formsContainer">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
+                                                <div id="res_colonia" style="display: none">
+                                                    <div style="float: right">
+                                                        <b>Municipio:</b> <span id="municipio"></span>
+                                                    </div>
+                                                    <p><b>Estado:</b> <span id="estado"></span>
+                                                    </p>
+
+                                                </div>
+
+
+
+                                                {% if field.field.required %}
+                                                    {% if field.name == 'cp' %}
+                                                        <label for="id_cp">* Código postal</label>
+                                                        <input type="text" name="cp" maxlength="5" class="validate form-control" data-validation-required-message="Este campo es requerido" required="" placeholder="Código postal" id="id_cp">
+                                                    <div class="valid-feedback">Looks good!</div>
+                                                        </div>
+                                                        </div>
+
+<div class="row formsContainer">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 centerDiv">
+                                        <label for="id_colonia">* Colonia</label>
+                                                        <select name="colonia" class="validate form-control" data-validation-required-message="Este campo es requerido" required="" placeholder="Colonia" id="id_colonia">
+  <option value="" selected="">---------</option>
+
+</select>
+
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% else %}
+                                                        <label for="{{ field.auto_id }}">* {{ field.label }}</label>
+                                                        {% render_field field class+="validate form-control" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% if field|field_type == 'booleanfield' %}
+                                                        <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                        {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% else %}
+                                                        {% render_field field class+="validate form-control" placeholder=field.label %}
+                                                        <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                                                        {% for error in field.errors %}
+                                                            <div class="invalid-feedback">
+                                                                <span>{{ error|escape }}</span></div>
+                                                        {% endfor %}
+                                                        <div class="valid-feedback">Looks good!</div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                                    {% if messages %}
+                                        <ul class="messages">
+                                            {% for message in messages %}
+                                                <p class="{{ message.tags }}">{{ message }}</p>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 offset-xl-4 offset-lg-4 offset-md-4">
+                                    <button class="btn generalBtn" type="submit" name="action"><i
+                                            class="far fa-save"></i> Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        var resultados;
+        var resultado;
+
+        $("document").ready(function () {
+            $('.invalid-feedback').show();
+
+            $('#id_cp').keypress(function() {
+                cargarDirecciones();
+            });
+            $('#id_cp').blur(function() {
+                cargarDirecciones();
+            });
+
+            $('#id_colonia').change(function() {
+                resultado = resultados.filter(el => el.pk == $('#id_colonia').val());
+                console.log(resultado, resultados)
+                showCiudad();
+            });
+
+        });
+
+        function cargarDirecciones() {
+            let codigoP = $('#id_cp').val();
+            if ( codigoP.length == 5) {
+                console.log('func¡ionaaaa')
+                $.ajax({
+                url: "/ws/list_colonias/?cp=" + codigoP ,
+                type: "GET",
+                cache: false,
+                success: function (json) {
+                    resultados = json
+                    for (i in json) {
+                    $('#id_colonia').append(
+                        $("<option></option>")
+                        .attr("value", json[i].pk)
+                        .text(json[i].nombre)
+                    );
+                    }
+                },
+                error: (err) => {console.log(err)}
+                });
+            }
+        }
+
+        function showCiudad() {
+            $('#res_colonia').show();
+            $('#municipio').empty();
+            $('#estado').empty();
+            $('#municipio').append(resultado[0].municipio.nombre);
+            $('#estado').append(resultado[0].municipio.estado.nombre);
+        }
+
+    </script>
+{% endblock %}

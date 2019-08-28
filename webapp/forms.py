@@ -1,6 +1,6 @@
-from django.forms import ModelForm, CharField, TextInput, IntegerField
+from django.forms import ModelForm, CharField, TextInput, IntegerField, ChoiceField
 
-from config.models import Fotografo, Direccion, Tarjeta, Colonia
+from config.models import Fotografo, Direccion, Tarjeta, Colonia, Usuario
 
 
 class RegistroForm(ModelForm):
@@ -15,19 +15,18 @@ class RegistroForm(ModelForm):
 
 class DireccionForm(ModelForm):
 
-    def __init__(self, *args, **kwargs):
-        super(DireccionForm, self).__init__(*args, **kwargs)
-        self.fields['colonia'].queryset = Colonia.objects.none()
+    # def __init__(self, *args, **kwargs):
+    #     super(DireccionForm, self).__init__(*args, **kwargs)
+    #     self.fields['colonia'].queryset = Colonia.objects.none()
 
     cp = CharField(label='Código postal', max_length=5)
-
     class Meta:
         model = Direccion
-        fields = ['nombre',
+        fields = ['cp',
+                  'nombre',
                   'calle',
                   'num_exterior',
                   'num_interior',
-                  'colonia',
                   'referencias',
                   'entre_calles'
                   ]
@@ -86,4 +85,17 @@ class TarjetaEditForm(ModelForm):
         }
         widgets = {
             'nombre_propietario': TextInput(attrs={'data-conekta': 'card[name]'}),
+        }
+
+class PerfilForm(ModelForm):
+
+    class Meta:
+        model = Usuario
+        fields = [
+            'nombre',
+            'correo',
+            'genero'
+        ]
+        labels = {
+            'genero': 'Género'
         }
