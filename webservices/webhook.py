@@ -10,16 +10,17 @@ from webservices.Permissions import WebHookPermission
 
 
 class WebHook(APIView):
-    permission_classes = (AllowAny, )
-    # authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (AllowAny, WebHookPermission)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
     parser_classes = (JSONParser,)
 
     def post(self, request):
         print('Funciona')
         print(request)
         print(request.data)
-        type = request.data['type']
-        if type == 'charge.paid':
+        print(request['object'])
+        type = request['type']
+        if type == 'order.paid':
             print('orden pagado')
             print(request.data)
             return HttpResponse(status=200)
