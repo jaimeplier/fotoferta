@@ -346,7 +346,7 @@
                     <ol id="indicators" class='carousel-indicators mCustomScrollbar'>
                         <li data-target="#gallerySimulator" data-slide-to="0" class='active'><img src="{% static 'images/previews/preview1.jpg' %}" alt='' /></li>
                         <li data-target='#gallerySimulator' data-slide-to='1'><img src="{% static 'images/previews/preview2.jpg' %}" alt="" /></li>
-                        <li data-target='#gallerySimulator' data-slide-to='2'><img src="{% static 'images/previews/preview2.jpg' %}" alt="" /></li>
+
                     </ol>
                 </div>
             </div>
@@ -593,8 +593,9 @@
         // $("#simuladorCarrusel").carousel("pause").removeData();
 
         if (orientacion == "Horizontal") {
+            $('#cont_item1').empty();
             $('#item1').append(`
-            <div class="frameHorizontal">` +
+            <div class="frameHorizontal" id="cont_item1">` +
                 '<img src="' + marco_select + '" class="horFrame">' +
                 `
                 <!-- marialuisa -->
@@ -602,10 +603,10 @@
                 <!-- foto de usuario -->
                 <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor" style="top:60px">
             </div>
-        `)
-
+        `);
+            $('#cont_item2').empty();
             $('#item2').append(`
-            <div class="frameHorizontal">` +
+            <div class="frameHorizontal" id="cont_item2">` +
                 '<img src="' + marco_select + '" class="horFrame">' +
                 `
                 <!-- marialuisa -->
@@ -615,16 +616,6 @@
             </div>
         `)
 
-            $('#item3').append(`
-            <div class="frameHorizontal">` +
-                '<img src="' + marco_select + '" class="horFrame" >' +
-                `
-                <!-- marialuisa -->
-                <img src="` + maLuisa + `" class="horframeBack" style="top:40px">
-                <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor" style="top:60px">
-            </div>
-        `)
 
             $('#simuladorCarrusel').append(`
         <div class="carousel-item" data-interval="1000000">
@@ -640,36 +631,29 @@
         </div>
         `)
         } else {
+            $('#cont_item1').empty()
             $('#item1').append(`
-            <div class="frameVertical">` +
+            <div class="frameVertical" id="cont_item1">` +
                 '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:25px">
             </div>
             `)
 
+            $('#cont_item2').empty()
             $('#item2').append(`
-            <div class="frameVertical">` +
+            <div class="frameVertical" id="cont_item2">` +
                 '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
             <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
-            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:25px">
             </div>
             `)
 
-            $('#item3').append(`
-            <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
-                `
-                <!-- marialuisa -->
-            <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
-            <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
-            </div>
-        `)
+
 
             $('#simuladorCarrusel').append(`
         <div class="carousel-item" data-interval="1000000">
