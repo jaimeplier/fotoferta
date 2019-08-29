@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import AllowAny
@@ -16,6 +17,7 @@ class WebHook(APIView):
     def post(self, request):
         type = request.data['type']
         if type == 'charge.paid':
+            return HttpResponse(status=200)
             id = request.data['data']['object']['order_id']
             try:
                 p = Orden.objects.get(order_id=id)
