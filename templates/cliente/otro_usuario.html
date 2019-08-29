@@ -17,7 +17,7 @@
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="row">
             <div class="col-xl-9 col-lg-9 col-md-9 col-sm-11 col-11 centerDiv">
-                <div class="row profileDataContainer">
+                <div class="row ">
                     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 profilePicture">
                         <div class="profilePictureContainer">
                             <img src="{% static 'images/52475675_10216002426126828_3273778910877188096_n.jpg'%}">
@@ -35,13 +35,13 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
                                 <div class="row">
                                     <div class="col-4">
-                                        <p id="num_fotos">325 <br>fotos</p>
+                                        <p id="num_fotos">{{ cantidad_fotos }} <br>fotos</p>
                                     </div>
                                     <div class="col-4">
-                                        <p id="num_seguidores">425<br>seguidores</p>
+                                        <p id="num_seguidores">{{ fotografo.seguidores }}<br>seguidores</p>
                                     </div>
                                     <div class="col-4">
-                                        <p id="num_siguiendo">325<br>siguiendo</p>
+                                        <p id="num_siguiendo">{{ cant_siguiendo }}<br>siguiendo</p>
                                     </div>
                                 </div>
                             </div>
@@ -54,6 +54,12 @@
                         <div class="row">
                             <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
                                 <div class="card-columns" id="sec1_fotos">
+                                    {% for foto in fotos %}
+                                       <div class="card">
+                            <a href="{%  url 'webapp:vista_foto' foto.pk %}"><img class="card-img-top" src="{{ foto.foto_home.url }}" alt="Card image top"
+                            ></a>
+                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -71,60 +77,22 @@
 <script src="{% static 'js/crsfajax.js' %}"></script>
 <script>
 
+
 $('document').ready(function(){
-        $.ajax({
-            url: "/ws/list_fotos_home/",
-            type: "GET",
-            cache: false,
-            success: function (json) {
-                console.log(json)
-                for (let [idx, i] of json.results.entries()) {
-                    $('#sec1_fotos').append(`
-                        <div class="card">
-                            <a href= "/webapp/foto/` + i.pk + `"><img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
-                            ></a>
-                        </div>
-                    `)
-                }
-                // Si usa paginador usar esto
-
-                // if (json.next) {
-                //     $.ajax({
-                //         url: json.next,
-                //         type: "GET",
-                //         cache: false,
-                //         success: function (json2) {
-                //             console.log('EN JSON 2',json2)
-                //             for (let [idx, j] of json2.results.entries()) {
-                //                 $('#sec2_fotos').append(`
-                //                 <div class="card">
-                //                     <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_home + `" alt="Card image top"
-                //                     ></a>
-                //                 </div>
-                //                 `)
-                //             }
-                //             url_next_foto = json2.next
-                //             if (!url_next_foto) {
-                //                 $('#ver_mas').hide();
-                //             }
-                //         }
-                //     })
-                // }
-
-            }
-        })
     });
     
 
     function seguir() {
         let data = {
-            fotopartner : 3, // obtener pk
+            fotopartner : "{{ fotografo.pk }}" , // obtener pk
             seguir: true
         }
+        console.log('sigue vivo')
         $.ajax({
             url: "/ws/seguir/",
             type: "POST",
             cache: false,
+            data: data,
             success: function (json) {
                 console.log(json)
             }

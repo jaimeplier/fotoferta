@@ -1,0 +1,109 @@
+{% extends 'config/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+        <section class="row promosCarousel">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+                        <div id="homeCarousel" class="owl-carousel owl-theme">
+                            <div class="item">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <img class="card-img-top" src="{% static 'images/banner1.jpeg' %}" alt="Card image top">
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <img class="card-img-top" src="{% static 'images/banner2.jpeg' %}" alt="Card image top">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="row masonryGallery">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
+                        <div class="card-columns" id="sec1_fotos">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <section class="row masonryGallery">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
+                        <div class="card-columns" id="sec3_fotos">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <h2 onclick="cargarFotos()" class="text-center" id="ver_mas"
+        style="padding: 40px 40px; cursor: pointer; display: none">+ Ver Más</h2>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script>
+    var url_next_foto;
+
+    $('document').ready(function(){
+        $.ajax({
+            url: "/ws/list_fotos_gratuitas/",
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log(json)
+                for (let [idx, i] of json.results.entries()) {
+                    $('#sec1_fotos').append(`
+                        <div class="card">
+                            <a href= "/webapp/foto/` + i.pk + `"><img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
+                            ></a>
+                        </div>
+                    `)
+                }
+                // url_next_foto = json.next
+                if (json.next) {
+                    url_next_foto = json.next
+                    if (!url_next_foto) {
+                        $('#ver_mas').hide();
+                    } else {
+                        $('#ver_mas').show();
+                    }
+                }
+
+            }
+        })
+    });
+
+function cargarFotos() {
+    if(url_next_foto) {
+        $.ajax({
+            url: url_next_foto,
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                console.log('TEST2');
+                for (let [idx, j] of json.results.entries()) {
+                    $('#sec3_fotos').append(`
+                        <div class="card">
+                            <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_home + `" alt="Card image top"
+                            ></a>
+                        </div>
+                    `)
+                }
+
+                url_next_foto = json.next;
+                if (!url_next_foto) {
+                    $('#ver_mas').hide();
+                }
+            }
+        })
+    }
+}
+</script>
+{% endblock %}

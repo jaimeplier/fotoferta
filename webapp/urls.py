@@ -1,6 +1,7 @@
 from django.urls import path
 
-from webapp.views import ClienteRegistro, TarjetaCrear, TarjetaAjaxListView, TarjetaActualizar, ComprasAjaxListView
+from webapp.views import ClienteRegistro, TarjetaCrear, TarjetaAjaxListView, TarjetaActualizar, ComprasAjaxListView, \
+    EditarPerfil, vista_fotos_gratis
 from . import views
 from webapp.views import DireccionCrear, DireccionAjaxListView, DireccionActualizar
 
@@ -13,11 +14,12 @@ urlpatterns = [
     path('sitio_en_construccion/', views.sitio_construccion, name='sitio_en_construccion'),
     path('registrar/', ClienteRegistro.as_view(), name='add_cliente'),
 
-    path('editar_perfil/', views.vista_editar_perfil, name='vista_editar_perfil'),
+    path('editar_perfil/', EditarPerfil.as_view(), name='vista_editar_perfil'),
     path('perfil/', views.vista_perfil, name='vista_perfil'),
     path('cambiar_password/', views.cambiar_password, name='cambiar_password'),
     path('usuario/<int:pk>', views.vista_otro_perfil, name='vista_otro_perfil'),
     path('compras/', ComprasAjaxListView.as_view(), name='tab_list_compras'),
+    path('fotos_gratis/', views.vista_fotos_gratis, name='vista_fotos_gratis'),
     path('detalle_orden/<int:orden>', views.detalle_orden, name='detalle_orden'),
     path('exclusivas/', views.vista_exclusivas, name='vista_exclusivas'),
     path('marco/<int:producto>', views.vista_marco, name='vista_marco'),

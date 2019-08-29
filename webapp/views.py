@@ -11,8 +11,9 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponse, HttpRe
 
 from config.conekta import agregar_tarjeta, actualizar_tarjeta, eliminar_tarjeta
 from fotofertas.settings import KEY_FOTO, BASE_DIR
-from webapp.forms import TarjetaForm, TarjetaEditForm
-from config.models import Fotografo, Rol, Fotografia, Direccion, Producto, Tarjeta, Descarga, Orden
+from webapp.forms import TarjetaForm, TarjetaEditForm, PerfilForm
+from config.models import Fotografo, Rol, Fotografia, Direccion, Producto, Tarjeta, Descarga, Orden, Colonia, \
+    SiguiendoFotografo, Usuario
 from webapp.forms import RegistroForm, DireccionForm
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
@@ -122,7 +123,7 @@ class DireccionCrear(PermissionRequiredMixin, CreateView):
     permission_required = 'fotopartner'
     model = Direccion
     form_class = DireccionForm
-    template_name = 'config/form_1col.html'
+    template_name = 'cliente/form_direccion.html'
     success_url = '/administrador/logo/listar'
 
     def get_context_data(self, **kwargs):
@@ -136,12 +137,15 @@ class DireccionCrear(PermissionRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        logo = form.save(commit=False)
-        logo.save()
+        direccion = form.save(commit=False)
+        colonia= Colonia.objects.get(pk=form.data['colonia'])
+        direccion.colonia= colonia
+        direccion.usuario=self.request.user
+        direccion.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('webapp:direccion')
+        return reverse('webapp:list_direccion')
 
 @permission_required(perm='fotopartner', login_url='/webapp/login')
 def direccion_listar(request):
@@ -207,7 +211,7 @@ class DireccionActualizar(PermissionRequiredMixin, UpdateView):
     login_url = '/webapp/login'
     permission_required = 'fotopartner'
     model = Direccion
-    template_name = 'config/form_1col.html'
+    template_name = 'cliente/form_direccion.html'
     form_class = DireccionForm
 
     def get_context_data(self, **kwargs):
@@ -222,11 +226,14 @@ class DireccionActualizar(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         # form.instance.set_password(form.cleaned_data['password'])
+        direccion =form.save(commit=False)
+        colonia = Colonia.objects.get(pk=form.data['colonia'])
+        direccion.colonia = colonia
         form.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('webservices:list_direccion')
+        return reverse('webapp:list_direccion')
 
 @permission_required(perm='fotopartner', login_url='/webapp/login')
 def direccion_cambiar_estatus(request, pk):
@@ -245,7 +252,12 @@ def direccion_cambiar_estatus(request, pk):
 def vista_perfil(request):
     template_name = 'cliente/perfil.html'
     fotografo = Fotografo.objects.get(pk=request.user.pk)
-    context = {'fotografo': fotografo}
+    fotografias = Fotografia.objects.filter(usuario__pk=fotografo.pk, estatus=True, aprobada=True,
+                                            publica=True).order_by('fecha_alta')
+    cant_fotos = len(fotografias)
+    cant_siguiendo = SiguiendoFotografo.objects.filter(fotografo=fotografo).count()
+    context = {'fotografo': fotografo, 'fotos': fotografias, 'cantidad_fotos': cant_fotos,
+               'cant_siguiendo': cant_siguiendo}
     return render(request, template_name, context)
 
 class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
@@ -350,10 +362,35 @@ def producto_descarga(request, token, image_name):
         context['error'] = 'El link no es válido'
     return render(request, template_error, context)
 
-@permission_required(perm='fotopartner', login_url='/webapp/login')
-def vista_editar_perfil(request):
+
+class EditarPerfil(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/webapp/login'
+    permission_required = 'fotopartner'
+    model = Usuario
     template_name = 'cliente/editar_perfil.html'
-    return render(request, template_name)
+    form_class = PerfilForm
+
+    def get_object(self):
+        return Usuario.objects.get(pk=self.request.user.pk)  #
+
+    def get_context_data(self, **kwargs):
+        context = super(EditarPerfil, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Modificación de direccion'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica los campos que requieras'
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('webapp:vista_editar_perfil')
+
 
 def vista_marco(request, producto):
     template_name = 'cliente/marco.html'
@@ -369,11 +406,17 @@ def vista_fotopartners(request):
     template_name = 'cliente/fotopartners.html'
     return render(request, template_name)
 
+def vista_fotos_gratis(request):
+    template_name = 'cliente/fotos_gratuitas.html'
+    return render(request, template_name)
+
 def vista_otro_perfil(request, pk):
     template_name = 'cliente/otro_usuario.html'
     fotografo = Fotografo.objects.get(pk=pk)
     fotografias = Fotografia.objects.filter(usuario__pk=fotografo.pk, estatus=True, aprobada=True, publica=True).order_by('fecha_alta')
-    context = {'fotografo': fotografo, 'fotos': fotografias}
+    cant_fotos = len(fotografias)
+    cant_siguiendo = SiguiendoFotografo.objects.filter(fotografo=fotografo).count()
+    context = {'fotografo': fotografo, 'fotos': fotografias, 'cantidad_fotos':cant_fotos, 'cant_siguiendo':cant_siguiendo}
     return render(request, template_name, context)
 
 class TarjetaCrear(PermissionRequiredMixin, CreateView):
