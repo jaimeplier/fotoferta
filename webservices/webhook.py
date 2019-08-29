@@ -30,5 +30,5 @@ class WebHook(APIView):
                 p.save()
             except Orden.DoesNotExist:
                 pass
-        obj = request.data['object']
         return Response({'received data': request.data})
+        obj = request.data['object']
