@@ -18,11 +18,12 @@
                                 <img src="{{producto.foto.foto_muestra.url}}">
                             </div>
                         </div>
+                        <!--
                         <div class="row btnPreviewModal">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <a href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <div id="stages" class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 frameSelection">
                         <div id="stage1">
@@ -278,7 +279,7 @@
                             </div>
                             <div class="row btnPreviewModal">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <a onclick="marcoSimulador()" href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
+                                    <a id="showSimulacion" onclick="marcoSimulador()" href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal" style="display: none">Simulación</a>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +288,7 @@
                 </div>
                 <div id="cont_precio" style="float: right">
                     <p>Subtotal $<span id="precio_total">0.00</span> MXN</p>
-                    <button id="guardarM" class="btn generalBtn" style="cursor:pointer" onclick="guardarMarco()">Guardar</button>
+                    <button id="guardarM" class="btn generalBtn" style="cursor:pointer;" onclick="guardarMarco()">Guardar</button>
                 </div>
 
             </div>
@@ -439,7 +440,7 @@
         estadosSimulador.res_stage4 = res;
         estadosSimulador.precio4 = precio;
         maLuisa = img;
-
+        $('#showSimulacion').show();
         $('#guardarM').show();
         updatePrice();
     }
@@ -521,8 +522,8 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         <img onclick="setStage3(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marcos/Dali/ME1DI_1.png'  %}\`, \`{% static 'images/Marcos/Dali/ME2DI_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI_1.png'  %} "> 
-                                         <!-- <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical + `')" style="cursor:pointer" src="` + obj.imagen_vertical + `"> -->
+
+                                         <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical + `')" style="cursor:pointer" src="` + obj.imagen_vertical + `">
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -566,8 +567,8 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         <img onclick="setStage4(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marialuisas/B7-150_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marialuisas/B7-150_1.png'  %} "> 
-                                         <!-- <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `"> -->
+
+                                          <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `">
 
                                     </div>
                                 </div>
@@ -597,9 +598,9 @@
                 '<img src="' + marco_select + '" class="horFrame">' +
                 `
                 <!-- marialuisa -->
-                <img src="` + maLuisa + `" class="horframeBack">
+                <img src="` + maLuisa + `" class="horframeBack" style="top:40px">
                 <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor" style="top:60px">
             </div>
         `)
 
@@ -608,20 +609,20 @@
                 '<img src="' + marco_select + '" class="horFrame">' +
                 `
                 <!-- marialuisa -->
-                <img src="` + maLuisa + `" class="horframeBack">
+                <img src="` + maLuisa + `" class="horframeBack" style="top:40px">
                 <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor" style="top:60px">
             </div>
         `)
 
             $('#item3').append(`
             <div class="frameHorizontal">` +
-                '<img src="' + marco_select + '" class="horFrame">' +
+                '<img src="' + marco_select + '" class="horFrame" >' +
                 `
                 <!-- marialuisa -->
-                <img src="` + maLuisa + `" class="horframeBack">
+                <img src="` + maLuisa + `" class="horframeBack" style="top:40px">
                 <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor" style="top:60px">
             </div>
         `)
 
@@ -630,43 +631,43 @@
             <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
             <div class="frameHorizontal">
 
-                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame" style="top:-20px">
                 <!-- marialuisa -->
                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
                 <!-- foto de usuario -->
-                <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
+                <img src="{% static 'images/previews/prevHor.jpg' %}" class="medImageFramedHor">
             </div>
         </div>
         `)
         } else {
             $('#item1').append(`
             <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame">' +
+                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
                 <!-- marialuisa -->
-            <img src="` + maLuisa + `" class="verframeBack">
+            <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            <img src="{{producto.foto.foto_muestra.url}}" class="smallImageFramedVer" style="top:31px">
             </div>
             `)
 
             $('#item2').append(`
             <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame">' +
+                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
-            <img src="` + maLuisa + `" class="verframeBack">
-            <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
+            <img src="{{producto.foto.foto_muestra.url}}" class="smallImageFramedVer" style="top:31px">
             </div>
             `)
 
             $('#item3').append(`
             <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame">' +
+                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
                 <!-- marialuisa -->
-            <img src="` + maLuisa + `" class="verframeBack">
+            <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            <img src="{{producto.foto.foto_muestra.url}}" class="smallImageFramedVer" style="top:31px">
             </div>
         `)
 

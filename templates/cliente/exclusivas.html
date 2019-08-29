@@ -76,12 +76,12 @@
 {% block scripts %}
 <script>
     $('document').ready(function() {
-        /*   LISTAR FOTOS, pendiente de WS
         $.ajax({
-            url: "/ws/list_categorias/",
+            url: "/ws/list_fotos_exclusivas/",
             type: "GET",
             cache: false,
             success: function(json) {
+                console.log('exclusivas',json)
                 for (i in json) {
                     $('#listaFotos').append(`
                         <div class="card">
@@ -91,7 +91,6 @@
                 }
             }
         })
-        */
     });
 
 </script>
