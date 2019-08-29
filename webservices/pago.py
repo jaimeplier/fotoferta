@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.conekta import crear_orden_tarjeta, crear_cliente
+from config.conekta import crear_orden_tarjeta, crear_cliente, crear_orden_oxxo
 from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga, Usuario
 from fotofertas.settings import KEY_FOTO
 from webapp.mail import sendMail
@@ -96,9 +96,9 @@ class PagarOrden(APIView):
             else:
                 return Response({'error': 'No se encontró la tarjeta'}, status=status.HTTP_404_NOT_FOUND)
 
-            resultado = crear_orden_tarjeta(request, orden, token_tarjeta)
-            if type(resultado) is str:
-                return Response({'error': resultado},
+            order_conekta = crear_orden_tarjeta(request, orden, token_tarjeta)
+            if type(order_conekta) is str:
+                return Response({'error': order_conekta},
                                 status=status.HTTP_412_PRECONDITION_FAILED)
             estatus_compra = EstatusCompra.objects.get(pk=2) # Ordenado
             estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
@@ -128,9 +128,11 @@ class PagarOrden(APIView):
             message = get_template(email_template_name).render(ctx)
             sendMail(to, subject, message)
 
-
         elif metodo_pago.nombre == 'Oxxo':
-            tarjeta = Tarjeta.objects.get(pk=serializer.validated_data['tarjeta'])
+            order_conekta = crear_orden_oxxo(request, orden)
+            if type(order_conekta) is str:
+                return Response({'error': order_conekta},
+                                status=status.HTTP_412_PRECONDITION_FAILED)
         elif metodo_pago.nombre == 'Spei':
             tarjeta = Tarjeta.objects.get(pk=serializer.validated_data['tarjeta'])
 

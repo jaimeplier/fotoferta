@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'rest_framework',
     'rest_framework.authtoken',
+    'django.contrib.humanize',
     'config.apps.ConfigConfig',
     'webapp.apps.WebappConfig',
     'administrador.apps.AdminConfig'
