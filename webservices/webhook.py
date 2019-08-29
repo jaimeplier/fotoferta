@@ -18,7 +18,7 @@ class WebHook(APIView):
         print('Funciona')
         print(request)
         print(request.data)
-        print(request['object'])
+        print(request.object)
         type = request['type']
         if type == 'order.paid':
             print('orden pagado')
