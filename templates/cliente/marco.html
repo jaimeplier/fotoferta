@@ -566,7 +566,7 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         
+
                                           <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `">
 
                                     </div>
@@ -594,7 +594,7 @@
         if (orientacion == "Horizontal") {
             $('#item1').append(`
             <div class="frameHorizontal">` +
-                '<img src="' + marco_select + '" class="horFrame">' +
+                '<img src="' + marco_select + '" class="horFrame" style="top:-20px">' +
                 `
                 <!-- marialuisa -->
                 <img src="` + maLuisa + `" class="horframeBack">
@@ -605,7 +605,7 @@
 
             $('#item2').append(`
             <div class="frameHorizontal">` +
-                '<img src="' + marco_select + '" class="horFrame">' +
+                '<img src="' + marco_select + '" class="horFrame" style="top:-20px">' +
                 `
                 <!-- marialuisa -->
                 <img src="` + maLuisa + `" class="horframeBack">
@@ -616,7 +616,7 @@
 
             $('#item3').append(`
             <div class="frameHorizontal">` +
-                '<img src="' + marco_select + '" class="horFrame">' +
+                '<img src="' + marco_select + '" class="horFrame" style="top:-20px">' +
                 `
                 <!-- marialuisa -->
                 <img src="` + maLuisa + `" class="horframeBack">
@@ -630,7 +630,7 @@
             <img src="{% static 'images/previews/preview1.jpg' %}" class="d-block w-100 baseImage" alt="...">
             <div class="frameHorizontal">
 
-                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame">
+                <img src="{% static 'images/marcos/Caravaggio/ME1CO_1.png' %}" class="horFrame" style="top:-20px">
                 <!-- marialuisa -->
                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
                 <!-- foto de usuario -->
