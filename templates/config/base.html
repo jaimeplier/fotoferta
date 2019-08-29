@@ -27,6 +27,7 @@
                     <div class="col-xl-4 col-lg-4 col-md-5 col-sm-5 col-5 logoContainer">
                         <a {% if user.is_admin %}href="{% url 'administrador:admin_menu' %}" {% else %}href="{% url 'webapp:home' %}" {% endif %}>
                             <img id="logo">
+                            <!--
                             <svg x="0px" y="0px" viewBox="0 0 474 77">
                                 <path class="fotOfertasLogo0" d="M124.9,30.2h-4.5c-0.1,0-0.1-0.1-0.1-0.2v-8.1c0-0.1,0.1-0.2,0.1-0.2h4.5c0.1,0,0.1-0.1,0.1-0.2v-7.1
 			c0-5.2,1.2-9.1,3.7-11.5c2.4-2.3,5.5-3.4,9.2-3.4h6c0.1,0,0.1,0.1,0.1,0.2v10c0,0.1-0.1,0.2-0.1,0.2h-5.3
@@ -81,7 +82,7 @@
                                 <path class="fotOfertasLogowhite" d="M101.4,25.6H86.2v-9.4h9.5c3.2,0,5.7,2.6,5.7,5.7C101.4,21.9,101.4,25.6,101.4,25.6z" />
                                 <circle class="fotOfertasLogo4" cx="52.7" cy="44.9" r="21.8" />
                                 <circle class="fotOfertasLogowhite" cx="38.6" cy="44.9" r="4" />
-                            </svg>
+                            </svg>-->
                         </a>
                     </div>
                     {% if user.is_admin %}
