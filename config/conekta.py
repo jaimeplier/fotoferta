@@ -213,6 +213,76 @@ def crear_orden_oxxo(request, orden):
     sendMail(to, subject, message)
     return order
 
+def crear_orden_spei(request, orden):
+    conekta.api_key = CONEKTA_PRIVATE_KEY
+    conekta.locale = CONEKTA_LOCALE
+    conekta.api_version = CONEKTA_VERSION
+    cliente = Usuario.objects.get(pk=request.user.pk)
+    productos = Producto.objects.filter(orden=orden)
+    costo_envio = int(orden.costo_envio*100)
+    paqueteria = "Estafeta"
+    line_items = []
+    for producto in productos:
+        line_items.append({"name": producto.foto.nombre, "unit_price": int(producto.subtotal*100), "quantity": 1})
+
+    if orden.direccion is None:
+        address = {
+                "street1": 'N/A',
+                "city": 'N/A',
+                "state": 'N/A',
+                "postal_code": 'N/A',
+                "country": 'N/A' # shipping_contact - required only for physical goods
+        }
+    else:
+        address = {
+                "street1": orden.direccion.direccion_corta(),
+                "city": orden.direccion.colonia.municipio.nombre,
+                "state": orden.direccion.colonia.municipio.estado.nombre,
+                "postal_code": orden.direccion.colonia.cp,
+                "country": orden.direccion.colonia.municipio.estado.pais.nombre # shipping_contact - required only for physical goods
+        }
+    try:
+        customer = conekta.Customer.find(cliente.customer_id)
+        order = conekta.Order.create({
+            "currency": "MXN",
+            "shipping_lines": [{
+                "amount": costo_envio,
+                "carrier": paqueteria
+            }],
+            "shipping_contact": {
+                "address": address
+            },
+            "customer_info": {
+                "customer_id": cliente.customer_id
+            },
+            "line_items": line_items,
+            "charges": [{
+                "payment_method": {
+                    "type": "spei"
+                }
+            }]
+        })
+        orden.order_id = order.id
+        orden.save()
+    except conekta.ConektaError as e:
+        return str(e.error_json['details'][0]['message'])
+
+    subject = "Pago SPEI Fotofertas"
+    to = [orden.usuario.correo]
+    ctx = {
+        'cantidad_total': (order.amount / 100),
+        'request': request,
+        'user': orden.usuario,
+        'productos': productos,
+        'envio': orden.costo_envio,
+        'reference': order.charges[0].payment_method.receiving_account_number,
+        'banco': order.charges[0].payment_method.receiving_account_bank,
+        'orden_id': orden.pk,
+    }
+    message = get_template('mailing/correo_pago_spei.html').render(ctx)
+    sendMail(to, subject, message)
+    return order
+
 def crear_cliente(request):
     conekta.api_key = CONEKTA_PRIVATE_KEY
     conekta.locale = CONEKTA_LOCALE

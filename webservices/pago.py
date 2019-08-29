@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.conekta import crear_orden_tarjeta, crear_cliente, crear_orden_oxxo
+from config.conekta import crear_orden_tarjeta, crear_cliente, crear_orden_oxxo, crear_orden_spei
 from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga, Usuario
 from fotofertas.settings import KEY_FOTO
 from webapp.mail import sendMail
@@ -134,7 +134,10 @@ class PagarOrden(APIView):
                 return Response({'error': order_conekta},
                                 status=status.HTTP_412_PRECONDITION_FAILED)
         elif metodo_pago.nombre == 'Spei':
-            tarjeta = Tarjeta.objects.get(pk=serializer.validated_data['tarjeta'])
+            order_conekta = crear_orden_spei(request, orden)
+            if type(order_conekta) is str:
+                return Response({'error': order_conekta},
+                                status=status.HTTP_412_PRECONDITION_FAILED)
 
 
         return Response({'exito': 'Orden generada correctamente'}, status=status.HTTP_200_OK)
