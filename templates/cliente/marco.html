@@ -324,14 +324,14 @@
                                 <img src="{% static 'images/previews/prevVer.jpg' %}" class="smallImageFramedVer">
                             </div> -->
                         </div>
-                        <div id="item3" class="carousel-item" data-interval="1000000">
+                       {% comment %} <div id="item3" class="carousel-item" data-interval="1000000">
                             <img src="{% static 'images/previews/preview2.jpg' %}" class="d-block w-100" alt="...">
                             <div class="frameVertical">
                                 <img src="{% static 'images/marcos/Caravaggio/ME2CO_1.png' %}" class="verFrame"><!--Marco-->
                                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="verframeBack"><!--Marialuisa-->
                                 <img src="{% static 'images/previews/prevVer.jpg' %}" class="smallImageFramedVer"><!--Imagen-->
                             </div>
-                        </div>
+                        </div>{% endcomment %}
                     </div>
 
 
@@ -647,7 +647,7 @@
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="smallImageFramedVer" style="top:31px">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
             </div>
             `)
 
@@ -656,7 +656,7 @@
                 '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
             <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
-            <img src="{{producto.foto.foto_muestra.url}}" class="smallImageFramedVer" style="top:31px">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
             </div>
             `)
 
@@ -667,7 +667,7 @@
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack" style="top:0px">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="smallImageFramedVer" style="top:31px">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
             </div>
         `)
 
