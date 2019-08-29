@@ -9,6 +9,7 @@ from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, Mod
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
 from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login, ListLogo, \
     CambiarFotoPerfil, CambiarFotoPortada
+from webservices.webhook import WebHook
 
 app_name = 'webservices'
 
@@ -62,4 +63,6 @@ urlpatterns = [
     path('seguir/', SeguirFotopartner.as_view(), name='seguir'),
     path('list_fotopartners/', ListFotopartners.as_view(), name='list_fotopartners'),
 
+    # Webhook
+    path('webhook/', WebHook.as_view(), name='webhook'),
 ]
