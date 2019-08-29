@@ -18,11 +18,12 @@
                                 <img src="{{producto.foto.foto_muestra.url}}">
                             </div>
                         </div>
+                        <!--
                         <div class="row btnPreviewModal">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <a href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <div id="stages" class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 frameSelection">
                         <div id="stage1">
@@ -278,7 +279,7 @@
                             </div>
                             <div class="row btnPreviewModal">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <a onclick="marcoSimulador()" href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal">Ver Imagen</a>
+                                    <a id="showSimulacion" onclick="marcoSimulador()" href="#" class="btn generalBtn specialBtn" data-toggle="modal" data-target="#galleryModal" style="display: none">Simulación</a>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +288,7 @@
                 </div>
                 <div id="cont_precio" style="float: right">
                     <p>Subtotal $<span id="precio_total">0.00</span> MXN</p>
-                    <button id="guardarM" class="btn generalBtn" style="cursor:pointer" onclick="guardarMarco()">Guardar</button>
+                    <button id="guardarM" class="btn generalBtn" style="cursor:pointer;" onclick="guardarMarco()">Guardar</button>
                 </div>
 
             </div>
@@ -439,7 +440,7 @@
         estadosSimulador.res_stage4 = res;
         estadosSimulador.precio4 = precio;
         maLuisa = img;
-
+        $('#showSimulacion').show();
         $('#guardarM').show();
         updatePrice();
     }
@@ -641,32 +642,32 @@
         } else {
             $('#item1').append(`
             <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame">' +
+                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
             </div>
             `)
 
             $('#item2').append(`
             <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame">' +
+                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
             <img src="` + maLuisa + `" class="verframeBack">
-            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
             </div>
             `)
 
             $('#item3').append(`
             <div class="frameVertical">` +
-                '<img src="' + marco_select + '" class="verFrame">' +
+                '<img src="' + marco_select + '" class="verFrame" style="top:10px">' +
                 `
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer" style="top:31px">
             </div>
         `)
 
