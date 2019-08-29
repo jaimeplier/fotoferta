@@ -16,6 +16,8 @@ class WebHook(APIView):
 
     def post(self, request):
         print('Funciona')
+        print(request)
+        print(request.data)
         type = request.data['type']
         if type == 'charge.paid':
             print('orden pagado')
