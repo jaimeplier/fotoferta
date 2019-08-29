@@ -521,7 +521,7 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         <!--<img onclick="setStage3(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marcos/Dali/ME1DI_1.png'  %}\`, \`{% static 'images/Marcos/Dali/ME2DI_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI_1.png'  %} ">-->
+                                         {% comment %}<img onclick="setStage3(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marcos/Dali/ME1DI_1.png'  %}\`, \`{% static 'images/Marcos/Dali/ME2DI_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI_1.png'  %} ">{% endcomment %}
                                          <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical + `')" style="cursor:pointer" src="` + obj.imagen_vertical + `">
                                     </div>
                                 </div>
@@ -566,8 +566,8 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         <!--<img onclick="setStage4(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marialuisas/B7-150_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marialuisas/B7-150_1.png'  %} "> -->
-                                         <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `">
+                                         {% comment %}<img onclick="setStage4(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marialuisas/B7-150_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marialuisas/B7-150_1.png'  %} ">{% endcomment %}
+                                          <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `">
 
                                     </div>
                                 </div>
