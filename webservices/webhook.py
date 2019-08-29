@@ -15,15 +15,8 @@ class WebHook(APIView):
     parser_classes = (JSONParser,)
 
     def post(self, request):
-        print('Funciona')
-        print(request)
-        print(request.data)
-        print(request.object)
         type = request['type']
         if type == 'order.paid':
-            print('orden pagado')
-            print(request.data)
-            return HttpResponse(status=200)
             id = request.data['data']['object']['order_id']
             try:
                 p = Orden.objects.get(order_id=id)
@@ -31,5 +24,5 @@ class WebHook(APIView):
                 p.save()
             except Orden.DoesNotExist:
                 pass
-        return Response({'received data': request.data})
         obj = request.data['object']
+        return Response({'received data': request.data})
