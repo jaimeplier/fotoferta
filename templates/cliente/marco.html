@@ -521,8 +521,8 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         <img onclick="setStage3(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marcos/Dali/ME1DI_1.png'  %}\`, \`{% static 'images/Marcos/Dali/ME2DI_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI_1.png'  %} "> 
-                                         <!-- <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical + `')" style="cursor:pointer" src="` + obj.imagen_vertical + `"> -->
+                                         <!--<img onclick="setStage3(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marcos/Dali/ME1DI_1.png'  %}\`, \`{% static 'images/Marcos/Dali/ME2DI_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marcos/Dali/ME2DI_1.png'  %} ">-->
+                                         <img onclick="setStage3(` + obj.id + ',' + obj.precio + ", '" + obj.imagen_horizontal + "', '" + obj.imagen_vertical + `')" style="cursor:pointer" src="` + obj.imagen_vertical + `">
                                     </div>
                                 </div>
                                 <div class="row frameImageDetails">
@@ -566,8 +566,8 @@
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div class="row frameImageSelector">
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                         <img onclick="setStage4(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marialuisas/B7-150_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marialuisas/B7-150_1.png'  %} "> 
-                                         <!-- <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `"> -->
+                                         <!--<img onclick="setStage4(` + obj.id + ',' + obj.precio + `, \`{% static 'images/Marialuisas/B7-150_1.png'  %}\`)" style="cursor:pointer" src=" {% static 'images/Marialuisas/B7-150_1.png'  %} "> -->
+                                         <img onclick="setStage4(` + obj.id + ',' + obj.precio + ", '" + obj.imagen + `')" style="cursor:pointer" src="` + obj.imagen + `">
 
                                     </div>
                                 </div>
@@ -599,7 +599,7 @@
                 <!-- marialuisa -->
                 <img src="` + maLuisa + `" class="horframeBack">
                 <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor">
             </div>
         `)
 
@@ -610,7 +610,7 @@
                 <!-- marialuisa -->
                 <img src="` + maLuisa + `" class="horframeBack">
                 <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor">
             </div>
         `)
 
@@ -621,7 +621,7 @@
                 <!-- marialuisa -->
                 <img src="` + maLuisa + `" class="horframeBack">
                 <!-- foto de usuario -->
-                <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+                <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedHor">
             </div>
         `)
 
@@ -634,7 +634,7 @@
                 <!-- marialuisa -->
                 <img src="{% static 'images/Marialuisas/B7-150_1.png' %}" class="horframeBack">
                 <!-- foto de usuario -->
-                <img src="{% static 'images/previews/prevHor.jpg' %}" class="fullImageFramedHor">
+                <img src="{% static 'images/previews/prevHor.jpg' %}" class="medImageFramedHor">
             </div>
         </div>
         `)
@@ -646,7 +646,7 @@
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer">
             </div>
             `)
 
@@ -655,7 +655,7 @@
                 '<img src="' + marco_select + '" class="verFrame">' +
                 `
             <img src="` + maLuisa + `" class="verframeBack">
-            <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer">
             </div>
             `)
 
@@ -666,7 +666,7 @@
                 <!-- marialuisa -->
             <img src="` + maLuisa + `" class="verframeBack">
             <!-- foto de usuario -->
-            <img src="{{producto.foto.foto_muestra.url}}" class="fullImageFramedHor">
+            <img src="{{producto.foto.foto_muestra.url}}" class="medImageFramedVer">
             </div>
         `)
 
