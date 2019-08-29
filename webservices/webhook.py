@@ -9,8 +9,8 @@ from webservices.Permissions import WebHookPermission
 
 
 class WebHook(APIView):
-    permission_classes = (AllowAny, WebHookPermission)
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (AllowAny, )
+    # authentication_classes = (TokenAuthentication, SessionAuthentication)
     parser_classes = (JSONParser,)
 
     def post(self, request):
