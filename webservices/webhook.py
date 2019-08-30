@@ -20,7 +20,7 @@ class WebHook(APIView):
     parser_classes = (JSONParser,)
 
     def post(self, request):
-        type = request['type']
+        type = request.data['type']
         if type == 'order.paid':
             print('**************Pago realizado************')
             id = request.data['data']['object']['order_id']
