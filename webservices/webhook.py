@@ -22,16 +22,20 @@ class WebHook(APIView):
     def post(self, request):
         type = request['type']
         if type == 'order.paid':
+            print('**************Pago realizado************')
             id = request.data['data']['object']['order_id']
+            print(id)
             try:
                 orden = Orden.objects.get(order_id=id)
                 estatus_pago = EstatusPago.objects.get(pk=2)  # Pagado
                 orden.estatus_pago = estatus_pago
                 orden.fecha_compra = timezone.now()
                 orden.save()
+                print('Orden Guardada')
                 productos = Producto.objects.filter(orden=orden)
                 productos.update(estatus_pago=estatus_pago)
                 productos.filter(subtotal__gt=0)
+                print('Productos filtrados')
                 descargas = []
                 for producto in productos:
                     encoded = jwt.encode(
@@ -40,7 +44,7 @@ class WebHook(APIView):
                     token = encoded.decode('UTF-8')
                     descargas.append(
                         Descarga.objects.create(producto=producto, orden=orden, usuario=self.request.user, token=token))
-
+                print(descargas)
                 email_template_name = 'mailing/descargas.html'
                 subject = "Productos Digitales"
                 to = [self.request.user.correo]
@@ -55,5 +59,6 @@ class WebHook(APIView):
 
             except Orden.DoesNotExist:
                 pass
+        print(request.data['object'])
         obj = request.data['object']
         return Response({'received data': request.data})
