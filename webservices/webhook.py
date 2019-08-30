@@ -22,13 +22,7 @@ class WebHook(APIView):
     def post(self, request):
         type = request.data['type']
         if type == 'order.paid':
-            print('**************Pago realizado************')
-            print(request.data['data'])
-            print('**************Data Object************')
-            print(request.data['data']['object'])
-            print('**************Data Object************')
-            print(request.data['data']['object']['object'])
-            id = request.data['data']['object']['object']
+            id = request.data['data']['object']['id']
             print(id)
             try:
                 orden = Orden.objects.get(order_id=id)
