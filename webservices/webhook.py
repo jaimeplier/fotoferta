@@ -23,41 +23,36 @@ class WebHook(APIView):
         type = request.data['type']
         if type == 'order.paid':
             id = request.data['data']['object']['id']
-            print(id)
             try:
                 orden = Orden.objects.get(order_id=id)
                 estatus_pago = EstatusPago.objects.get(pk=2)  # Pagado
                 orden.estatus_pago = estatus_pago
                 orden.fecha_compra = timezone.now()
                 orden.save()
-                print('Orden Guardada')
                 productos = Producto.objects.filter(orden=orden)
                 productos.update(estatus_pago=estatus_pago)
                 productos.filter(subtotal__gt=0)
-                print('Productos filtrados')
                 descargas = []
                 for producto in productos:
                     encoded = jwt.encode(
-                        {'producto': producto.pk, 'foto': producto.foto.pk, 'usuario': self.request.user.pk}, KEY_FOTO,
+                        {'producto': producto.pk, 'foto': producto.foto.pk, 'usuario': orden.usuario.pk}, KEY_FOTO,
                         algorithm='HS256')
                     token = encoded.decode('UTF-8')
                     descargas.append(
-                        Descarga.objects.create(producto=producto, orden=orden, usuario=self.request.user, token=token))
-                print(descargas)
+                        Descarga.objects.create(producto=producto, orden=orden, usuario=orden.usuario, token=token))
+
                 email_template_name = 'mailing/descargas.html'
                 subject = "Productos Digitales"
-                to = [self.request.user.correo]
+                to = [orden.usuario.correo]
                 ctx = {
                     'productos': descargas,
                     'request': request,
-                    'user': self.request.user,
+                    'user': orden.usuario,
                     'orden': orden
                 }
                 message = get_template(email_template_name).render(ctx)
                 sendMail(to, subject, message)
-                print('Correo enviado')
             except Orden.DoesNotExist:
                 pass
-        print(request.data['object'])
         obj = request.data['object']
         return Response({'received data': request.data})
