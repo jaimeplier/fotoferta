@@ -98,10 +98,15 @@ $('document').ready(function(){
             cache: false,
             data: data,
             success: function (json) {
-                $('#num_seguidores').text("{{ fotografo.seguidores }}")
+                $('#num_seguidores').text(Number($('#num_seguidores').text()))
                 console.log(json)
-                $('')
-            }
+                $('#seguir').hide();
+                $('#noseguir').show();
+            },
+             error: function (xhr, errmsg, err) {
+                $('#seguir').hide();
+                $('#noseguir').show();
+             }
         });
     }
 
@@ -116,8 +121,10 @@ $('document').ready(function(){
             cache: false,
             data: data,
             success: function (json) {
-                console.log(json)
+               $('#noseguir').hide();
+               $('#seguir').show();
             }
+
         });
     }
 
