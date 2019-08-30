@@ -23,7 +23,12 @@ class WebHook(APIView):
         type = request.data['type']
         if type == 'order.paid':
             print('**************Pago realizado************')
-            id = request.data['data']['object']['order_id']
+            print(request.data['data'])
+            print('**************Data Object************')
+            print(request.data['data']['object'])
+            print('**************Data Object************')
+            print(request.data['data']['object']['object'])
+            id = request.data['data']['object']['object']
             print(id)
             try:
                 orden = Orden.objects.get(order_id=id)
@@ -56,7 +61,7 @@ class WebHook(APIView):
                 }
                 message = get_template(email_template_name).render(ctx)
                 sendMail(to, subject, message)
-
+                print('Correo enviado')
             except Orden.DoesNotExist:
                 pass
         print(request.data['object'])
