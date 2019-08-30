@@ -87,7 +87,8 @@ class PagarOrden(APIView):
             if type(customer_id) is int:
                 return Response({'error': 'Ocurrió un error al procesar la orden'},
                                 status=status.HTTP_412_PRECONDITION_FAILED)
-
+        orden.forma_pago = metodo_pago
+        orden.save()
         # Verificar metodos de pago
         if metodo_pago.nombre == 'Tarjeta':
             if tarjeta is not None:
@@ -100,11 +101,8 @@ class PagarOrden(APIView):
             if type(order_conekta) is str:
                 return Response({'error': order_conekta},
                                 status=status.HTTP_412_PRECONDITION_FAILED)
-            estatus_compra = EstatusCompra.objects.get(pk=2) # Ordenado
             estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
-            orden.estatus_compra = estatus_compra
             orden.estatus_pago = estatus_pago
-            orden.forma_pago = metodo_pago
             orden.fecha_compra = timezone.now()
             orden.save()
             productos = Producto.objects.filter(orden=orden)

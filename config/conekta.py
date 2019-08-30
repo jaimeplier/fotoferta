@@ -2,7 +2,7 @@ import conekta
 from django.http import JsonResponse
 from django.template.loader import get_template
 
-from config.models import Usuario, Tarjeta, Orden, Producto
+from config.models import Usuario, Tarjeta, Orden, Producto, EstatusCompra, EstatusPago
 from fotofertas.settings import CONEKTA_PRIVATE_KEY, CONEKTA_LOCALE, CONEKTA_VERSION, CONEKTA_PUBLIC_KEY
 from webapp.mail import sendMail
 
@@ -140,6 +140,8 @@ def crear_orden_tarjeta(request, orden, token_card):
             }]
         })
         orden.order_id = order.id
+        estatus_compra = EstatusCompra.objects.get(pk=2)  # Ordenado
+        orden.estatus_compra = estatus_compra
         orden.save()
     except conekta.ConektaError as e:
         return str(e.error_json['details'][0]['message'])
@@ -195,7 +197,12 @@ def crear_orden_oxxo(request, orden):
             }]
         })
         orden.order_id = order.id
+        estatus_compra = EstatusCompra.objects.get(pk=2)  # Ordenado
+        orden.estatus_compra = estatus_compra
+        estatus_pago = EstatusPago.objects.get(pk=4)  # Pendiente
+        orden.estatus_pago = estatus_pago
         orden.save()
+        productos.update(estatus_pago=estatus_pago)
     except conekta.ConektaError as e:
         return str(e.error_json['details'][0]['message'])
 
@@ -263,7 +270,12 @@ def crear_orden_spei(request, orden):
             }]
         })
         orden.order_id = order.id
+        estatus_compra = EstatusCompra.objects.get(pk=2)  # Ordenado
+        orden.estatus_compra = estatus_compra
+        estatus_pago = EstatusPago.objects.get(pk=4)  # Pendiente
+        orden.estatus_pago = estatus_pago
         orden.save()
+        productos.update(estatus_pago=estatus_pago)
     except conekta.ConektaError as e:
         return str(e.error_json['details'][0]['message'])
 
