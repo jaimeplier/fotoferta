@@ -27,8 +27,10 @@
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 profileName">
                                 <h2>{{ fotografo.nombre }}</h2>
-                                <button style="cursor: pointer" onclick="seguir()" class="btn generalBtn specialBtn">
+                                <button id="seguir" style="cursor: pointer" onclick="seguir()" class="btn generalBtn specialBtn">
                                     Seguir</button>
+                                <button id="noseguir" style="display: none; cursor: pointer" onclick="noseguir()" class="btn generalBtn noSeguirBtn">
+                                    Dejar de seguir</button>
                             </div>
                         </div>
                         <div class="row">
@@ -38,7 +40,7 @@
                                         <p id="num_fotos">{{ cantidad_fotos }} <br>fotos</p>
                                     </div>
                                     <div class="col-4">
-                                        <p id="num_seguidores">{{ fotografo.seguidores }}<br>seguidores</p>
+                                        <p><span id="num_seguidores">{{ fotografo.seguidores }}</span><br>seguidores</p>
                                     </div>
                                     <div class="col-4">
                                         <p id="num_siguiendo">{{ cant_siguiendo }}<br>siguiendo</p>
@@ -80,14 +82,34 @@
 
 $('document').ready(function(){
     });
-    
+
+    function test() {
+        console.log(Number($('#num_seguidores').text()), typeof Number($('#num_seguidores').text()))
+    }
 
     function seguir() {
         let data = {
             fotopartner : "{{ fotografo.pk }}" , // obtener pk
             seguir: true
         }
-        console.log('sigue vivo')
+        $.ajax({
+            url: "/ws/seguir/",
+            type: "POST",
+            cache: false,
+            data: data,
+            success: function (json) {
+                $('#num_seguidores').text("{{ fotografo.seguidores }}")
+                console.log(json)
+                $('')
+            }
+        });
+    }
+
+    function noseguir() {
+        let data = {
+            fotopartner : "{{ fotografo.pk }}" , // obtener pk
+            seguir: false
+        }
         $.ajax({
             url: "/ws/seguir/",
             type: "POST",
@@ -98,5 +120,6 @@ $('document').ready(function(){
             }
         });
     }
+
 </script>
 {% endblock %}

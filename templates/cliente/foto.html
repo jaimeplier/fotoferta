@@ -8,7 +8,7 @@
                 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-11 col-11 centerDiv photoProfileContent">
                     <div class="row photoUser">
                         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-8 col-8 photoUserProfileImage">
-                            <a href="profile.html">
+                            <a href="{% url 'webapp:vista_otro_perfil' foto.usuario.pk %}">
                                 {% if foto.usuario.foto_perfil %}
                                     <img src="{{ foto.usuario.foto_perfil.url }}" >
                                 {% else %}

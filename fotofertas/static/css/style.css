@@ -355,8 +355,8 @@ header {
 }
 
 .sugestionsCarousel .owl-carousel .item div img {
-    width: 100% !important;
-    height: auto;
+    width: auto ;
+    height: 100% !important;
 }
 
 .owl-prev {
@@ -1764,3 +1764,6 @@ form {
 }
 
 /*Carousel Indicators*/
+
+
+
