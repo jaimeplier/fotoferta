@@ -175,6 +175,32 @@ class ListFotosHome(ListAPIView):
         queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=1).order_by('?')
         return queryset
 
+class BuscarFoto(ListAPIView):
+    """
+            **Parámetros**
+
+            1. nombre: Nombre de la fotografia a buscar
+            2. categoria: ID de la categoría seleccionada para listar fotos de esa categoría
+            3. exclusiva: Bool para indicar si se debe buscar fotos exclusivas o normales, por default busca normales
+
+            """
+    serializer_class = FotografiaSerializer
+    pagination_class = SmallPagesPagination
+
+    def get_queryset(self):
+        queryset = Fotografia.objects.none()
+        nombre = self.request.query_params.get('nombre', None)
+        categoria = self.request.query_params.get('categoria', None)
+        if nombre is not None:
+            exclusivo = self.request.query_params.get('exclusiva', False)
+            tipo_foto = 1 # Foto normal
+            if exclusivo:
+                tipo_foto = 2 # Foto exclusiva
+            queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto, nombre__icontains=nombre)
+        if categoria is not None:
+            queryset = queryset.filter(categorias__pk=categoria)
+        return queryset.order_by('-fecha_alta')
+
 class ListFotosRecomendadas(ListAPIView):
     """
             **Parámetros**
