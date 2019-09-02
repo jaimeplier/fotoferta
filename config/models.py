@@ -35,7 +35,7 @@ class Usuario(AbstractBaseUser):
     correo = models.EmailField(unique=True, max_length=128)
     password = models.CharField(max_length=512)
     rol = models.ForeignKey('Rol', models.DO_NOTHING)
-    genero = models.ForeignKey('Genero', models.DO_NOTHING)
+    genero = models.ForeignKey('Genero', models.DO_NOTHING, default=3)
     estatus = models.BooleanField(default=True)
     fecha_registro = models.DateField(auto_now_add=True)
     customer_id = models.CharField(max_length=45, blank=True, null=True)

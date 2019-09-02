@@ -104,7 +104,7 @@ class ClienteRegistro(CreateView):
                 #     'request': self.request,
                 # }
                 # message = get_template("mailing/correo_registro.html").render(ctx)
-                # sendMail(to, 'Registro inderspace', message)
+                # sendMail(to, 'Registro Fotofertas', message)
                 user = authenticate(correo=fotopartner.correo, password=form.cleaned_data['password'])
                 auth_login(request, user)
                 return redirect(reverse('webapp:home'))
