@@ -638,3 +638,9 @@ class Contactanos(models.Model):
     class Meta:
         managed = True
         db_table = 'contactanos'
+
+class MotivoReporte(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'motivo_reporte'
