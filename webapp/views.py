@@ -578,5 +578,5 @@ def cambiar_password(request):
         form = PasswordChangeForm(request.user)
     titulo = 'Registro para cambiar tu contraseña'
     instrucciones = 'Ingresa tu contraseña actual y tu nueva contraseña que deseas'
-    return render(request, 'config/form_1Col.html',
+    return render(request, 'config/form_1col.html',
                   {'form': form, 'titulo': titulo, 'instrucciones': instrucciones})

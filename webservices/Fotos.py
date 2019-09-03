@@ -3,6 +3,8 @@ from io import BytesIO
 import sys
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db import IntegrityError
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
@@ -41,9 +43,11 @@ class SubirFotografia(APIView):
             try:
                 etiquetas_objts.append(Etiqueta.objects.get(pk=etiqueta))
             except:
-                nva_etiqueta = Etiqueta.objects.create(nombre=etiqueta)
-                etiquetas_objts.append(nva_etiqueta)
-
+                try:
+                    nva_etiqueta = Etiqueta.objects.create(nombre=etiqueta)
+                    etiquetas_objts.append(nva_etiqueta)
+                except IntegrityError:
+                    etiquetas_objts.append(Etiqueta.objects.get(nombre=etiqueta))
         # list de categorias
         categorias = categoria.split(',')
         categorias_objts = []
@@ -170,12 +174,31 @@ class SubirFotografia(APIView):
         return RegistroFotografiaSerializer()
 
 class ListFotosHome(ListAPIView):
+    """
+                **Parámetros**
+                Filtros para imagenes del home
+
+
+                1. recientes: Filtrar busqueda por mas recientes
+                2. vendidas: Filtrar busqueda por mas vendidas
+                3. likes: Filtrar busqueda por mas me gusta
+
+                """
 
     serializer_class = FotografiaSerializer
     pagination_class = SmallPagesPagination
 
     def get_queryset(self):
         queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=1).order_by('?')
+        recientes = self.request.query_params.get('recientes', None)
+        vendidas = self.request.query_params.get('vendidas', None)
+        likes = self.request.query_params.get('likes', None)
+        if recientes is not None:
+            queryset.order_by('-fecha_alta')
+        elif vendidas is not None:
+            queryset.order_by('-num_compras')
+        elif likes is not None:
+            queryset.order_by('-likes')
         return queryset
 
 class BuscarFoto(ListAPIView):
@@ -199,10 +222,11 @@ class BuscarFoto(ListAPIView):
             tipo_foto = 1 # Foto normal
             if exclusivo:
                 tipo_foto = 2 # Foto exclusiva
-            queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto, nombre__icontains=nombre)
+            queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto)
+            queryset = queryset.filter(nombre__icontains=nombre) | queryset.filter(Q(etiquetas__nombre__icontains=nombre)) | queryset.filter(Q(categorias__nombre__icontains=nombre))
         if categoria is not None:
             queryset = queryset.filter(categorias__pk=categoria)
-        return queryset.order_by('-fecha_alta')
+        return queryset.distinct().order_by('-fecha_alta')
 
 class ListFotosRecomendadas(ListAPIView):
     """
