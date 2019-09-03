@@ -171,12 +171,31 @@ class SubirFotografia(APIView):
         return RegistroFotografiaSerializer()
 
 class ListFotosHome(ListAPIView):
+    """
+                **Parámetros**
+                Filtros para imagenes del home
+
+
+                1. recientes: Filtrar busqueda por mas recientes
+                2. vendidas: Filtrar busqueda por mas vendidas
+                3. likes: Filtrar busqueda por mas me gusta
+
+                """
 
     serializer_class = FotografiaSerializer
     pagination_class = SmallPagesPagination
 
     def get_queryset(self):
         queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=1).order_by('?')
+        recientes = self.request.query_params.get('recientes', None)
+        vendidas = self.request.query_params.get('vendidas', None)
+        likes = self.request.query_params.get('likes', None)
+        if recientes is not None:
+            queryset.order_by('-fecha_alta')
+        elif vendidas is not None:
+            queryset.order_by('-num_compras')
+        elif likes is not None:
+            queryset.order_by('-likes')
         return queryset
 
 class BuscarFoto(ListAPIView):
