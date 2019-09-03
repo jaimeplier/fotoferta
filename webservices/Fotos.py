@@ -201,10 +201,10 @@ class BuscarFoto(ListAPIView):
             if exclusivo:
                 tipo_foto = 2 # Foto exclusiva
             queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto)
-            queryset = queryset.filter(nombre__icontains=nombre) | queryset.filter(Q(etiquetas__nombre__icontains=nombre))
+            queryset = queryset.filter(nombre__icontains=nombre) | queryset.filter(Q(etiquetas__nombre__icontains=nombre)) | queryset.filter(Q(categorias__nombre__icontains=nombre))
         if categoria is not None:
             queryset = queryset.filter(categorias__pk=categoria)
-        return queryset.order_by('-fecha_alta')
+        return queryset.distinct().order_by('-fecha_alta')
 
 class ListFotosRecomendadas(ListAPIView):
     """
