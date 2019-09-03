@@ -3,6 +3,7 @@ from io import BytesIO
 import sys
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db import IntegrityError
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -42,9 +43,11 @@ class SubirFotografia(APIView):
             try:
                 etiquetas_objts.append(Etiqueta.objects.get(pk=etiqueta))
             except:
-                nva_etiqueta = Etiqueta.objects.create(nombre=etiqueta)
-                etiquetas_objts.append(nva_etiqueta)
-
+                try:
+                    nva_etiqueta = Etiqueta.objects.create(nombre=etiqueta)
+                    etiquetas_objts.append(nva_etiqueta)
+                except IntegrityError:
+                    etiquetas_objts.append(Etiqueta.objects.get(nombre=etiqueta))
         # list de categorias
         categorias = categoria.split(',')
         categorias_objts = []
