@@ -313,6 +313,7 @@ class Fotografia(models.Model):
     gratuita = models.BooleanField(default=False) # Si la fotografia será gratuita
     fecha_alta = models.DateTimeField(auto_now_add=True)
     likes = models.BigIntegerField(default=0)
+    num_compras = models.BigIntegerField(default=0)
 
 
     class Meta:
