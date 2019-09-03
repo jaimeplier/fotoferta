@@ -236,6 +236,19 @@ class ListTexturas(ListAPIView):
         queryset = Textura.objects.filter(estatus=True)
         return queryset
 
+class ContadorArticulos(APIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication,)
+
+    def post(self, request):
+
+        # ---> OBTENER Orden en estatus carrito <---
+
+        orden = Orden.objects.filter(usuario=request.user, estatus_compra__nombre="Carrito").first()
+        productos = Producto.objects.filter(orden=orden).count()
+        return Response({'cantidad': productos}, status=status.HTTP_200_OK)
+
+
 
 def actualizar_costo_envio(orden):
     productos = Producto.objects.filter(orden=orden, tipo_compra__pk=2)

@@ -5,7 +5,7 @@ from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, List
     ListFotosGratuitas, BuscarFoto
 from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguiendo, SeguirFotopartner, ListFotopartners
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
-    ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa
+    ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa, ContadorArticulos
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
 from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login, ListLogo, \
     CambiarFotoPerfil, CambiarFotoPortada
@@ -50,6 +50,7 @@ urlpatterns = [
     path('listar_tamanios/', ListTamanio.as_view(), name='listar_tamanios'),
     path('listar_tipos_papel/', ListTipoPapel.as_view(), name='listar_tipos_papel'),
     path('listar_texturas/', ListTexturas.as_view(), name='listar_listar_texturas'),
+    path('contador_articulos/', ContadorArticulos.as_view(), name='contador_articulos'),
 
 
     # Pagos
