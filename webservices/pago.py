@@ -1,4 +1,5 @@
 import jwt
+from django.db.models import F
 from django.template.loader import get_template
 from django.utils import timezone
 from rest_framework import status
@@ -9,7 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.conekta import crear_orden_tarjeta, crear_cliente, crear_orden_oxxo, crear_orden_spei
-from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga, Usuario
+from config.models import Direccion, Tarjeta, Orden, FormaPago, Producto, EstatusCompra, EstatusPago, Descarga, Usuario, \
+    Fotografia
 from fotofertas.settings import KEY_FOTO
 from webapp.mail import sendMail
 from webservices.Permissions import FotopartnerPermission
@@ -106,6 +108,9 @@ class PagarOrden(APIView):
             orden.fecha_compra = timezone.now()
             orden.save()
             productos = Producto.objects.filter(orden=orden)
+            list_fotos =productos.values_list('foto__pk', flat=True)
+            fotos = Fotografia.objects.filter(pk__in=list_fotos)
+            fotos.update(num_compras=F('num_compras')+1)
             productos.update(estatus_pago=estatus_pago)
             productos.filter(subtotal__gt=0)
             descargas = []
