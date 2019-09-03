@@ -343,7 +343,13 @@ class TipoFoto(Catalogo):
         managed = True
         db_table = 'tipo_foto'
 
-class Etiqueta(Catalogo):
+class Etiqueta(models.Model):
+
+    nombre = models.CharField(max_length=512, unique=True)
+    fecha_alta = models.DateTimeField(auto_now_add=True)
+    fecha_baja = models.DateTimeField(blank=True, null=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
+    estatus = models.BooleanField(default=True)
 
     class Meta:
         managed = True
