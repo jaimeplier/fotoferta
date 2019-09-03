@@ -3,6 +3,7 @@ from io import BytesIO
 import sys
 
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
@@ -199,7 +200,8 @@ class BuscarFoto(ListAPIView):
             tipo_foto = 1 # Foto normal
             if exclusivo:
                 tipo_foto = 2 # Foto exclusiva
-            queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto, nombre__icontains=nombre)
+            queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto)
+            queryset = queryset.filter(nombre__icontains=nombre) | queryset.filter(Q(etiquetas__nombre__icontains=nombre))
         if categoria is not None:
             queryset = queryset.filter(categorias__pk=categoria)
         return queryset.order_by('-fecha_alta')
