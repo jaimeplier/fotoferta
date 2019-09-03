@@ -620,6 +620,7 @@
     }
 
     var foto = null;
+    var no_repeat_etiquetas = [];
 
     $('document').ready(function() {
         cargarFavoritas();
@@ -767,6 +768,17 @@
             type: "GET",
             cache: false,
             success: function(json) {
+                console.log('etiquetas', json);               
+                function uniq(a, param){
+                    return a.filter(function(item, pos, array){
+                        return array.map(function(mapItem){ return mapItem[param]; }).indexOf(item[param]) === pos;
+                    })
+                }
+
+                let no_repeat_etiquetas = uniq(json, 'nombre');
+                console.log('UNIQ?', uniq(json, 'nombre'))
+
+                //console.log('norepeat etiq',no_repeat_etiquetas)
                 /*
                     $('#categorias').append(
                         $("<option></option>")
@@ -774,11 +786,11 @@
                             .text("Categoría")
                     ); */
 
-                for (i in json) {
+                for (i in no_repeat_etiquetas) {
                     $('#etiquetas_foto').append(
                         $("<option></option>")
-                        .attr("value", json[i].pk)
-                        .text(json[i].nombre)
+                        .attr("value", no_repeat_etiquetas[i].pk)
+                        .text(no_repeat_etiquetas[i].nombre)
                     );
                 }
 
