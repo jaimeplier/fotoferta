@@ -32,14 +32,19 @@ class AgregarCarrrito(APIView):
         # ---> Buscar orden en estatus de carrito o crearla <---
 
         orden_carrito = Orden.objects.filter(usuario=request.user, estatus_compra__pk=1)
+        # ---> Agregar producto a la orden de compra con estatus de carrito <---
+        tipo_compra = TipoCompra.objects.get(pk=serializer.validated_data['tipo_compra'])
         if len(orden_carrito) == 0:
             estatus_compra = EstatusCompra.objects.get(pk=1) # estatus de carrito
             estatus_pago = EstatusPago.objects.get(pk=1) # estatus orden no pagada
             orden_carrito = Orden.objects.create(usuario=request.user, estatus=estatus_pago,
                                                  estatus_compra=estatus_compra)
+            producto = Producto.objects.create(usuario=request.user, foto=foto, orden=orden_carrito, tipo_compra=tipo_compra)
+            actualizar_costo_envio(orden_carrito)
+            actualizar_costo_producto_orden(producto, orden_carrito, 'add')
+            return Response({'exito': 'producto agregado a carrito exitosamente', 'producto_pk': producto.pk},
+                            status=status.HTTP_200_OK)
 
-        # ---> Agregar producto a la orden de compra con estatus de carrito <---
-        tipo_compra = TipoCompra.objects.get(pk=serializer.validated_data['tipo_compra'])
         producto = Producto.objects.create(usuario=request.user, foto=foto, orden=orden_carrito.first(), tipo_compra=tipo_compra)
 
         actualizar_costo_envio(orden_carrito.first())
