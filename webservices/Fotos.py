@@ -51,10 +51,13 @@ class SubirFotografia(APIView):
             categorias_objts.append(Categoria.objects.get(pk=categoria))
 
         # Revisar tipo de imagen
-        if publica or tipo_venta_foto==1 or tipo_venta_foto==2:
+        if tipo_venta_foto==1: # Tipo venta general
             tipo_foto = TipoFoto.objects.get(pk=1)
-        else:
+        elif tipo_venta_foto==3: # Tipo de venta exclusiva
             tipo_foto = TipoFoto.objects.get(pk=2)
+            publica = True
+        else:
+            tipo_foto = TipoFoto.objects.get(pk=1)
 
         # Revisar orientacion
         altura_foto = foto_original.image.height
