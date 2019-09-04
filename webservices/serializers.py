@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
     FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
-    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo, MotivoReporte, Promocion
+    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo, MotivoReporte, Promocion, Notificacion, \
+    Reaccion
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -137,6 +138,11 @@ class FotoSerializer(serializers.ModelSerializer):
         model = Fotografia
         fields = ['nombre', 'descripcion', 'tamanio', 'foto_muestra']
 
+class ReaccionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reaccion
+        fields = ['nombre']
+
 class FotoReaccionSerializer(serializers.ModelSerializer):
     foto = FotografiaSerializer()
     class Meta:
@@ -148,6 +154,15 @@ class FotografoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fotografo
         fields = ['id', 'foto_perfil', 'nombre', 'correo', 'seguidores']
+
+class NotificacionSerializer(serializers.ModelSerializer):
+    reaccion = ReaccionSerializer()
+    actioner = FotografoSerializer()
+    receiver = FotografoSerializer()
+    foto = FotoSerializer()
+    class Meta:
+        model = Notificacion
+        fields = ['actioner', 'reaccion', 'receiver', 'foto']
 
 class FotoparterSiguiendoSerializer(serializers.ModelSerializer):
     siguiendo_a = FotografoSerializer()

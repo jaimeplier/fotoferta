@@ -3,7 +3,8 @@ from django.urls import path
 from webservices.Catalogos import ListCategorias, ListEtiquetas
 from webservices.Fotos import SubirFotografia, ListFotosHome, ListMisFotos, ListFotosRecomendadas, ListFotosExclusivas, \
     ListFotosGratuitas, BuscarFoto, ReportarFotografia
-from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguiendo, SeguirFotopartner, ListFotopartners
+from webservices.Interaccion import ListFavoritos, AgregarFavoritos, ListSiguiendo, SeguirFotopartner, ListFotopartners, \
+    ListNotificaciones
 from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, ModificarProductoCarrito, ListMarco, \
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa, ContadorArticulos
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
@@ -66,6 +67,7 @@ urlpatterns = [
     path('list_siguiendo/', ListSiguiendo.as_view(), name='list_siguiendo'),
     path('seguir/', SeguirFotopartner.as_view(), name='seguir'),
     path('list_fotopartners/', ListFotopartners.as_view(), name='list_fotopartners'),
+    path('list_notificaciones/', ListNotificaciones.as_view(), name='list_notificaciones'),
 
     # Webhook
     path('webhook/', WebHook.as_view(), name='webhook'),
