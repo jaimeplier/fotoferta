@@ -331,6 +331,17 @@ class FotoReaccion(models.Model):
         managed = True
         db_table = 'foto_reaccion'
 
+class Notificacion(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    actioner = models.ForeignKey(Fotografo, models.DO_NOTHING)
+    reaccion = models.ForeignKey("Reaccion", models.DO_NOTHING)
+    receiver = models.ForeignKey(Fotografo, models.DO_NOTHING, related_name='receiver')
+    foto = models.ForeignKey(Fotografia, models.DO_NOTHING, null=True, blank=True)
+
+    class Meta:
+        managed = True
+        db_table = 'notificacion'
+
 class Reaccion(Catalogo):
     class Meta:
         managed = True
