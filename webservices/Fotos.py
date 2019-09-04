@@ -276,7 +276,7 @@ class ListFotosRecomendadas(ListAPIView):
         if foto_pk is not None:
             foto = Fotografia.objects.get(pk=foto_pk)
             categorias =  foto.categorias.all()
-        queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, categorias__in=categorias)
+        queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, categorias__in=categorias).distinct()
         print(queryset.query)
         return queryset
 
