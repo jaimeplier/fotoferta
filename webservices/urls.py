@@ -8,7 +8,7 @@ from webservices.carrito import AgregarCarrrito, ListCarrito, DeleteCarrito, Mod
     ListTamanio, ListTipoPapel, ListTexturas, ListMariaLuisa, ContadorArticulos
 from webservices.pago import ListDirecciones, ListTarjetas, PagarOrden
 from webservices.views import ListContactanos, ListDatosCP, ListRedesSociales, Signin, Login, ListLogo, \
-    CambiarFotoPerfil, CambiarFotoPortada
+    CambiarFotoPerfil, CambiarFotoPortada, ListPromocionesBanner
 from webservices.webhook import WebHook
 
 app_name = 'webservices'
@@ -40,6 +40,7 @@ urlpatterns = [
     path('list_fotos_gratuitas/', ListFotosGratuitas.as_view(), name='list_fotos_gratuitas'),
     path('subir_foto/', SubirFotografia.as_view(), name='subir_foto'),
     path('reportar_foto/', ReportarFotografia.as_view(), name='reportar_foto'),
+    path('list_promos_banner/', ListPromocionesBanner.as_view(), name='list_promos_banner'),
 
     # Carrito
     path('agregar_carrito/', AgregarCarrrito.as_view(), name='agregar_carrito'),

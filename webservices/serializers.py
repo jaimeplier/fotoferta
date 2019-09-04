@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
     FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
-    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo, MotivoReporte
+    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo, MotivoReporte, Promocion
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -369,3 +369,8 @@ class ReporteFotoSerializer(serializers.Serializer):
         except:
             raise serializers.ValidationError('No existe el motivo de reporte')
         return value
+
+class PromocionBannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Promocion
+        fields = ['pk', 'nombre', 'imagen']

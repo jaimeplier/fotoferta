@@ -1,4 +1,5 @@
 from django.contrib.auth import login as auth_login
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.generics import ListAPIView
@@ -6,10 +7,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Contactanos, Categoria, Colonia, RedSocial, Usuario, UsuarioRedSocial, Fotografo, Rol, Logo
+from config.models import Contactanos, Categoria, Colonia, RedSocial, Usuario, UsuarioRedSocial, Fotografo, Rol, Logo, \
+    Promocion
 from webservices.Permissions import FotopartnerPermission
 from webservices.serializers import ContactanosSerializer, CategoriasSerializer, ColoniaSerializer, RedSocialSerializer, \
-    LoginSerializer, RegistroRedesSerializer, LogoSerializer, FotoPerfilSerializer, FotoPortadaSerializer
+    LoginSerializer, RegistroRedesSerializer, LogoSerializer, FotoPerfilSerializer, FotoPortadaSerializer, \
+    PromocionBannerSerializer
 
 
 class ListContactanos(ListAPIView):
@@ -190,3 +193,11 @@ class CambiarFotoPortada(APIView):
 
     def get_serializer(self):
         return FotoPortadaSerializer()
+
+class ListPromocionesBanner(ListAPIView):
+
+    serializer_class = PromocionBannerSerializer
+
+    def get_queryset(self):
+        queryset = Promocion.objects.filter(estatus=True, fecha_fin__gte=timezone.now()).order_by('-fecha_inicio')
+        return queryset
