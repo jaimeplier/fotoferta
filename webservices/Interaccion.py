@@ -50,6 +50,12 @@ class AgregarFavoritos(APIView):
         elif num_fotos ==0 and like==True:
             with transaction.atomic():
                 reaccion = Reaccion.objects.get(nombre='Favorito')
+                # Buscar notificacion y/o crearla
+                receiver = Fotografo.objects.get(pk=foto.usuario.pk)
+                notificacion = Notificacion.objects.filter(actioner=cliente, reaccion=reaccion, receiver=receiver, foto=foto)
+                if not notificacion.exists():
+                    Notificacion.objects.create(actioner=cliente, reaccion=reaccion, receiver=receiver, foto=foto)
+
                 foto.likes += 1
                 foto.save()
                 FotoReaccion.objects.create(foto=foto, usuario=cliente, reaccion=reaccion)
