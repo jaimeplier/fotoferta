@@ -191,8 +191,7 @@ class ReportarFotografia(APIView):
 
         email_template_name = 'mailing/reporte_foto.html'
         subject = "Reporte de fotografía"
-        #to = ['contacto@fotofertas.com']
-        to = ['salvadorjnt@gmail.com']
+        to = ['contacto@fotofertas.com']
         ctx = {
             'foto': foto,
             'request': request,
