@@ -5,6 +5,7 @@ import sys
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import IntegrityError
 from django.db.models import Q
+from django.template.loader import get_template
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
@@ -12,10 +13,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta, Categoria, FotoPrecio
+from config.models import Fotografia, TipoFoto, Orientacion, Tamanio, Fotografo, Etiqueta, Categoria, FotoPrecio, \
+    MotivoReporte
+from webapp.mail import sendMail
 from webservices.Pagination import SmallPagesPagination, SmallestPagesPagination
 from webservices.Permissions import FotopartnerPermission
-from webservices.serializers import RegistroFotografiaSerializer, FotografiaSerializer
+from webservices.serializers import RegistroFotografiaSerializer, FotografiaSerializer, ReporteFotoSerializer
 
 
 class SubirFotografia(APIView):
@@ -172,6 +175,37 @@ class SubirFotografia(APIView):
 
     def get_serializer(self):
         return RegistroFotografiaSerializer()
+
+class ReportarFotografia(APIView):
+    permission_classes = (IsAuthenticated, FotopartnerPermission)
+    authentication_classes = (SessionAuthentication, )
+
+    def post(self, request):
+        serializer = ReporteFotoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # ---> OBTENER FOTOGRAFIA <---
+        foto = Fotografia.objects.get(pk=serializer.validated_data['foto'])
+        motivo_reporte = MotivoReporte.objects.get(pk=serializer.validated_data['motivo_reporte'])
+        descripcion = serializer.validated_data['descripcion']
+
+        email_template_name = 'mailing/reporte_foto.html'
+        subject = "Reporte de fotografía"
+        #to = ['contacto@fotofertas.com']
+        to = ['salvadorjnt@gmail.com']
+        ctx = {
+            'foto': foto,
+            'request': request,
+            'user': self.request.user,
+            'motivo_reporte': motivo_reporte,
+            'descripcion': descripcion,
+        }
+        message = get_template(email_template_name).render(ctx)
+        sendMail(to, subject, message)
+        return Response({'exito': 'Reporte enviado'}, status=status.HTTP_200_OK)
+
+    def get_serializer(self):
+        return ReporteFotoSerializer()
 
 class ListFotosHome(ListAPIView):
     """

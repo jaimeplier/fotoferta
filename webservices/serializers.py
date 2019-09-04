@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from config.models import Contactanos, Fotografia, Categoria, Etiqueta, TipoCompra, Producto, Orden, Direccion, Tarjeta, \
     FormaPago, Marco, PapelImpresion, Tamanio, TipoPapel, Textura, FotoPrecio, MariaLuisa, Pais, Estado, Municipio, \
-    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo
+    Colonia, FotoReaccion, SiguiendoFotografo, Fotografo, RedSocial, Logo, MotivoReporte
 
 
 class ContactanosSerializer(serializers.ModelSerializer):
@@ -350,3 +350,22 @@ class RegistroRedesSerializer(serializers.Serializer):
     correo = serializers.EmailField()
     red_social = serializers.IntegerField()
     token = serializers.CharField(max_length=256)
+
+class ReporteFotoSerializer(serializers.Serializer):
+    foto = serializers.IntegerField()
+    motivo_reporte = serializers.IntegerField()
+    descripcion = serializers.CharField(max_length=1024)
+
+    def validate_foto(self, value):
+        try:
+            Fotografia.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe la foto seleccionada')
+        return value
+
+    def validate_motivo_reporte(self, value):
+        try:
+            MotivoReporte.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('No existe el motivo de reporte')
+        return value
