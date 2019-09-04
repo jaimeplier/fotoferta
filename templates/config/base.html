@@ -542,6 +542,7 @@
   crossorigin="anonymous"></script> -->
 
     <script>
+        var categoria;
         $('document').ready(function() {
             $.ajax({
                 url: "/ws/list_logo/",
@@ -557,10 +558,11 @@
                 type: "GET",
                 cache: false,
                 success: function(json) {
+                    console.log('categorias', json)
                     for (i of json) {
                         $('#list_categorias').append(`
                     <div class="col-xl-6 col-lg-6 cl-md-6 col-sm-6 col-6">
-                        <a class="dropdown-item" href="#">` + i.nombre + `</a>
+                        <button class="dropdown-item" onclick="addCategoria(`+ i.pk +`)">` + i.nombre + `</button>
                     </div>
                         `)
                     }
@@ -589,6 +591,15 @@
                 }
             })
         });
+
+        function addCategoria(id) {
+            categoria = id
+        }
+
+        function buscarFoto() {
+            // usar categoria
+            window.location.href = "/webapp/foto/?categoria=" + 8 + "&nombre=" + "Fuente"
+        }
 
         /* Funcion para cargar notificaciones
         function cargarNotificaciones() {
