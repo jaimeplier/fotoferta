@@ -410,6 +410,10 @@ def vista_fotos_gratis(request):
     template_name = 'cliente/fotos_gratuitas.html'
     return render(request, template_name)
 
+def vista_buscar_foto(request):
+    template_name = 'cliente/buscar_foto.html'
+    return render(request, template_name)
+
 def vista_otro_perfil(request, pk):
     template_name = 'cliente/otro_usuario.html'
     fotografo = Fotografo.objects.get(pk=pk)

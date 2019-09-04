@@ -1,0 +1,93 @@
+{% extends 'config/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+
+    <h3>Resultados para <i><span id="request">Request</span></i></h3>
+    <section class="row masonryGallery">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row">
+                <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
+                    <div class="card-columns" id="sec1_fotos">
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <h2 onclick="cargarFotos()" class="text-center" id="ver_mas"
+        style="padding: 40px 40px; cursor: pointer; display: none">+ Ver Más</h2>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+<script src="{% static 'js/crsfajax.js' %}"></script>
+<script>
+var url_next_foto;
+
+$('document').ready(function(){
+    // obtener params de query
+    $.ajax({
+        url: "/ws/buscar_foto/?categoria=" + 8 + "&nombre=" + "Fuente",
+        type: "GET",
+        cache: false,
+        success: function(json) {
+            console.log('fotos',json)
+            for (i of json.results) {
+                $('#sec1_fotos').append(`
+                    <div class="card">
+                        <a href="/webapp/foto/` + i.pk + `"><img class="card-img-top" src="" alt="Card image top">                            
+                            <img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
+                        </a>
+                    </div>   
+                `);
+            }
+
+            url_next_foto = json.next;
+                if (!url_next_foto) {
+                    $('#ver_mas').hide();
+                } else {
+                    $('#ver_mas').show();
+                }
+        }
+    })
+});
+
+function cargarFotos() {
+    console.log('TEST1',url_next_foto )
+    if(url_next_foto) {
+        $.ajax({
+            url: url_next_foto,
+            type: "GET",
+            cache: false,
+            success: function (json) {
+                for (let [idx, j] of json.results.entries()) {
+                    $('#sec1_fotos').append(`
+                        <div class="card">
+                            <a href= "/webapp/foto/` + j.pk + `"><img class="card-img-top" src="` + j.foto_home + `" alt="Card image top"
+                            ></a>
+                        </div>
+                    `)
+                }
+
+                url_next_foto = json.next;
+                if (!url_next_foto) {
+                    $('#ver_mas').hide();
+                }else {
+                    $('#ver_mas').show();
+                }
+            }
+        })
+    }
+}
+
+    function test() {
+        console.log(Number($('#num_seguidores').text()), typeof Number($('#num_seguidores').text()))
+    }
+
+</script>
+{% endblock %}
