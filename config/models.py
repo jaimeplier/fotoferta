@@ -551,7 +551,7 @@ class Comision(Catalogo):
 
 class Orden(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_compra = models.DateField(null=True, blank=True)
+    fecha_compra = models.DateTimeField(null=True, blank=True)
     usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
     direccion = models.ForeignKey('Direccion', models.DO_NOTHING, null=True, blank=True)
     tarjeta = models.ForeignKey('Tarjeta', models.DO_NOTHING, null=True, blank=True)
