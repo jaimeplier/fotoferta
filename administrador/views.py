@@ -12,7 +12,7 @@ from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, Tama
     PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm, FotoPrecioForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion, Contactanos, Categoria, FotoPrecio
+    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1708,6 +1708,10 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             elif row.forma_pago.nombre == 'Spei':
                 return 'Transferencia'
             return 'Sin información'
+        elif column == 'detalle':
+            return '<a class="" href ="' + reverse('administrador:detalle_orden',
+                                                   kwargs={
+                                                       'orden': row.pk}) + '"><i class="fa fa-file-invoice" aria-hidden="true"></i></a>'
         return super(VentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
@@ -1719,6 +1723,13 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(usuario__nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
                 forma_pago__nombre__icontains=search)| qs.filter(forma_pago__nombre__icontains=search)
         return qs
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def detalle_orden(request, orden):
+    template_name = 'cliente/detalle_orden.html'
+    orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Ordenado')
+    productos = Producto.objects.filter(orden=orden_objt)
+    return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def historial_ventas_listar(request):
