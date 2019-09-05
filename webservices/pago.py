@@ -94,7 +94,7 @@ class PagarOrden(APIView):
         # Verificar metodos de pago
         if metodo_pago.nombre == 'Tarjeta':
             if tarjeta is not None:
-                tarjeta = Tarjeta.objects.get(pk=serializer.validated_data['tarjeta'])
+                tarjeta = Tarjeta.objects.get(pk=serializer.validated_data['tarjeta'], usuario=self.request.user)
                 token_tarjeta = tarjeta.token
             else:
                 return Response({'error': 'No se encontró la tarjeta'}, status=status.HTTP_404_NOT_FOUND)
@@ -103,7 +103,9 @@ class PagarOrden(APIView):
             if type(order_conekta) is str:
                 return Response({'error': order_conekta},
                                 status=status.HTTP_412_PRECONDITION_FAILED)
+
             estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
+            orden.tarjeta = tarjeta
             orden.estatus_pago = estatus_pago
             orden.fecha_compra = timezone.now()
             orden.save()
