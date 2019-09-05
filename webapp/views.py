@@ -346,7 +346,6 @@ def producto_descarga(request, token, image_name):
     template_error = 'cliente/error_descarga.html'
     try:
         decode_descarga = jwt.decode(token, KEY_FOTO, algorithm='HS256')
-        print(decode_descarga)
         producto = Producto.objects.get(pk=decode_descarga['producto'])
         if producto.usuario.pk == request.user.pk:
             foto = Fotografia.objects.get(pk=producto.foto.pk)
