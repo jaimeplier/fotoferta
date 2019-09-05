@@ -337,6 +337,7 @@ class Notificacion(models.Model):
     reaccion = models.ForeignKey("Reaccion", models.DO_NOTHING)
     receiver = models.ForeignKey(Fotografo, models.DO_NOTHING, related_name='receiver')
     foto = models.ForeignKey(Fotografia, models.DO_NOTHING, null=True, blank=True)
+    leido = models.BooleanField(default=False)
 
     class Meta:
         managed = True
