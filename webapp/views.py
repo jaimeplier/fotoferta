@@ -1,9 +1,12 @@
+import math
+
 import jwt
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DetailView
@@ -410,9 +413,31 @@ def vista_fotos_gratis(request):
     template_name = 'cliente/fotos_gratuitas.html'
     return render(request, template_name)
 
-def vista_buscar_foto(request):
+def vista_buscar_foto(request, categoria, nombre, tipo_foto, page):
     template_name = 'cliente/buscar_foto.html'
-    return render(request, template_name)
+    queryset = Fotografia.objects.none()
+    TAMANIO_PAGINA=20
+    nombre = nombre
+    categoria = categoria
+    tipo_busqueda = tipo_foto
+    if tipo_busqueda == 1:
+        tipo_foto = 2 # Foto exclusiva
+        template_name = 'cliente/buscar_foto.html'
+    else:
+        tipo_foto = 1 # Foto normal
+        template_name = 'cliente/buscar_foto.html'
+    if nombre is not 'None_Null':
+        queryset = Fotografia.objects.filter(publica=True, aprobada=True, estatus=True, tipo_foto__pk=tipo_foto)
+        queryset = queryset.filter(nombre__icontains=nombre) | queryset.filter(
+            Q(etiquetas__nombre__icontains=nombre)) | queryset.filter(Q(categorias__nombre__icontains=nombre))
+    if categoria is not 0:
+        queryset = queryset.filter(categorias__pk=categoria, tipo_foto__pk=tipo_foto)
+    start = page*TAMANIO_PAGINA
+    fotos = queryset.distinct().order_by('-fecha_alta')[start: start+TAMANIO_PAGINA+1]
+    num_fotos = len(fotos)
+    paginas = math.ceil(num_fotos/TAMANIO_PAGINA)
+
+    return render(request, template_name, context={'fotos': fotos, 'num_paginas': paginas})
 
 def vista_otro_perfil(request, pk):
     template_name = 'cliente/otro_usuario.html'

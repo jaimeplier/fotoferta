@@ -25,7 +25,7 @@ urlpatterns = [
     path('marco/<int:producto>', views.vista_marco, name='vista_marco'),
     path('carrito/', views.vista_carrito, name='vista_carrito'),
     path('fotopartners/', views.vista_fotopartners, name='vista_fotopartners'),
-    path('buscar/', views.vista_buscar_foto, name='vista_buscar_foto'),
+    path('buscar/<int:categoria>/<nombre>/<int:tipo_foto>/<int:page>', views.vista_buscar_foto, name='vista_buscar_foto'),
     path('foto/<int:pk>', views.vista_foto, name='vista_foto'),
     path('producto_descarga/<token>/<image_name>', views.producto_descarga, name='producto_descarga'),
 
