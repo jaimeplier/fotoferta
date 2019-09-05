@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout, updat
 from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -432,12 +433,13 @@ def vista_buscar_foto(request, categoria, nombre, tipo_foto, page):
             Q(etiquetas__nombre__icontains=nombre)) | queryset.filter(Q(categorias__nombre__icontains=nombre))
     if categoria is not 0:
         queryset = queryset.filter(categorias__pk=categoria, tipo_foto__pk=tipo_foto)
-    start = page*TAMANIO_PAGINA
-    fotos = queryset.distinct().order_by('-fecha_alta')[start: start+TAMANIO_PAGINA+1]
-    num_fotos = len(fotos)
-    paginas = math.ceil(num_fotos/TAMANIO_PAGINA)
+    queryset = queryset.distinct().order_by('-fecha_alta')
+    #start = page*TAMANIO_PAGINA
+    #fotos = queryset.distinct().order_by('-fecha_alta')[start: start+TAMANIO_PAGINA+1]
+    paginator = Paginator(queryset, TAMANIO_PAGINA)
+    fotos = paginator.get_page(page)
 
-    return render(request, template_name, context={'fotos': fotos, 'num_paginas': paginas})
+    return render(request, template_name, context={'fotos': fotos})
 
 def vista_otro_perfil(request, pk):
     template_name = 'cliente/otro_usuario.html'
