@@ -103,6 +103,12 @@ class SeguirFotopartner(APIView):
             return Response({'exito': 'Has dejado de seguir al Fotopartner'}, status=status.HTTP_200_OK)
         elif num_seguidor_fotopart ==0 and seguir==True:
             with transaction.atomic():
+                # Buscar notificacion y/o crearla
+                reaccion = Reaccion.objects.get(nombre='Siguiendo')
+                notificacion = Notificacion.objects.filter(actioner=seguidor, reaccion=reaccion, receiver=fotografo, foto=None)
+                if not notificacion.exists():
+                    Notificacion.objects.create(actioner=seguidor, reaccion=reaccion, receiver=fotografo)
+
                 fotografo.seguidores += 1
                 fotografo.save()
                 SiguiendoFotografo.objects.create(fotografo=seguidor, siguiendo_a=fotografo)
