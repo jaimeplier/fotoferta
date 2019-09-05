@@ -105,6 +105,7 @@ urlpatterns = [
     path('ventas/listar/', views.ventas_listar, name='list_ventas'),
     path('ventas/ajax/', VentasAjaxListView.as_view(), name='tab_list_ventas'),
     path('detalle_orden/<int:orden>', views.detalle_orden, name='detalle_orden'),
+    path('producto_descarga/<token>/<image_name>', views.producto_descarga, name='producto_descarga'),
 
     path('historial_ventas/listar/', views.historial_ventas_listar, name='list_historial_ventas'),
     path('historial_ventas/ajax/', HistorialVentasAjaxListView.as_view(), name='tab_list_historial_ventas'),

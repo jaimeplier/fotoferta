@@ -1,0 +1,142 @@
+{% extends 'config/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+    <section class="row previewCart">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="row totalItemsCart">
+                <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv prewviewCartContainer">
+                    <div class="row">
+                        <div class="col-lx-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h1>Orden ID: {{ orden.pk }} de {{ orden.usuario.nombre }}({{ orden.usuario.correo }})</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                            <div id="cont_ordenes">
+                                {% for producto in productos %}
+                                    <div id="orden{{ producto.pk }}">
+                                        <div class="row itemCartContainer">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 imageBuyCart">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        <img src="{{producto.foto.foto_home.url}}">
+                                                    </div>
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                        {% if producto.descarga_set.first %}
+                                                        <p>Descargas disponibles para el usuario: {{ producto.descarga_set.first.no_descargas_disponibles }}</p>
+                                                            {% if producto.descarga_set.first.no_descargas_disponibles > 0 %}
+                                                        <a download="fotofertas_prod_{{ producto.pk }}.jpg" class="button-a button-a-primary" href="{% url 'administrador:producto_descarga' producto.descarga_set.first.token 'fotofertas_prod' %}"
+                                                           style="background: #12284C; border: none; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 15px 50px; color: #ffffff; display: block; border-radius: 4px;">Descargar</a>
+                                                                {% endif %}
+                                                        {% else %}
+                                                            Sin descargas
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 pricesDetailsContainer">
+                                                <div class="row imagePriceDetails">
+                                                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                                        <h4 class="imageName">Nombre de la Imagen: </h4>
+                                                    </div>
+                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                                        <h5 class="imagePrice">{{ producto.foto.nombre }}</h5>
+                                                    </div>
+                                                </div>
+                                                {% if producto.marco %}
+                                                    <div class="row framePriceDetails">
+                                                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                                            <h4><i class="fas fa-plus"></i> Tamaño de imagen: {{producto.foto_tamanio_precio.tamanio.nombre}}</h4>
+                                                        </div>
+                                                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                                            <h5 class="framePrice">{{producto.foto_tamanio_precio.precio}}</h5>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if producto.marco %}
+                                                    <div class="row framePriceDetails">
+                                                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                                            <h4><i class="fas fa-plus"></i> Tipo de marco: {{producto.marco.nombre}}</h4>
+                                                        </div>
+                                                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                                            <h5 class="framePrice">{{producto.marco.precio}}</h5>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if producto.maria_luisa %}
+                                                    <div class="row marginPriceDetails">
+                                                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                                            <h4><i class="fas fa-plus"></i> Tipo de Marialuisa: {{producto.maria_luisa.nombre}}</h4>
+                                                        </div>
+                                                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                                            <h5 class="marginPrice">{{producto.maria_luisa.precio}}</h5>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if producto.papel_impresion %}
+                                                    <div class="row marginPriceDetails">
+                                                        <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-9">
+                                                            <h4><i class="fas fa-plus"></i> Tipo de papel: {{producto.papel_impresion.tipo_papel.nombre}}
+                                                            </h4>
+                                                        </div>
+                                                        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col-3">
+                                                            <h5 class="marginPrice">{{producto.papel_impresion.precio}}</h5>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+
+                                                <div class="row totalPriceDetails">
+                                                    <div class="col-xl-6 col-lg-8 col-md-10 col-sm-12 col-12 offset-xl-6 offset-lg-4 offset-md-2">
+                                                        <h4>Subtotal: <span class="totalPrice">${{producto.subtotal}}</span></h4></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                            <div class="row continueToPayment">
+                                <div class="col-xl-11 col-lg-11 col-md-12 col-sm-12 col-12 centerDiv continuePaymentContent">
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Envío: <span> ${{ orden.costo_envio }}</span></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <h4>Total: <span> ${{ orden.total }}</span></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paymentMethodTitle">
+                                            <p>Método de pago: {{ orden.forma_pago.nombre }}</p>
+                                        </div>
+                                    </div>
+                                    {% if orden.direccion %}
+                                    <div class="row">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paymentMethodTitle">
+                                            <p>Dirección: {{ orden.direccion.direccion_completa}}</p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/crsfajax.js' %}"></script>
+    <script>
+        $('document').ready(function () {
+
+        });
+
+    </script>
+{% endblock %}

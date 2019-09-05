@@ -1,6 +1,7 @@
+import jwt
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.urls import reverse
@@ -12,12 +13,14 @@ from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, Tama
     PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm, FotoPrecioForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto
+    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto, Descarga
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
 
 ### No tocar, codigo marco -> muerto
+from fotofertas.settings import KEY_FOTO
+
 
 class CodigoMarcoCrear(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -1726,10 +1729,24 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def detalle_orden(request, orden):
-    template_name = 'cliente/detalle_orden.html'
+    template_name = 'administrador/detalle_orden.html'
     orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Ordenado')
     productos = Producto.objects.filter(orden=orden_objt)
     return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def producto_descarga(request, token, image_name):
+    context = {}
+    template_error = 'cliente/error_descarga.html'
+    try:
+        decode_descarga = jwt.decode(token, KEY_FOTO, algorithm='HS256')
+        producto = Producto.objects.get(pk=decode_descarga['producto'])
+        foto = Fotografia.objects.get(pk=producto.foto.pk)
+        with open('/var/django'+foto.foto_original.url, "rb") as f:
+            return HttpResponse(f.read(), content_type="image/jpeg")
+    except:
+        context['error'] = 'El link no es válido'
+    return render(request, template_error, context)
 
 @permission_required(perm='administrador', login_url='/webapp/login')
 def historial_ventas_listar(request):
