@@ -1701,11 +1701,17 @@ class VentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'total':
             return "$" + "{0:,.2f}".format(row.total)
         elif column == 'detalle_pago':
-            return '*******4242'
+            if row.forma_pago.nombre == 'Tarjeta':
+                return '**** **** **** ' + row.tarjeta.ultimos_digitos
+            elif row.forma_pago.nombre == 'Oxxo':
+                return row.oxxo_order
+            elif row.forma_pago.nombre == 'Spei':
+                return 'Transferencia'
+            return 'Sin información'
         return super(VentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Orden.objects.all()
+        return Orden.objects.filter(estatus__nombre="Pagado", estatus_compra__nombre="Ordenado")
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
@@ -1766,7 +1772,13 @@ class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'total':
             return "$" + "{0:,.2f}".format(row.total)
         elif column == 'detalle_pago':
-            return '*******4242'
+            if row.forma_pago.nombre=='Tarjeta':
+                return '**** **** **** '+row.tarjeta.ultimos_digitos
+            elif row.forma_pago.nombre=='Oxxo':
+                return row.oxxo_order
+            elif row.forma_pago.nombre=='Spei':
+                return 'Transferencia'
+            return 'Sin información'
         return super(HistorialVentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
