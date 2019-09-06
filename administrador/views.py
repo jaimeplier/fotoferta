@@ -13,7 +13,7 @@ from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, Tama
     PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm, FotoPrecioForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto, Descarga
+    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto, Descarga, EstatusCompra
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1732,6 +1732,13 @@ def detalle_orden(request, orden):
     template_name = 'administrador/detalle_orden.html'
     orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Ordenado')
     productos = Producto.objects.filter(orden=orden_objt)
+    if request.method == 'POST':
+        est_compra = EstatusCompra.objects.get(pk=3)
+        num_guia = request.POST['num_guia']
+        orden_objt.num_guia=num_guia
+        orden_objt.estatus_compra = est_compra # Impresion y envío
+        orden_objt.save()
+        return HttpResponseRedirect(reverse('administrador:list_ventas'))
     return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
 
 @permission_required(perm='administrador', login_url='/webapp/login')
