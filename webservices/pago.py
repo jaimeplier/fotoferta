@@ -104,34 +104,34 @@ class PagarOrden(APIView):
                 return Response({'error': order_conekta},
                                 status=status.HTTP_412_PRECONDITION_FAILED)
 
-            estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
+            # estatus_pago = EstatusPago.objects.get(pk=2) # Pagado
             orden.tarjeta = tarjeta
-            orden.estatus_pago = estatus_pago
+            # orden.estatus_pago = estatus_pago
             orden.fecha_compra = timezone.now()
             orden.save()
-            productos = Producto.objects.filter(orden=orden)
-            list_fotos =productos.values_list('foto__pk', flat=True)
-            fotos = Fotografia.objects.filter(pk__in=list_fotos)
-            fotos.update(num_compras=F('num_compras')+1)
-            productos.update(estatus_pago=estatus_pago)
-            productos.filter(subtotal__gt=0)
-            descargas = []
-            for producto in productos:
-                encoded = jwt.encode({'producto': producto.pk, 'foto': producto.foto.pk, 'usuario': self.request.user.pk}, KEY_FOTO, algorithm='HS256')
-                token = encoded.decode('UTF-8')
-                descargas.append(Descarga.objects.create(producto=producto, orden=orden, usuario=self.request.user, token=token))
+            # productos = Producto.objects.filter(orden=orden)
+            # list_fotos =productos.values_list('foto__pk', flat=True)
+            # fotos = Fotografia.objects.filter(pk__in=list_fotos)
+            # fotos.update(num_compras=F('num_compras')+1)
+            # productos.update(estatus_pago=estatus_pago)
+            # productos.filter(subtotal__gt=0)
+            # descargas = []
+            # for producto in productos:
+            #     encoded = jwt.encode({'producto': producto.pk, 'foto': producto.foto.pk, 'usuario': self.request.user.pk}, KEY_FOTO, algorithm='HS256')
+            #     token = encoded.decode('UTF-8')
+            #     descargas.append(Descarga.objects.create(producto=producto, orden=orden, usuario=self.request.user, token=token))
 
-            email_template_name = 'mailing/descargas.html'
-            subject = "Productos Digitales"
-            to = [self.request.user.correo]
-            ctx = {
-                'productos': descargas,
-                'request': request,
-                'user': self.request.user,
-                'orden': orden
-            }
-            message = get_template(email_template_name).render(ctx)
-            sendMail(to, subject, message)
+            # email_template_name = 'mailing/descargas.html'
+            # subject = "Productos Digitales"
+            # to = [self.request.user.correo]
+            # ctx = {
+            #     'productos': descargas,
+            #     'request': request,
+            #     'user': self.request.user,
+            #     'orden': orden
+            # }
+            # message = get_template(email_template_name).render(ctx)
+            # sendMail(to, subject, message)
 
         elif metodo_pago.nombre == 'Oxxo':
             order_conekta = crear_orden_oxxo(request, orden)
