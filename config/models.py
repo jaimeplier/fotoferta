@@ -555,7 +555,7 @@ class Orden(models.Model):
     usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
     direccion = models.ForeignKey('Direccion', models.DO_NOTHING, null=True, blank=True)
     tarjeta = models.ForeignKey('Tarjeta', models.DO_NOTHING, null=True, blank=True)
-    oxxo_order = models.CharField(max_length=12, null=True, blank=True)
+    oxxo_order = models.CharField(max_length=16, null=True, blank=True)
     num_guia = models.CharField(max_length=12, null=True, blank=True)
     peso = models.FloatField(default=0)
     costo_envio = models.FloatField(default=0)
