@@ -8,7 +8,7 @@
                 <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv prewviewCartContainer">
                     <div class="row">
                         <div class="col-lx-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <h1>Mi Orden ID: {{ orden.pk }} </h1>
+                            <h1>Orden ID: {{ orden.pk }} de {{ orden.usuario.nombre }}({{ orden.usuario.correo }})</h1>
                         </div>
                     </div>
                     <div class="row">
@@ -24,9 +24,9 @@
                                                     </div>
                                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                         {% if producto.descarga_set.first %}
-                                                        <p>Descargas disponibles: {{ producto.descarga_set.first.no_descargas_disponibles }}</p>
+                                                        <p>Descargas disponibles para el usuario: {{ producto.descarga_set.first.no_descargas_disponibles }}</p>
                                                             {% if producto.descarga_set.first.no_descargas_disponibles > 0 %}
-                                                        <a download="fotofertas_prod_{{ producto.pk }}.jpg" class="button-a button-a-primary" href="{% url 'webapp:producto_descarga' producto.descarga_set.first.token 'fotofertas_prod' %}"
+                                                        <a download="fotofertas_prod_{{ producto.pk }}.jpg" class="button-a button-a-primary" href="{% url 'administrador:producto_descarga' producto.descarga_set.first.token 'fotofertas_prod' %}"
                                                            style="background: #12284C; border: none; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 15px 50px; color: #ffffff; display: block; border-radius: 4px;">Descargar</a>
                                                                 {% endif %}
                                                         {% else %}
@@ -121,13 +121,19 @@
                                         </div>
                                     </div>
                                     {% endif %}
-                                    {% if orden.num_guia %}
+                                    <form method="post">
+                                        {% csrf_token %}
                                         <div class="row">
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 paymentMethodTitle">
-                                                <p>Numero de guia: {{ orden.num_guia }}</p>
+                                                <label for="num_guia">Número de guía</label>
+                                                <input type="text" id="num_guia" name="num_guia" maxlength="12">
+                                                <p>Guardar orden y pasar orden a estatus de impresión y envío</p>
+                                                <button type="submit" class="button-a button-a-primary"
+                                                   style="background: #12284C; border: none; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 15px 50px; color: #ffffff; display: block; border-radius: 4px;">Guardar</button>
                                             </div>
                                         </div>
-                                    {% endif %}
+                                    </form>
+
                                 </div>
                             </div>
                         </div>

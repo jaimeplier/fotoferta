@@ -270,11 +270,11 @@ class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'fotopartner'
     model = Producto
     columns = [
-        'foto', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', 'disponibles', 'descargar', 'subtotal', 'detalle'
+        'foto', 'tamanio', 'tipo_compra.nombre', 'disponibles', 'descargar', 'num_guia', 'subtotal', 'detalle'
     ]
 
     order_columns = [
-    'foto.nombre', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', '', '', 'subtotal', ''
+    'foto.nombre', 'foto_tamanio_precio.tamanio.nombre', 'tipo_compra.nombre', '', '', 'num_guia', 'subtotal', ''
     ]
 
     max_display_length = 100
@@ -304,16 +304,25 @@ class ComprasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             return '<a class="" href ="' + reverse('webapp:detalle_orden',
                                                    kwargs={
                                                        'orden': row.orden.pk}) + '"><i class="fa fa-file-invoice" aria-hidden="true"></i></a>'
-
+        elif column == 'num_guia':
+            if row.orden.num_guia:
+                return row.orden.num_guia
+            else:
+                return '------'
+        elif column == 'tamanio':
+            if row.tipo_compra.nombre == 'Digital':
+                return row.foto.tamanio.nombre
+            else:
+                return row.foto_tamanio_precio.tamanio.nombre
         return super(ComprasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Producto.objects.filter(usuario=self.request.user, estatus_pago__pk=2)
+        return Producto.objects.filter(usuario=self.request.user, estatus_pago__pk__in=[2,3])
 
 @permission_required(perm='fotopartner', login_url='/webapp/login')
 def detalle_orden(request, orden):
     template_name = 'cliente/detalle_orden.html'
-    orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Ordenado')
+    orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre__in=['Ordenado', 'Impresión y envío'])
     if orden_objt.usuario.pk == request.user.pk:
         productos = Producto.objects.filter(orden=orden_objt)
         return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
@@ -346,7 +355,6 @@ def producto_descarga(request, token, image_name):
     template_error = 'cliente/error_descarga.html'
     try:
         decode_descarga = jwt.decode(token, KEY_FOTO, algorithm='HS256')
-        print(decode_descarga)
         producto = Producto.objects.get(pk=decode_descarga['producto'])
         if producto.usuario.pk == request.user.pk:
             foto = Fotografia.objects.get(pk=producto.foto.pk)

@@ -1074,9 +1074,9 @@ footer .footerMenu {
 
 .reportContainer {
     width: 180px;
-    position: absolute;
+    /*position: absolute;
     top: 55px;
-    left: 170px;
+    left: 170px;*/
     z-index: 1001;
     background: rgba(255, 255, 255, 1);
     display: none;
@@ -1212,6 +1212,7 @@ footer .footerMenu {
     opacity: 0.5;
     fill: #FFFFFF;
     enable-background: new;
+    width: 150px;
 }
 
 .fotOfertasLogo3 {

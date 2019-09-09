@@ -52,24 +52,34 @@
                                     <p>{{ foto.descripcion }}</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 btnSaleDigital">
-                                    <button class="btn generalBtn specialBtn" onclick="agregareIrCarrito({{ foto.pk }})">
+
+                            {% if foto.precio > 0 %}
+                                <div class="row">
+                                    <div class="col-12 btnSaleDigital">
+                                        <button class="btn generalBtn specialBtn" onclick="agregareIrCarrito({{ foto.pk }})">
                                         <i class="fas fa-paper-plane"></i> Comprar en formato digital</button>
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
+
+
                             <div class="row">
                                 <div class="col-12 btnSaleDigital">
                                     <button onclick="agregarMarco({{ foto.pk }})" class="btn generalBtn specialBtn"><i class="fas fa-print"></i> Imprime y enmarca</button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 btnSaleDigital" >
-                                    <button class="btn generalBtn specialBtn" onclick="agregarCarrito({{ foto.pk }})">
-                                        <i class="fas fa-cart-plus"></i> Agregar al carrito
-                                    </button>
+
+                            {% if foto.precio > 0 %}
+                                <div class="row">
+                                    <div class="col-12 btnSaleDigital" >
+                                        <button class="btn generalBtn specialBtn" onclick="agregarCarrito({{ foto.pk }})">
+                                            <i class="fas fa-cart-plus"></i> Agregar al carrito
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
+
+
                         </div>
                     </div>
                 </div>

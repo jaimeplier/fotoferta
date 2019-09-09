@@ -27,7 +27,7 @@ class WebHook(APIView):
             try:
                 orden = Orden.objects.get(order_id=id)
                 estatus_pago = EstatusPago.objects.get(pk=2)  # Pagado
-                orden.estatus_pago = estatus_pago
+                orden.estatus = estatus_pago
                 orden.fecha_compra = timezone.now()
                 orden.save()
                 productos = Producto.objects.filter(orden=orden)
