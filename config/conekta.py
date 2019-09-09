@@ -201,6 +201,7 @@ def crear_orden_oxxo(request, orden):
         orden.estatus_compra = estatus_compra
         estatus_pago = EstatusPago.objects.get(pk=4)  # Pendiente
         orden.estatus_pago = estatus_pago
+        orden.oxxo_order = order.charges[0].payment_method.reference # referencia de Oxxo
         orden.save()
         productos.update(estatus_pago=estatus_pago)
     except conekta.ConektaError as e:

@@ -13,7 +13,7 @@ from administrador.forms import CodigoMarcoForm, MarcoForm, MarialuisaForm, Tama
     PromocionForm, TipoPapelForm, PapelImpresionForm, ContactanosForm, CategoriaForm, FotoPrecioForm
 from config.models import CodigoMarco, Marco, MariaLuisa, ModeloMariaLuisa, Tamanio, Textura, \
     Logo, PersonalAdministrativo, Rol, Orden, MenuFotopartner, Promocion, Fotografo, Fotografia, TipoPapel, \
-    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto, Descarga
+    PapelImpresion, Contactanos, Categoria, FotoPrecio, Producto, Descarga, EstatusCompra
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from fotofertas import settings
@@ -1732,6 +1732,25 @@ def detalle_orden(request, orden):
     template_name = 'administrador/detalle_orden.html'
     orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Ordenado')
     productos = Producto.objects.filter(orden=orden_objt)
+    if request.method == 'POST':
+        est_compra = EstatusCompra.objects.get(pk=3)
+        num_guia = request.POST['num_guia']
+        orden_objt.num_guia=num_guia
+        orden_objt.estatus_compra = est_compra # Impresion y envío
+        orden_objt.save()
+        return HttpResponseRedirect(reverse('administrador:list_ventas'))
+    return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
+
+@permission_required(perm='administrador', login_url='/webapp/login')
+def detalle_orden_historial(request, orden):
+    template_name = 'administrador/detalle_orden.html'
+    orden_objt = Orden.objects.get(pk=orden, estatus_compra__nombre='Impresión y envío')
+    productos = Producto.objects.filter(orden=orden_objt)
+    if request.method == 'POST':
+        num_guia = request.POST['num_guia']
+        orden_objt.num_guia=num_guia
+        orden_objt.save()
+        return HttpResponseRedirect(reverse('administrador:list_ventas'))
     return render(request, template_name, context={'orden':orden_objt, 'productos': productos})
 
 @permission_required(perm='administrador', login_url='/webapp/login')
@@ -1758,10 +1777,12 @@ def historial_ventas_listar(request):
                               ['Fecha de compra', True],
                               ['Usuario', True],
                               ['Dirección', True],
+                              ['Guia', True],
                               ['Método de pago', True],
                               ['Detalle de pago', True],
                               ['Total', True],
                               ['Estatus', True],
+                              ['Estatus de compra', True],
                               ['Detalle', False],
                               ]
     context['url_ajax'] = reverse('administrador:tab_list_historial_ventas')
@@ -1772,9 +1793,9 @@ class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
     login_url = '/webapp/login'
     permission_required = 'administrador'
     model = Orden
-    columns = ['id','fecha_creacion', 'fecha_compra', 'usuario.nombre', 'direccion', 'forma_pago.nombre', 'detalle_pago', 'total', 'estatus.nombre', 'detalle']
+    columns = ['id','fecha_creacion', 'fecha_compra', 'usuario.nombre', 'direccion', 'num_guia', 'forma_pago.nombre', 'detalle_pago', 'total', 'estatus.nombre', 'estatus_compra.nombre', 'detalle']
 
-    order_columns = ['id', 'fecha_creacion', 'fecha_compra', 'usuario.nombre', 'colonia', 'forma_pago.nombre', '', 'total', 'estatus.nombre', '']
+    order_columns = ['id', 'fecha_creacion', 'fecha_compra', 'usuario.nombre', 'colonia', 'num_guia', 'forma_pago.nombre', '', 'total', 'estatus.nombre', 'estatus_compra.nombre', '']
 
     max_display_length = 100
     settingstime_zone = timezone(settings.TIME_ZONE)
@@ -1785,7 +1806,7 @@ class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
                                                    kwargs={
                                                        'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
 
-        elif column == 'estatus':
+        elif column == 'estatus_compra':
             return '<a class="" href ="#"><i class="material-icons">receipt</i></a>'
         elif column == 'estatus':
             return '<a class="" href ="#"><i class="material-icons">receipt</i></a>'
@@ -1807,16 +1828,25 @@ class HistorialVentasAjaxListView(PermissionRequiredMixin, BaseDatatableView):
             elif row.forma_pago.nombre=='Spei':
                 return 'Transferencia'
             return 'Sin información'
+        elif column == 'detalle':
+            return '<a class="" href ="' + reverse('administrador:detalle_orden_historial',
+                                                   kwargs={
+                                                       'orden': row.pk}) + '"><i class="fa fa-file-invoice" aria-hidden="true"></i></a>'
+        elif column == 'guia':
+            if row.num_guia:
+                return row.num_guia
+            return 'Sin num guia'
         return super(HistorialVentasAjaxListView, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Orden.objects.filter(estatus__pk__in=[1,2])
+        return Orden.objects.filter(estatus_compra__pk__in=[3])
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
             qs = qs.filter(usuario__nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
-                forma_pago__nombre__icontains=search)| qs.filter(forma_pago__nombre__icontains=search)
+                forma_pago__nombre__icontains=search)| qs.filter(forma_pago__nombre__icontains=search) | qs.filter(
+                num_guia__icontains=search)
         return qs
 
 @permission_required(perm='administrador', login_url='/webapp/login')
