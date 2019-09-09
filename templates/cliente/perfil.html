@@ -7,11 +7,11 @@
 <section class="row promosCarousel">
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="row">
-            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv">
+            <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv" style="max-width:728px; max-height: 250px; ">
                 {% if fotografo.foto_portada %}
-                <img class="card-img-top" src="{{ fotografo.foto_portada.url }}" alt="Card image top">
+                <img class="card-img-top img-fluid" src="{{ fotografo.foto_portada.url }}" alt="Card image top">
                 {% else %}
-                <img class="card-img-top" src="https://via.placeholder.com/728x250.png?" alt="Card image top">
+                <img class="card-img-top img-fluid" src="https://via.placeholder.com/728x250.png?" alt="Card image top">
                 {% endif %}
             </div>
         </div>
@@ -557,14 +557,14 @@
                 <div onclick="cancelarFoto()">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="etapasFoto()">Siguiente</button>
+                <button type="button" class="btn btn-primary" onclick="etapasFoto()">Subir foto</button>
             </div>
         </div>
     </div>
 </div>
 <div id="modalPhotoUploadType" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 100%; margin: 15%; background: #EAECEE;">
             <div class="modal-header">
                 <h5 class="modal-title">¿Como quieres subir tu fotografía?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -585,7 +585,7 @@
 </div>
 <div id="modalPhotoUploadSellType" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 100%; margin: 15%; background: #EAECEE;">
             <div class="modal-header">
                 <h5 class="modal-title">¿Como quieres vender tu fotografía?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

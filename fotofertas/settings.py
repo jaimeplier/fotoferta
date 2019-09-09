@@ -36,7 +36,7 @@ KEY_FOTO = '_f034t0$F3rt(4zPthRoi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'ec2-34-220-71-42.us-west-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-34-220-71-42.us-west-2.compute.amazonaws.com']
 
 AUTH_USER_MODEL = 'config.Usuario'
 
