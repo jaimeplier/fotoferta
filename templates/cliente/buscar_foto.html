@@ -3,13 +3,18 @@
 {% load static %}
 {% block content %}
 
-    <h3>Resultados para <i><span id="request">Request</span></i></h3>
+    <h3>Resultados: </h3>
     <section class="row masonryGallery">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="row">
                 <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
                     <div class="card-columns" id="sec1_fotos">
-                      
+                        {% for foto in fotos %}
+                        <div class="card">
+                                <a href="/webapp/foto/{{foto.pk}}"><img class="card-img-top" src="{{ foto.foto_home }}" alt="Card image top">
+                                </a>
+                            </div>   
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -31,30 +36,30 @@ var url_next_foto;
 
 $('document').ready(function(){
     // obtener params de query
-    $.ajax({
-        url: "/ws/buscar_foto/?categoria=" + 8 + "&nombre=" + "Fuente",
-        type: "GET",
-        cache: false,
-        success: function(json) {
-            console.log('fotos',json)
-            for (i of json.results) {
-                $('#sec1_fotos').append(`
-                    <div class="card">
-                        <a href="/webapp/foto/` + i.pk + `"><img class="card-img-top" src="" alt="Card image top">                            
-                            <img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
-                        </a>
-                    </div>   
-                `);
-            }
+    // $.ajax({
+    //     url: "/ws/buscar_foto/?categoria=" + 8 + "&nombre=" + "Fuente",
+    //     type: "GET",
+    //     cache: false,
+    //     success: function(json) {
+    //         console.log('fotos',json)
+    //         for (i of json.results) {
+    //             $('#sec1_fotos').append(`
+    //                 <div class="card">
+    //                     <a href="/webapp/foto/` + i.pk + `"><img class="card-img-top" src="" alt="Card image top">                            
+    //                         <img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
+    //                     </a>
+    //                 </div>   
+    //             `);
+    //         }
 
-            url_next_foto = json.next;
-                if (!url_next_foto) {
-                    $('#ver_mas').hide();
-                } else {
-                    $('#ver_mas').show();
-                }
-        }
-    })
+    //         url_next_foto = json.next;
+    //             if (!url_next_foto) {
+    //                 $('#ver_mas').hide();
+    //             } else {
+    //                 $('#ver_mas').show();
+    //             }
+    //     }
+    // })
 });
 
 function cargarFotos() {

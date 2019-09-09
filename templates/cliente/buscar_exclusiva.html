@@ -1,0 +1,43 @@
+{% extends 'config/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+
+<div class="row exclusiveRow">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="row">
+            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 centerDiv">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <h1>Resultados:</h1>
+                    </div>
+                </div>
+                {% if not fotos %}
+                    <p style="color:white">No se encontraron resultados para esa búsqueda</p>
+                {% endif %}
+                <div class="row exclusiveGallery">
+                    <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
+                        <div id="listaFotos" class="card-columns">                                
+                                {% for foto in fotos %}
+                                <div class="card">
+                                    <a href="/webapp/foto/{{foto.pk}}"><img class="card-img-top" src="{{ foto.foto_home }}"
+                                    alt="Card image top"></a>
+                                </div>                                
+                                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $('document').ready(function() {
+    });
+
+</script>
+{% endblock %}

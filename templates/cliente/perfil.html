@@ -607,6 +607,76 @@
         </div>
     </div>
 </div>
+
+
+<div id="modalPhotoPrivada" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Enmarca tu foto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="row uploadStepCounter">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="row">
+                            <div class="col-11 centerDiv">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div id="paso1" class="col-11 centerDiv stepCounter active"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div id="paso2" class="col-11 centerDiv stepCounter"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div id="paso3" class="col-11 centerDiv stepCounter"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <img id="foto_subir2" class="uploadedImage">
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 uploadMenu">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <b><p style="float:left">Elige tu foto a enmarcar</p></b>
+                                    <input type="file" id="input_foto_enmarcar" placeholder="Foto">
+                                </div>
+                                <!-- onchange="cargarfoto(event)" -->                                    
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <label style="float:left" for="nombre_foto2">Título</label>
+                                    <input class="form-control" id="titulo_enmarcar">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div onclick="cancelarFoto()">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="subirFoto2()">Siguiente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 {% block scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -620,6 +690,7 @@
     }
 
     var foto = null;
+    var foto2 = null;
     var no_repeat_etiquetas = [];
 
     $('document').ready(function() {
@@ -725,6 +796,9 @@
             readURL(this);
         });
 
+        $("#input_foto_enmarcar").change(function() {
+            readfoto(this);
+        });
         // $('#etiquetas_foto').select2({
         //     tags: true,
         // });
@@ -830,7 +904,13 @@
 
         var hash = window.location.hash;
         if (hash.length > 0) {
-            $('#modalPhotoUpload').modal('show');
+            if(hash == '#modalPhotoUpload') {
+                $('#modalPhotoUpload').modal('show');
+            }
+
+            if(hash == '#modalPhotoPrivada') {
+                $('#modalPhotoPrivada').modal('show');
+            }
         }
 
     });
@@ -847,6 +927,20 @@
                 console.log(e)
                 $('#foto_subir').attr('src', e.target.result);
                 foto = e.target.result;
+                $('#loader').hide()
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readfoto(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            $('#loader').show()
+            reader.onload = function(e) {
+                console.log(e)
+                $('#foto_subir2').attr('src', e.target.result);
+                foto2 = e.target.result;
                 $('#loader').hide()
             }
             reader.readAsDataURL(input.files[0]);
@@ -954,29 +1048,59 @@
                 },
                  error: function(xhr, error){
                     $('#loader').hide();
-                    alert(xhr.responseJSON.error);
+                    alert(xhr.responseText);
                 },
             });
-
-            /*    $.ajax({
-                url: "/ws/add_direccion_cliente/" ,
-                type: "POST",
-                cache: false,
-                data: datosNuevaDireccion,
-                success: function (json) {
-                   alert('Dirección añadida')
-                },
-                error: function (xhr, errmsg, err) {
-                    alert(errmsg, err);
-                }
-        }); */
-
-
-
         }
-        console.log(foto_form);
-
     }
+
+    function subirFoto2() {
+        var data_foto2 = new FormData();
+        var nombre_foto = $('#nombre_foto2').val();
+
+        data_foto2.append('foto ', $('#input_foto_enmarcar')[0].files[0]);
+        data_foto2.append('tipo_venta_foto', 1);
+        data_foto2.append('publica', false);
+        // agregar categoria para default?
+        data_foto2.append('categoria', 1);
+        data_foto2.append('descripcion', 'null');
+        data_foto2.append('etiquetas', 0);
+        data_foto2.append('nombre', nombre_foto);
+
+
+        $('#loader').show();
+        $.ajax({
+            url: "/ws/subir_foto/",
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: data_foto2,
+            success: function(json) {
+                $('#nombre_foto2').val('');
+                let data_carrito = {
+                    pk: '',
+                    tipo_compra :''
+                }
+                $.ajax({
+                    url: "/ws/agregar_carrito/",
+                    type: "POST",
+                    cache: false,
+                    data: data_carrito,
+                    success: function (res) {
+                        $('#loader').hide();
+                        window.location.href = "/webapp/marco/" + res.id;
+                    },
+                    error: (err) => {console.log(err)}
+                })
+            },
+                error: function(xhr, error){
+                $('#loader').hide();
+                alert(xhr.responseText);
+            },
+        });
+    }
+
 
     function cancelarFoto() {
         // $(this).prop('checked', false);

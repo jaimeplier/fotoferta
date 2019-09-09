@@ -423,7 +423,7 @@ def vista_buscar_foto(request, categoria, nombre, tipo_foto, page):
     tipo_busqueda = tipo_foto
     if tipo_busqueda == 1:
         tipo_foto = 2 # Foto exclusiva
-        template_name = 'cliente/buscar_foto.html'
+        template_name = 'cliente/buscar_exclusiva.html'
     else:
         tipo_foto = 1 # Foto normal
         template_name = 'cliente/buscar_foto.html'

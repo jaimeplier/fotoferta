@@ -127,7 +127,7 @@
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="row">
-                            <div class="col-11 centerDiv iconContainer">
+                            <div class="col-11 centerDiv iconContainer" onclick="cargarFotosConParametro('recientes')">
                                 <p><i class="far fa-clock"></i></p>
                                 <h4>Las más recientes</h4>
                             </div>
@@ -135,7 +135,7 @@
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="row">
-                            <div class="col-11 centerDiv iconContainer">
+                            <div class="col-11 centerDiv iconContainer" onclick="cargarFotosConParametro('vendidas')">
                                 <p><i class="fas fa-cart-arrow-down"></i></p>
                                 <h4>Las más vendidas</h4>
                             </div>
@@ -143,7 +143,7 @@
                     </div>
                     <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="row">
-                            <div class="col-11 centerDiv iconContainer">
+                            <div class="col-11 centerDiv iconContainer" onclick="cargarFotosConParametro('likes')">
                                 <p><i class="fas fa-heart"></i></p>
                                 <h4>Con más me gusta</h4>
                             </div>
@@ -215,8 +215,11 @@
         })
     });
 
+    function test() {
+        console.log('asdafsd')
+    }
+
 function cargarFotos() {
-    console.log('TEST1',url_next_foto )
     if(url_next_foto) {
         $.ajax({
             url: url_next_foto,
@@ -241,5 +244,34 @@ function cargarFotos() {
         })
     }
 }
+
+function cargarFotosConParametro(param) {
+    $.ajax({
+        url: "/ws/list_fotos_home/?"+ param + "=1",
+        type: "GET",
+        cache: false,
+        success: function (json) {
+            console.log(json)
+            for (let [idx, i] of json.results.entries()) {
+                $('#sec3_fotos').append(`
+                    <div class="card">
+                        <a href= "/webapp/foto/` + i.pk + `"><img class="card-img-top" src="` + i.foto_home + `" alt="Card image top"
+                        ></a>
+                    </div>
+                `)
+            }
+            url_next_foto = json2.next
+            if (!url_next_foto) {
+                $('#ver_mas').hide();
+            } else {
+                $('#ver_mas').show();
+            }
+            // url_next_foto = json.next
+           
+        }
+    })
+}
+
+
 </script>
 {% endblock %}

@@ -15,7 +15,7 @@
                 <div class="row exclusiveGallery">
                     <div class="col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 centerDiv masonryContainer">
                         <div id="listaFotos" class="card-columns">
-                            <div class="card">
+                            <!-- <div class="card">
                                 <img class="card-img-top" src="https://via.placeholder.com/150" alt="Card image top">
                             </div>
                             <div class="card">
@@ -62,7 +62,7 @@
                             </div>
                             <div class="card">
                                 <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -82,10 +82,11 @@
             cache: false,
             success: function(json) {
                 console.log('exclusivas',json)
-                for (i in json) {
+                for (i in json.results) {
                     $('#listaFotos').append(`
                         <div class="card">
-                            <img class="card-img-top" src="https://source.unsplash.com/daily?wood" alt="Card image top">
+                            <a href="/webapp/foto/`+ i.pk +`"><img class="card-img-top" src="`+ i.foto_home +`"
+                            alt="Card image top"></a>
                         </div>`
                     );
                 }

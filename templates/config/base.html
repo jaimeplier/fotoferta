@@ -120,12 +120,15 @@
                 <div class="d-xl-none d-lg-none col-md-2 col-sm-2 col-2 shoppingCartContainer">
                     <a href="#" onclick="toggle_visibility('notificationDrawer')">
                         <i class="fas fa-bell">
-                            <div class="amountContainer">5</div>
+                            <div class="amountContainer length_notificaciones"></div>
                         </i>
                     </a>
                     <div id="notificationDrawer" class="notificationContainer">
-                        <div class="row notificationContent">
+                        <div class="row notificationContent list_notificaciones">
                             <div class="col-12 notification">
+                                <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
+                            </div>
+                            <!-- <div class="col-12 notification">
                                 <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
                             </div>
                             <div class="col-12 notification">
@@ -136,17 +139,14 @@
                             </div>
                             <div class="col-12 notification">
                                 <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
-                            </div>
-                            <div class="col-12 notification">
-                                <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
                 <div class="d-xl-none d-lg-none col-md-3 col-sm-3 col-3 shoppingCartContainer">
                     <a href="#">
                         <i class="fas fa-shopping-cart">
-                            <div class="amountContainer">5</div>
+                            <div class="amountContainer num_carrito" id="articulosCarrito"></div>
                         </i>
                     </a>
                 </div>
@@ -196,9 +196,10 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="text" class="form-control" placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control" id="buscador"
+                        placeholder="Buscar..." aria-label="Recipient's username" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn generalBtn" type="button">Buscar</button>
+                            <button onclick="buscarFoto()" class="btn generalBtn" type="button">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -207,12 +208,12 @@
                         <div class="col-xl-2 col-lg-2 col-md-2 d-xl-block d-lg-block d-sm-none d-none shoppingCartContainer">
                             <a href="#" onclick="toggle_visibility('notificationDrawerMobile')">
                                 <i class="fas fa-bell">
-                                    <div id="notificaciones" class="amountContainer">5</div>
+                                    <div id="notificaciones" class="amountContainer length_notificaciones"></div>
                                 </i>
                             </a>
                             <div id="notificationDrawerMobile" class="notificationContainer">
-                                <div class="row notificationContent">
-                                    <div class="col-12 notification">
+                                <div class="row notificationContent list_notificaciones">                                
+                                    <!-- <div class="col-12 notification">
                                         <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
                                     </div>
                                     <div class="col-12 notification">
@@ -220,20 +221,14 @@
                                     </div>
                                     <div class="col-12 notification">
                                         <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
-                                    </div>
-                                    <div class="col-12 notification">
-                                        <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
-                                    </div>
-                                    <div class="col-12 notification">
-                                        <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-2 col-lg-2 col-md-2 d-xl-block d-lg-block d-md-block d-sm-none d-none shoppingCartContainer">
                             <a href="{% url 'webapp:vista_carrito' %}">
                                 <i class="fas fa-shopping-cart">
-                                    <div class="amountContainer">5</div>
+                                    <div class="amountContainer num_carrito"></div>
                                 </i>
                             </a>
                         </div>
@@ -273,7 +268,7 @@
                         <li><a href="{% url 'webapp:vista_fotopartners' %}">Fotopartners</a></li>
                         <li><a href="{% url 'webapp:vista_exclusivas' %}">Fotos exclusivas</a></li>
                         <li><a href="{% url 'webapp:vista_fotos_gratis' %}">Fotos Gratuitas</a></li>
-                        <li><a href="{% url 'webapp:sitio_en_construccion' %}">Enmarcar foto</a></li>
+                        <li><a href="{% url 'webapp:vista_perfil' %}#modalPhotoPrivada">Enmarcar foto</a></li>
                         <li><a href="{% url 'webapp:sitio_en_construccion' %}">Revista</a>
                             <ul>
                                 <li><a href="{% url 'webapp:sitio_en_construccion' %}">Blog</a></li>
@@ -536,6 +531,8 @@
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/functions.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
+    <script src="{% static 'js/crsfajax.js' %}"></script>
+
     <!-- <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -544,6 +541,9 @@
     <script>
         var categoria;
         $('document').ready(function() {
+            contarArticulos();
+            cargarNotificaciones();
+
             $.ajax({
                 url: "/ws/list_logo/",
                 type: "GET",
@@ -558,7 +558,6 @@
                 type: "GET",
                 cache: false,
                 success: function(json) {
-                    console.log('categorias', json)
                     for (i of json) {
                         $('#list_categorias').append(`
                     <div class="col-xl-6 col-lg-6 cl-md-6 col-sm-6 col-6">
@@ -566,6 +565,12 @@
                     </div>
                         `)
                     }
+                    $('#list_categorias').append(`
+                    <div class="col-xl-6 col-lg-6 cl-md-6 col-sm-6 col-6">
+                        <div class="checkbox dropdown-item">
+                            <label><input id="exclusiva" type="checkbox" value="0"> Exclusiva</label>
+                        </div>
+                    </div>`)
                 }
             })
 
@@ -574,7 +579,6 @@
                 type: "GET",
                 cache: false,
                 success: function(json) {
-                    console.log('dir', json)
                     $('#contacto_correo').append(`
                 <p>` + json[0].correo + `</p>
                         `)
@@ -586,10 +590,9 @@
                     $('#contacto_dir').append(`
                 <p>` + json[0].direccion + `</p>
                         `)
-
-
                 }
             })
+            
         });
 
         function addCategoria(id) {
@@ -597,29 +600,83 @@
         }
 
         function buscarFoto() {
+            var elementos = ''
+            
+            if(!categoria) {
+                elementos += '0/'
+            } else {
+                elementos += categoria +'/'
+            }
+
+            if($('#buscador').val().length == 0 ) {
+                elementos += 'None_Null/'
+            } else {
+                elementos += $('#buscador').val() + '/'
+            }
+
+            // Agregar pagina
+            if(!$('#exclusiva').is(":checked") ) {
+                elementos += '0/0'
+            } else {
+                elementos += '1/0'
+            }
+
             // usar categoria
-            window.location.href = "/webapp/foto/?categoria=" + 8 + "&nombre=" + "Fuente"
+            window.location.href = "/webapp/buscar/" + elementos
+        }
+      
+        function contarArticulos() {
+            $.ajax({
+                url: "/ws/contador_articulos/",
+                type: "POST",
+                cache: false,
+                success: function(json) {
+                    $('.num_carrito').append(json.cantidad);
+                }
+            })
         }
 
-        /* Funcion para cargar notificaciones
         function cargarNotificaciones() {
             $.ajax({
-                url: "/ws/list_contactanos/",
+                url: "/ws/list_notificaciones/",
                 type: "GET",
                 cache: false,
                 success: function (json) {
-                    $('#notificaciones').append(json.notificaciones);
+                    $(".length_notificaciones").append(json.results.length);
+                    for(i of json.results ) {
+                        if(i.reaccion.nombre == 'Favorito') {
+                            $('.list_notificaciones').append(`
+                                <div class="col-12 notification">
+                                    <p><a href="/webapp/usuario/`+ i.actioner.id +`">A `+ i.actioner.nombre +` 
+                                    le gusta tu foto!</a> <i class="fas fa-circle"></i></a></p>
+                                </div>
+                            `)  
+                        }
+                        // $('.list_notificaciones').append(`
+                        //         <div class="col-12 notification">
+                        //             <p><a href="#">A <a href="/webapp/usuario/`+ i.actioner.id +`">`+ i.actioner.nombre +`</a> 
+                        //             le gusta tu <a href="`+ i.foto.id +`">foto!</a> <i class="fas fa-circle"></i></a></p>
+                        //         </div>
 
-                    for(let i = 0; i < json.length ) {
-                        $('#').append(`
-                            <div class="col-12 notification">
-                                <p><a href="#">A Ana le gusta tu foto <i class="fas fa-circle"></i></a></p>
-                            </div>
-                        `)
+                        if(i.reaccion.nombre == 'Siguiendo') {
+                            $('.list_notificaciones').append(`
+                                <div class="col-12 notification">
+                                    <p><a href="/webapp/usuario/`+ i.actioner.id +`">`+ i.actioner.nombre +` 
+                                    comenzó a seguirte! <i class="fas fa-circle"></i></a></p>
+                                </div>
+                            `)
+                        }
+                        // con href, pero se rompe la vista
+                        // $('.list_notificaciones').append(`
+                        //         <div class="col-12 notification">
+                        //             <p><a href="#"><a href="/webapp/usuario/`+ i.actioner.id +`">`+ i.actioner.nombre +`</a> 
+                        //             comenzó a seguirte! <i class="fas fa-circle"></i></a></p>
+                        //         </div>
+                        //     `)
                     }
                 }
             })
-        } */
+        }
 
     </script>
 
