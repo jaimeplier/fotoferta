@@ -1130,21 +1130,7 @@
     }
 
 
-    function subirFoto() {
-        $.ajax({
-            url: "/ws/WEBSERVICE/",
-            type: "POST",
-            cache: false,
-            data: foto_form,
-            success: function(json) {
-                $('#categorias').append(
-                    $("<option></option>")
-                    .attr("value", "")
-                    .text("Categoría")
-                );
-            }
-        })
-    }
+
 
     function cargarFavoritas() {
         $.ajax({
